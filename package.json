@@ -33,7 +33,6 @@
     "babel-eslint": "^8.2.1",
     "eslint": "^4.16.0",
     "eslint-config-4catalyzer": "^0.3.3",
-    "eslint-config-import": "^0.13.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.7.0",
