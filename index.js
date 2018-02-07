@@ -1,5 +1,8 @@
+#!/usr/bin/env node
+
 const yargs = require('yargs');
 const newCommand = require('./commands/new');
+const releaseCommand = require('./commands/release');
 
 yargs
   .help()
@@ -12,4 +15,5 @@ yargs
   .showHelpOnFail(true)
   .recommendCommands()
   .command(newCommand)
+  .command(releaseCommand)
   .parse(process.argv.slice(2));
