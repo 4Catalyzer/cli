@@ -142,79 +142,90 @@ module.exports = {
     const pkgPath = path.join(cwd, 'package.json');
     const pkg = require(pkgPath);
 
-    const nextVersion = await getNextVersion(version, pkg.version, preid);
-    const nextPkgJson = { ...pkg, version: nextVersion };
+    try {
+      await ConsoleUtilities.step(
+        'Checking repo and running tests',
+        async () => {
+          if (!skipGit) {
+            await GitUtilities.assertClean();
+            await GitUtilities.assertMatchesRemote();
+          }
 
-    await ConsoleUtilities.step('Updating version and tags', async () => {
-      if (!skipGit) {
-        await GitUtilities.assertClean();
-        await GitUtilities.assertMatchesRemote();
-      }
+          await execa('npm', ['test'], { stdio: [0, 1, 'pipe'] });
+        },
+      );
 
-      const branch = await GitUtilities.getCurrentBranch();
+      const nextVersion = await getNextVersion(version, pkg.version, preid);
+      const nextPkgJson = { ...pkg, version: nextVersion };
 
-      if (!allowBranch.includes(branch))
-        throw new Error(`Cannot publish from branch: ${chalk.bold(branch)}`);
+      await ConsoleUtilities.step('Updating version and tags', async () => {
+        const branch = await GitUtilities.getCurrentBranch();
 
-      await writeJson(pkgPath, nextPkgJson);
+        if (!allowBranch.includes(branch))
+          throw new Error(`Cannot publish from branch: ${chalk.bold(branch)}`);
 
-      if (!skipGit) {
-        const gitTag = `v${nextVersion}`;
+        await writeJson(pkgPath, nextPkgJson);
 
-        await GitUtilities.commit(`Publish ${gitTag}`);
-        await GitUtilities.addTag(gitTag);
-      }
-    });
+        if (!skipGit) {
+          const gitTag = `v${nextVersion}`;
 
-    await ConsoleUtilities.step(
-      'Publishing to npm',
-      async () => {
-        const tag =
-          npmTag || semver.prerelease(nextVersion) ? 'next' : 'latest';
+          await GitUtilities.commit(`Publish ${gitTag}`);
+          await GitUtilities.addTag(gitTag);
+        }
+      });
 
-        if (publishDir) {
-          delete nextPkgJson.files; // because otherwise it would be wrong
-          delete nextPkgJson.scripts;
-          delete nextPkgJson.devDependencies;
-          delete nextPkgJson.rollout;
+      await ConsoleUtilities.step(
+        'Publishing to npm',
+        async () => {
+          const tag =
+            npmTag || semver.prerelease(nextVersion) ? 'next' : 'latest';
 
-          // main: 'lib/index.js' -> index.js
-          nextPkgJson.main = nextPkgJson.main.replace(
-            new RegExp(`${publishDir}\\/?`),
-            '',
-          );
+          if (publishDir) {
+            delete nextPkgJson.files; // because otherwise it would be wrong
+            delete nextPkgJson.scripts;
+            delete nextPkgJson.devDependencies;
+            delete nextPkgJson.rollout;
 
-          const readme = await getReadme(cwd);
-
-          await writeJson(
-            path.join(cwd, publishDir, 'package.json'),
-            nextPkgJson,
-          );
-
-          if (readme)
-            await fs.copyFile(
-              readme,
-              path.join(cwd, publishDir, path.basename(readme)),
+            // main: 'lib/index.js' -> index.js
+            nextPkgJson.main = nextPkgJson.main.replace(
+              new RegExp(`${publishDir}\\/?`),
+              '',
             );
-        }
 
-        const args = ['publish'];
-        if (publishDir) {
-          args.push(publishDir);
-        }
-        if (tag !== 'latest') {
-          args.push('--tag', tag);
-        }
-        if (!await npmName(pkg.name)) {
-          args.push('--access', isPublic ? 'public' : 'restricted');
-        }
-        await execa('npm', args);
-      },
-      skipNpm,
-    );
+            const readme = await getReadme(cwd);
 
-    if (!skipGit) {
-      await GitUtilities.pushWithTags();
+            await writeJson(
+              path.join(cwd, publishDir, 'package.json'),
+              nextPkgJson,
+            );
+
+            if (readme)
+              await fs.copyFile(
+                readme,
+                path.join(cwd, publishDir, path.basename(readme)),
+              );
+          }
+
+          const args = ['publish'];
+          if (publishDir) {
+            args.push(publishDir);
+          }
+          if (tag !== 'latest') {
+            args.push('--tag', tag);
+          }
+          if (!await npmName(pkg.name)) {
+            args.push('--access', isPublic ? 'public' : 'restricted');
+          }
+          await execa('npm', args);
+        },
+        skipNpm,
+      );
+
+      if (!skipGit) {
+        await GitUtilities.pushWithTags();
+      }
+    } catch (err) {
+      /* ignore */
     }
   },
 };

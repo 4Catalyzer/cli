@@ -15,5 +15,6 @@ exports.step = async (text, fn, skip) => {
     spinner.succeed();
   } catch (err) {
     spinner.fail(err.message);
+    throw err;
   }
 };
