@@ -13,18 +13,23 @@ async function setupGit(dest, { name }) {
     path.join(dest, '.gitignore'),
   );
 
-  await execa('git', ['init'], { cwd: dest });
+  await execa('git', ['init'], { cwd: dest, stdio: 'inherit' });
 
-  await execa(
-    'git',
-    [
-      'remote',
-      'add',
-      'origin',
-      `git@github.com:4catalyzer/${repoName(name)}.git`,
-    ],
-    { cwd: dest },
-  );
+  try {
+    await execa(
+      'git',
+      [
+        'remote',
+        'add',
+        'origin',
+        `git@github.com:4catalyzer/${repoName(name)}.git`,
+      ],
+      { cwd: dest, stdio: [0, 1, 'pipe'] },
+    );
+  } catch (err) {
+    if ((err.stderr || '').match(/remote origin already exists/)) return;
+    throw err;
+  }
 }
 
 async function setupNpm(dest, a) {
@@ -120,10 +125,28 @@ module.exports = {
       ? location
       : path.resolve(process.cwd(), location);
 
-    const name = path.basename(dest).replace(/^4c-/, '');
+    // my own convention of naming scoped repo's like 4c-foo on disk
+    const getName = ({ scope }) => {
+      let name = path.basename(dest);
+
+      if (!scope) return name;
+      name = name.replace(new RegExp(`^${scope.slice(1)}-`), '');
+      return `${scope}/${name}`;
+    };
 
     const answers = await inquirer.prompt([
-      { name: 'name', type: 'input', default: `@4c/${name}`, message: 'name' },
+      {
+        name: 'scope',
+        type: 'input',
+        message: 'package scope',
+        default: '@4c',
+      },
+      {
+        name: 'name',
+        type: 'input',
+        message: 'name',
+        default: getName,
+      },
       {
         name: 'type',
         type: 'list',
@@ -181,9 +204,9 @@ module.exports = {
       await fs.ensureFile(path.join(dest, 'index.js'));
     }
 
-    await execa('yarn', ['install'], { cwd: dest });
+    await execa('yarn', ['install'], { cwd: dest, stdio: 'inherit' });
 
-    await execa('npm', ['run', 'format'], { cwd: dest });
+    await execa('npm', ['run', 'format'], { cwd: dest, stdio: 'inherit' });
 
     console.log('Done!');
   },
