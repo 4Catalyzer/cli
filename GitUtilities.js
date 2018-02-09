@@ -50,7 +50,17 @@ exports.addRemote = (name, org = '4catalyzer') => {
   }
 };
 
-exports.addTag = tag => execa('git', ['tag', tag, '-m', tag]);
+exports.addTag = async tag => {
+  const hasTag = await execa.stdout('git', [
+    'rev-parse',
+    '-q',
+    '--verify',
+    `refs/tags/${tag}`,
+  ]);
+  console.log(hasTag);
+  if (hasTag) return;
+  await execa('git', ['tag', tag, '-m', tag]);
+};
 
 exports.removeTag = tag => execa('git', ['tag', '-d', tag]);
 
