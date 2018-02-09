@@ -2,6 +2,12 @@ const execa = require('execa');
 const path = require('path');
 const slash = require('slash');
 
+function hasTag(tag) {
+  return execa
+    .stdout('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`])
+    .then(() => true, () => false);
+}
+
 exports.init = dest => execa('git', ['init'], { cwd: dest, stdio: 'inherit' });
 
 exports.addFile = file =>
@@ -51,14 +57,7 @@ exports.addRemote = (name, org = '4catalyzer') => {
 };
 
 exports.addTag = async tag => {
-  const hasTag = await execa.stdout('git', [
-    'rev-parse',
-    '-q',
-    '--verify',
-    `refs/tags/${tag}`,
-  ]);
-  console.log(hasTag);
-  if (hasTag) return;
+  if (await hasTag(tag)) return;
   await execa('git', ['tag', tag, '-m', tag]);
 };
 
