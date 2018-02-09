@@ -169,7 +169,8 @@ module.exports = {
         if (!skipGit) {
           const gitTag = `v${nextVersion}`;
 
-          await GitUtilities.commit(`Publish ${gitTag}`);
+          await GitUtilities.addFile(pkgPath);
+          await GitUtilities.commit(`"Publish ${gitTag}"`);
           await GitUtilities.addTag(gitTag);
         }
       });

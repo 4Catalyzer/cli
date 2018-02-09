@@ -1,6 +1,14 @@
 const execa = require('execa');
+const path = require('path');
+const slash = require('slash');
 
 exports.init = dest => execa('git', ['init'], { cwd: dest, stdio: 'inherit' });
+
+exports.addFile = file =>
+  execa('git', [
+    'add',
+    slash(path.relative(process.cwd(), path.resolve(process.cwd(), file))),
+  ]);
 
 exports.commit = message =>
   execa('git', ['commit', '--no-verify', '-m', message]);

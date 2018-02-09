@@ -129,7 +129,7 @@
     invariant "^2.2.0"
     lodash "^4.2.0"
 
-"@babel/traverse@7.0.0-beta.39", "@babel/traverse@^7.0.0-beta.38":
+"@babel/traverse@7.0.0-beta.39":
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.0.0-beta.39.tgz#ccb5abfb878403a39af249997dd6f36136de7694"
   dependencies:
@@ -151,7 +151,7 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@babel/types@7.0.0-beta.39", "@babel/types@^7.0.0-beta.38":
+"@babel/types@7.0.0-beta.39":
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.0.0-beta.39.tgz#2ea0d97efe4781688751edc68cde640d6559938c"
   dependencies:
@@ -334,7 +334,7 @@ babylon@7.0.0-beta.36:
   version "7.0.0-beta.36"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-7.0.0-beta.36.tgz#3a3683ba6a9a1e02b0aa507c8e63435e39305b9e"
 
-babylon@7.0.0-beta.39, babylon@^7.0.0-beta.38:
+babylon@7.0.0-beta.39:
   version "7.0.0-beta.39"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-7.0.0-beta.39.tgz#512833ea788f6570c6db026d743a7565e58d3aeb"
 
@@ -631,10 +631,6 @@ delegates@^1.0.0:
 detect-libc@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
-
-detect-newline@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-2.1.0.tgz#f41f1c10be4b00e87b5f13da680759f2c5bfd3e2"
 
 doctrine@1.5.0:
   version "1.5.0"
@@ -948,10 +944,6 @@ fill-range@^2.1.0:
     repeat-element "^1.1.2"
     repeat-string "^1.5.2"
 
-find-line-column@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/find-line-column/-/find-line-column-0.5.2.tgz#db00238ff868551a182e74a103416d295a98c8ca"
-
 find-parent-dir@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/find-parent-dir/-/find-parent-dir-0.3.0.tgz#33c44b429ab2b2f0646299c5f9f718f376ff8d54"
@@ -1226,42 +1218,6 @@ iconv-lite@^0.4.17:
 ignore@^3.3.3:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.7.tgz#612289bfb3c220e186a58118618d5be8c1bab021"
-
-import-sort-parser-4catalyzer@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/import-sort-parser-4catalyzer/-/import-sort-parser-4catalyzer-4.0.1.tgz#250cdff5e3d42a1e37f3e790958943420f6d1b63"
-  dependencies:
-    "@babel/traverse" "^7.0.0-beta.38"
-    "@babel/types" "^7.0.0-beta.38"
-    babylon "^7.0.0-beta.38"
-    find-line-column "^0.5.2"
-
-import-sort-parser@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/import-sort-parser/-/import-sort-parser-4.2.0.tgz#c8263e2c015e77a554e51b319e0006da488d2937"
-
-import-sort-style-4catalyzer@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/import-sort-style-4catalyzer/-/import-sort-style-4catalyzer-4.0.0.tgz#26ce8b2d23f6a19780f84f6082f720d8872eb43c"
-  dependencies:
-    "@babel/traverse" "^7.0.0-beta.38"
-    "@babel/types" "^7.0.0-beta.38"
-    babylon "^7.0.0-beta.38"
-    find-line-column "^0.5.2"
-
-import-sort-style@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/import-sort-style/-/import-sort-style-4.2.0.tgz#ab9194424495045b6ab5fe0b51215efe25c4afb8"
-
-import-sort@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/import-sort/-/import-sort-4.2.0.tgz#4a4daab500ef766cebfac6a9e66a5a143a8bf520"
-  dependencies:
-    detect-newline "^2.1.0"
-    import-sort-parser "^4.2.0"
-    import-sort-style "^4.2.0"
-    is-builtin-module "^1.0.0"
-    resolve "^1.5.0"
 
 imurmurhash@^0.1.4:
   version "0.1.4"
