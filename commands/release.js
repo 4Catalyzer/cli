@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs-extra');
 const chalk = require('chalk');
 const execa = require('execa');
-const npmName = require('npm-name');
 const semver = require('semver');
 
 const GitUtilities = require('../GitUtilities');
@@ -133,7 +132,7 @@ module.exports = {
       })
       .option('public', {
         type: 'bool',
-        default: false,
+        default: undefined,
       }),
 
   async handler({
@@ -234,9 +233,8 @@ module.exports = {
           if (tag !== 'latest') {
             args.push('--tag', tag);
           }
-          const unpublished = await npmName(pkg.name);
-          console.log('hmmm', unpublished);
-          if (unpublished) {
+
+          if (isPublic != null) {
             args.push('--access', isPublic ? 'public' : 'restricted');
           }
 

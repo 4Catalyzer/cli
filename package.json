@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "repository": "https://github.com/4Catalyzer/init.git",
   "author": "4Catalyzer",
@@ -47,7 +47,6 @@
     "execa": "^0.9.0",
     "fs-extra": "^5.0.0",
     "inquirer": "^5.0.1",
-    "npm-name": "^3.1.0",
     "ora": "^1.4.0",
     "semver": "^5.5.0",
     "slash": "^1.0.0",
