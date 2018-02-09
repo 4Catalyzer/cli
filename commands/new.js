@@ -2,35 +2,11 @@ const path = require('path');
 const fs = require('fs-extra');
 const execa = require('execa');
 const inquirer = require('inquirer');
+const GitUtilities = require('../GitUtilities');
 
 const templatePath = path.resolve(__dirname, '../templates');
 
 const repoName = name => name.replace(/^@4c\//, '');
-
-async function setupGit(dest, { name }) {
-  await fs.copyFile(
-    path.join(templatePath, '.gitignore'),
-    path.join(dest, '.gitignore'),
-  );
-
-  await execa('git', ['init'], { cwd: dest, stdio: 'inherit' });
-
-  try {
-    await execa(
-      'git',
-      [
-        'remote',
-        'add',
-        'origin',
-        `git@github.com:4catalyzer/${repoName(name)}.git`,
-      ],
-      { cwd: dest, stdio: [0, 1, 'pipe'] },
-    );
-  } catch (err) {
-    if ((err.stderr || '').match(/remote origin already exists/)) return;
-    throw err;
-  }
-}
 
 async function setupNpm(dest, a) {
   const eslint = {
@@ -169,7 +145,14 @@ module.exports = {
 
     await fs.ensureDir(dest);
 
-    await setupGit(dest, answers);
+    await fs.copyFile(
+      path.join(templatePath, '.gitignore'),
+      path.join(dest, '.gitignore'),
+    );
+
+    await GitUtilities.init(answers.name);
+
+    await GitUtilities.addRemote(answers.name);
 
     await setupNpm(dest, answers);
 

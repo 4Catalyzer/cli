@@ -1,10 +1,18 @@
 {
-  "name": "@4c/init",
-  "version": "1.0.0",
+  "name": "@4c/cli",
+  "version": "1.1.2",
   "main": "index.js",
   "repository": "https://github.com/4Catalyzer/init.git",
   "author": "4Catalyzer",
   "license": "MIT",
+  "bin": {
+    "4c": "index.js"
+  },
+  "scripts": {
+    "lint":
+      "eslint . && prettier --list-different --ignore-path .ignore '**/*.{json,css,md}'",
+    "precommit": "lint-staged"
+  },
   "prettier": {
     "printWidth": 79,
     "singleQuote": true,
@@ -17,15 +25,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "import-sort --write",
-      "git add"
-    ],
-    "*.{json,css,md}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["eslint --fix", "git add"],
+    "*.{json,css,md}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.39",
@@ -38,16 +39,17 @@
     "eslint-plugin-jest": "^21.7.0",
     "eslint-plugin-prettier": "^2.5.0",
     "husky": "^0.14.3",
-    "import-sort": "^4.2.0",
-    "import-sort-parser-4catalyzer": "^4.0.1",
-    "import-sort-style-4catalyzer": "^4.0.0",
     "lint-staged": "^6.1.0",
     "prettier": "^1.10.2"
   },
   "dependencies": {
+    "chalk": "^2.3.0",
     "execa": "^0.9.0",
     "fs-extra": "^5.0.0",
     "inquirer": "^5.0.1",
+    "npm-name": "^3.1.0",
+    "ora": "^1.4.0",
+    "semver": "^5.5.0",
     "yargs": "^11.0.0"
   }
 }
