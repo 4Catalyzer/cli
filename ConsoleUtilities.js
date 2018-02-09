@@ -6,7 +6,7 @@ exports.step = async (text, fn, skip) => {
   const spinner = exports.spinner(text);
 
   if (skip) {
-    spinner.warn();
+    spinner.warn(`Skipping: ${text}`);
     return;
   }
 

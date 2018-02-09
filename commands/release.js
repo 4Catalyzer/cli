@@ -19,6 +19,32 @@ async function getReadme(cwd) {
   );
 }
 
+async function bumpVersion(pkg, publishDir, cwd) {
+  const json = pkg;
+  const pkgPath = path.join(cwd, 'package.json');
+  await writeJson(pkgPath, json);
+
+  if (publishDir) {
+    delete json.files; // because otherwise it would be wrong
+    delete json.scripts;
+    delete json.devDependencies;
+    delete json.rollout;
+
+    // main: 'lib/index.js' -> index.js
+    json.main = json.main.replace(new RegExp(`${publishDir}\\/?`), '');
+
+    const readme = await getReadme(cwd);
+
+    await writeJson(path.join(cwd, publishDir, 'package.json'), json);
+
+    if (readme)
+      await fs.copyFile(
+        readme,
+        path.join(cwd, publishDir, path.basename(readme)),
+      );
+  }
+}
+
 async function getNextVersion(version, currentVersion, preid) {
   const patch = semver.inc(currentVersion, 'patch');
   const minor = semver.inc(currentVersion, 'minor');
@@ -27,6 +53,9 @@ async function getNextVersion(version, currentVersion, preid) {
   const preminor = semver.inc(currentVersion, 'preminor');
   const premajor = semver.inc(currentVersion, 'premajor');
 
+  if (semver.valid(version)) {
+    return version;
+  }
   switch (version) {
     case 'patch':
       return patch;
@@ -36,6 +65,7 @@ async function getNextVersion(version, currentVersion, preid) {
       return major;
     default:
   }
+
   const message = `Select a new version (currently ${currentVersion})`;
 
   const choice = await PromptUtilities.select(message, {
@@ -87,10 +117,10 @@ async function getNextVersion(version, currentVersion, preid) {
 }
 
 module.exports = {
-  command: 'release [version]',
+  command: 'release [nextVersion]',
   describe: 'Publish a new version',
   builder: _ =>
-    _.positional('version', {
+    _.positional('nextVersion', {
       type: 'string',
       describe: 'The next version',
     })
@@ -137,7 +167,7 @@ module.exports = {
 
   async handler({
     preid,
-    version,
+    nextVersion: version,
     npmTag,
     skipChecks,
     skipGit,
@@ -159,6 +189,12 @@ module.exports = {
             await GitUtilities.assertClean();
             await GitUtilities.assertMatchesRemote();
           }
+          const branch = await GitUtilities.getCurrentBranch();
+
+          if (!allowBranch.includes(branch))
+            throw new Error(
+              `Cannot publish from branch: ${chalk.bold(branch)}`,
+            );
 
           await execa('npm', ['test'], { stdio: [0, 1, 'pipe'] });
         },
@@ -166,50 +202,25 @@ module.exports = {
       );
 
       let nextVersion = pkg.version;
-      let nextPkgJson = pkg;
 
-      if (!skipVersion) {
+      if (skipVersion) {
+        ConsoleUtilities.spinner().warn(
+          `Using existing version: ${chalk.bold(nextVersion)}`,
+        );
+      } else {
         nextVersion = await getNextVersion(version, pkg.version, preid);
-        nextPkgJson = { ...pkg, version: nextVersion };
+
+        ConsoleUtilities.step(
+          `Bumping version to: ${chalk.bold(nextVersion)}  (${chalk.dim(
+            `was ${pkg.version}`,
+          )})`,
+          () => bumpVersion({ ...pkg, version: nextVersion }, publishDir, cwd),
+        );
       }
 
-      await ConsoleUtilities.step('Updating version and tags', async () => {
-        const branch = await GitUtilities.getCurrentBranch();
-
-        if (!allowBranch.includes(branch))
-          throw new Error(`Cannot publish from branch: ${chalk.bold(branch)}`);
-
-        if (!skipVersion) {
-          await writeJson(pkgPath, nextPkgJson);
-
-          if (publishDir) {
-            delete nextPkgJson.files; // because otherwise it would be wrong
-            delete nextPkgJson.scripts;
-            delete nextPkgJson.devDependencies;
-            delete nextPkgJson.rollout;
-
-            // main: 'lib/index.js' -> index.js
-            nextPkgJson.main = nextPkgJson.main.replace(
-              new RegExp(`${publishDir}\\/?`),
-              '',
-            );
-
-            const readme = await getReadme(cwd);
-
-            await writeJson(
-              path.join(cwd, publishDir, 'package.json'),
-              nextPkgJson,
-            );
-
-            if (readme)
-              await fs.copyFile(
-                readme,
-                path.join(cwd, publishDir, path.basename(readme)),
-              );
-          }
-        }
-
-        if (!skipGit) {
+      await ConsoleUtilities.step(
+        'Tagging and committing version bump',
+        async () => {
           const gitTag = `v${nextVersion}`;
 
           if (!skipVersion) {
@@ -217,8 +228,9 @@ module.exports = {
             await GitUtilities.commit(`"Publish ${gitTag}"`);
           }
           await GitUtilities.addTag(gitTag);
-        }
-      });
+        },
+        skipGit,
+      );
 
       await ConsoleUtilities.step(
         'Publishing to npm',
