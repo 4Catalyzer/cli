@@ -5,7 +5,6 @@ const inquirer = require('inquirer');
 const GitUtilities = require('../GitUtilities');
 
 const templatePath = path.resolve(__dirname, '../templates');
-
 const repoName = name => name.replace(/^@4c\//, '');
 
 async function setupNpm(dest, a) {
@@ -101,6 +100,9 @@ module.exports = {
       ? location
       : path.resolve(process.cwd(), location);
 
+    const copyTemplate = src =>
+      fs.copyFile(path.join(templatePath, src), path.join(dest, src));
+
     // my own convention of naming scoped repo's like 4c-foo on disk
     const getName = ({ scope }) => {
       let name = path.basename(dest);
@@ -145,25 +147,15 @@ module.exports = {
 
     await fs.ensureDir(dest);
 
-    await fs.copyFile(
-      path.join(templatePath, '.gitignore'),
-      path.join(dest, '.gitignore'),
-    );
+    await copyTemplate('.gitignore');
+    await copyTemplate('.travis.yml');
+    await copyTemplate('.eslintrc');
+    await copyTemplate('.eslintignore');
 
     await GitUtilities.init(answers.name);
-
     await GitUtilities.addRemote(answers.name);
 
     await setupNpm(dest, answers);
-
-    await fs.copyFile(
-      path.join(templatePath, '.eslintrc'),
-      path.join(dest, '.eslintrc'),
-    );
-    await fs.copyFile(
-      path.join(templatePath, '.eslintignore'),
-      path.join(dest, '.eslintignore'),
-    );
 
     if (answers.babel) {
       await fs.ensureFile(path.join(dest, 'src/index.js'));
