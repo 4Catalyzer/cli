@@ -250,6 +250,7 @@ module.exports = {
         await GitUtilities.pushWithTags();
       }
     } catch (err) {
+      console.error(err);
       /* ignore */
     }
   },
