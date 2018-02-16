@@ -210,7 +210,7 @@ module.exports = {
       } else {
         nextVersion = await getNextVersion(version, pkg.version, preid);
 
-        ConsoleUtilities.step(
+        await ConsoleUtilities.step(
           `Bumping version to: ${chalk.bold(nextVersion)}  (${chalk.dim(
             `was ${pkg.version}`,
           )})`,
@@ -221,9 +221,9 @@ module.exports = {
       const isPrerelease = !!semver.prerelease(nextVersion);
       const tag = npmTag || isPrerelease ? 'next' : 'latest';
 
-      PromptUtilities.confirm(
+      await PromptUtilities.confirm(
         `Are you sure you want to publish version: ` +
-          `${chalk.bold(`${nextVersion}@${tag}`)}?`,
+          `${chalk.green(nextVersion)}@${chalk.blue(tag)}?`,
       );
 
       await ConsoleUtilities.step(
@@ -264,7 +264,9 @@ module.exports = {
         await GitUtilities.pushWithTags();
       }
 
-      console.log(`🎉 Done! \n\nhttps://npm.im/${pkg.name}`);
+      console.log(
+        `🎉  Done! \n\n  ${chalk.blue(`https://npm.im/${pkg.name}`)} \n`,
+      );
     } catch (err) {
       /* ignore */
     }
