@@ -221,10 +221,12 @@ module.exports = {
       const isPrerelease = !!semver.prerelease(nextVersion);
       const tag = npmTag || isPrerelease ? 'next' : 'latest';
 
-      await PromptUtilities.confirm(
+      const confirmed = await PromptUtilities.confirm(
         `Are you sure you want to publish version: ` +
-          `${chalk.green(nextVersion)}@${chalk.blue(tag)}?`,
+          `${nextVersion}@${tag}?`,
       );
+
+      if (!confirmed) return;
 
       await ConsoleUtilities.step(
         'Tagging and committing version bump',
