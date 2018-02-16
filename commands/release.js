@@ -218,6 +218,14 @@ module.exports = {
         );
       }
 
+      const isPrerelease = !!semver.prerelease(nextVersion);
+      const tag = npmTag || isPrerelease ? 'next' : 'latest';
+
+      PromptUtilities.confirm(
+        `Are you sure you want to publish version: ` +
+          `${chalk.bold(`${nextVersion}@${tag}`)}?`,
+      );
+
       await ConsoleUtilities.step(
         'Tagging and committing version bump',
         async () => {
@@ -235,9 +243,6 @@ module.exports = {
       await ConsoleUtilities.step(
         'Publishing to npm',
         async () => {
-          const tag =
-            npmTag || semver.prerelease(nextVersion) ? 'next' : 'latest';
-
           const args = ['publish'];
           if (publishDir) {
             args.push(publishDir);
@@ -258,6 +263,8 @@ module.exports = {
       if (!skipGit) {
         await GitUtilities.pushWithTags();
       }
+
+      console.log(`🎉 Done! \n\nhttps://npm.im/${pkg.name}`);
     } catch (err) {
       /* ignore */
     }
