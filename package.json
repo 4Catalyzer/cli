@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "index.js",
   "repository": "https://github.com/4Catalyzer/init.git",
   "author": "4Catalyzer",
@@ -9,8 +9,7 @@
     "4c": "index.js"
   },
   "scripts": {
-    "lint":
-      "eslint . && prettier --list-different --ignore-path .ignore '**/*.{json,css,md}'",
+    "lint": "eslint . && prettier --list-different --ignore-path .ignore '**/*.{json,css,md}'",
     "precommit": "lint-staged"
   },
   "prettier": {
@@ -25,8 +24,14 @@
     }
   },
   "lint-staged": {
-    "*.js": ["eslint --fix", "git add"],
-    "*.{json,css,md}": ["prettier --write", "git add"]
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.39",
