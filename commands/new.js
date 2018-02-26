@@ -100,8 +100,8 @@ module.exports = {
       ? location
       : path.resolve(process.cwd(), location);
 
-    const copyTemplate = src =>
-      fs.copyFile(path.join(templatePath, src), path.join(dest, src));
+    const copyTemplate = (src, destName = src) =>
+      fs.copyFile(path.join(templatePath, src), path.join(dest, destName));
 
     // my own convention of naming scoped repo's like 4c-foo on disk
     const getName = ({ scope }) => {
@@ -147,7 +147,7 @@ module.exports = {
 
     await fs.ensureDir(dest);
 
-    await copyTemplate('.gitignore');
+    await copyTemplate('gitignore', '.gitignore');
     await copyTemplate('.travis.yml');
     await copyTemplate('.eslintrc');
     await copyTemplate('.eslintignore');
