@@ -152,7 +152,7 @@ module.exports = {
     await copyTemplate('.eslintrc');
     await copyTemplate('.eslintignore');
 
-    await GitUtilities.init(answers.name);
+    await GitUtilities.init(dest);
     await GitUtilities.addRemote(answers.name);
 
     await setupNpm(dest, answers);
