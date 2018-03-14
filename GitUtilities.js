@@ -18,7 +18,7 @@ exports.init = dest =>
     .isGitRepo(dest)
     .then(
       isGit =>
-        isGit && execa('git', ['init'], { cwd: dest, stdio: 'inherit' }),
+        !isGit && execa('git', ['init'], { cwd: dest, stdio: 'inherit' }),
     );
 
 exports.addFile = file =>
