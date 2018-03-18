@@ -8,7 +8,18 @@ function hasTag(tag) {
     .then(() => true, () => false);
 }
 
-exports.init = dest => execa('git', ['init'], { cwd: dest, stdio: 'inherit' });
+exports.isGitRepo = dest =>
+  execa('git', ['rev-parse'], { cwd: dest, stdio: 'inherit' })
+    .then(() => true)
+    .catch(() => false);
+
+exports.init = dest =>
+  exports
+    .isGitRepo(dest)
+    .then(
+      isGit =>
+        !isGit && execa('git', ['init'], { cwd: dest, stdio: 'inherit' }),
+    );
 
 exports.addFile = file =>
   execa('git', [
