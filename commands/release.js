@@ -235,7 +235,7 @@ module.exports = {
 
           if (!skipVersion) {
             await GitUtilities.addFile(pkgPath);
-            await GitUtilities.commit(`"Publish ${gitTag}"`);
+            await GitUtilities.commit(`Publish ${gitTag}`);
           }
           await GitUtilities.addTag(gitTag);
         },
