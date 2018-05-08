@@ -2,10 +2,9 @@ sudo: false
 
 language: node_js
 node_js:
-  - stable
-
+  - '9'
+  - '8'
 cache: yarn
-
 branches:
   only:
     - master

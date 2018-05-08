@@ -7,6 +7,12 @@ function hasTag(tag) {
     .stdout('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`])
     .then(() => true, () => false);
 }
+const repoName = name => name.replace(/^@.+\//, '');
+
+exports.repoName = repoName;
+
+exports.remoteUrl = (name, org = '4Catalyzer') =>
+  `https://github.com/${org}/${repoName(name)}.git`;
 
 exports.isGitRepo = dest =>
   execa('git', ['rev-parse'], { cwd: dest, stdio: 'inherit' })
@@ -49,18 +55,12 @@ exports.assertMatchesRemote = async () => {
     throw new Error('The remote differs from the local working tree');
 };
 
-exports.addRemote = (name, org = '4catalyzer') => {
+exports.addRemote = (dest, name, org) => {
   try {
-    execa(
-      'git',
-      [
-        'remote',
-        'add',
-        'origin',
-        `git@github.com:${org}/${name.replace(/^@4c\//, '')}.git`,
-      ],
-      { cwd: name, stdio: [0, 1, 'pipe'] },
-    );
+    execa('git', ['remote', 'add', 'origin', exports.remoteUrl(name, org)], {
+      cwd: dest,
+      stdio: 'inherit',
+    });
   } catch (err) {
     if ((err.stderr || '').match(/remote origin already exists/)) return;
     throw err;

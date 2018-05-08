@@ -1,26 +1,24 @@
 {
-  "extends": [
-    "4catalyzer",
-    "prettier"
-  ],
-  "plugins": [
-    "prettier"
-  ],
+  "extends": ["4catalyzer", "prettier"],
+  "plugins": ["prettier"],
+  "env": {
+    "node": true
+  },
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "global-require": "off",
+    "import/no-dynamic-require": "off"
   },
   "overrides": [
     {
-      "files": ["**/__tests__/**", "test/**"],
+      "files": ["test/**"],
       "plugins": ["jest"],
       "env": {
         "jest/globals": true
       },
       "rules": {
-        "global-require": "off",
-        "no-await-in-loop": "off",
         "no-console": "off",
-        "import/no-dynamic-require": "off",
+        "no-await-in-loop": "off",
         "jest/no-disabled-tests": "warn",
         "jest/no-focused-tests": "error",
         "jest/no-identical-title": "error",
