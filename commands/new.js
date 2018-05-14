@@ -31,7 +31,6 @@ async function setupNpm(dest, a) {
       main: a.babel ? 'lib/index.js' : 'index.js',
       ...(a.babel && {
         module: 'es/index.js',
-        'jsnext:main': 'es/index.js',
       }),
 
       repository: {
