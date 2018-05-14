@@ -1,6 +1,7 @@
 **/coverage/**
 **/es/**
 **/fixtures/**
+**/flow-typed/**
 **/lib/**
 **/node_modules/**
 **/CHANGELOG.md
