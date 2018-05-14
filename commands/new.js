@@ -30,7 +30,7 @@ async function setupNpm(dest, a) {
       version: '1.0.0',
       main: a.babel ? 'lib/index.js' : 'index.js',
       ...(a.babel && {
-        modules: 'es/index.js',
+        module: 'es/index.js',
         'jsnext:main': 'es/index.js',
       }),
 
