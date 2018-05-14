@@ -1,6 +1,7 @@
-lib/
-es/
-**/node_modules/**
+**/coverage/**
+**/es/**
 **/fixtures/**
-**/package.json
+**/lib/**
+**/node_modules/**
 **/CHANGELOG.md
+**/package.json
