@@ -10,7 +10,8 @@
   },
   "scripts": {
     "test": "npm run lint",
-    "lint": "eslint . && prettier --list-different --ignore-path .ignore '**/*.{json,css,md}'",
+    "lint":
+      "eslint . && prettier --list-different --ignore-path .ignore '**/*.{json,css,md}'",
     "precommit": "lint-staged"
   },
   "prettier": {
@@ -25,14 +26,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ],
-    "*.{json,css,md}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["eslint --fix", "git add"],
+    "*.{json,css,md}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.39",
