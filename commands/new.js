@@ -100,6 +100,7 @@ async function setupNpm(dest, a) {
         husky: '^0.14.3',
         'lint-staged': '^7.1.0',
         prettier: '^1.10.2',
+        jest: '^22.4.4',
         ...eslint,
       },
     },
