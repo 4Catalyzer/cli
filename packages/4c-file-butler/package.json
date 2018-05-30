@@ -1,6 +1,6 @@
 {
   "name": "@4c/file-butler",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -12,10 +12,8 @@
     "tdd": "jest --watch",
     "test": "npm run lint",
     "testonly": "jest",
-    "lint":
-      "eslint . && prettier --list-different --ignore-path .eslintignore '**/*.{json,css,md}'",
-    "format":
-      "eslint . --fix && prettier --write --ignore-path .eslintignore '**/*.{json,css,md}'",
+    "lint": "eslint . && prettier --list-different --ignore-path .eslintignore '**/*.{json,css,md}'",
+    "format": "eslint . --fix && prettier --write --ignore-path .eslintignore '**/*.{json,css,md}'",
     "precommit": "lint-staged"
   },
   "engines": {
@@ -30,18 +28,25 @@
     "trailingComma": "all"
   },
   "lint-staged": {
-    "*.js": ["eslint --fix", "git add"],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
     "*.{json,css,md}": [
       "prettier --write --ignore-path .eslintignore",
       "git add"
     ]
   },
   "jest": {
-    "roots": ["<rootDir>/test"],
+    "roots": [
+      "<rootDir>/test"
+    ],
     "testEnvironment": "node"
   },
   "release": {
-    "extends": ["@4c/semantic-release-config"]
+    "extends": [
+      "@4c/semantic-release-config"
+    ]
   },
   "devDependencies": {
     "@4c/semantic-release-config": "^1.0.2",
