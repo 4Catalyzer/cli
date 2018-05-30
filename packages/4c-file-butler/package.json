@@ -10,7 +10,7 @@
   "license": "MIT",
   "scripts": {
     "tdd": "jest --watch",
-    "test": "npm run lint && jest",
+    "test": "npm run lint",
     "testonly": "jest",
     "lint":
       "eslint . && prettier --list-different --ignore-path .eslintignore '**/*.{json,css,md}'",
