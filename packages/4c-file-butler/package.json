@@ -16,6 +16,9 @@
     "format": "eslint . --fix && prettier --write --ignore-path .eslintignore '**/*.{json,css,md}'",
     "precommit": "lint-staged"
   },
+  "bin": {
+    "file-butler": "index.js"
+  },
   "engines": {
     "node": ">= 8.3"
   },
