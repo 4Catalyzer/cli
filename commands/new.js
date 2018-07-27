@@ -195,6 +195,7 @@ module.exports = {
     await copyTemplate('.travis.yml');
     await copyTemplate(`${answers.type}.eslintrc`, '.eslintrc');
     await copyTemplate('.eslintignore');
+    await copyTemplate('LICENSE');
 
     await GitUtilities.init(dest);
     await GitUtilities.addRemote(dest, answers.name);
