@@ -69,6 +69,8 @@
   },
   "dependencies": {
     "cpy": "^7.0.0",
+    "fs-extra": "^7.0.0",
+    "globby": "^8.0.1",
     "yargs": "^11.0.0"
   }
 }

@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 const path = require('path');
+const fs = require('fs-extra');
 const yargs = require('yargs');
+const globby = require('globby');
 const cpy = require('cpy');
 
 const strReg = /\[\s*(\w+)\s*\]/g;
@@ -16,6 +18,47 @@ const interpolate = pattern => filename => {
 
 const flowRename = interpolate('[basename].flow[extname]');
 const mjsRename = interpolate('[basename].mjs');
+
+async function findReadme() {
+  const [readmePath] = await globby('README{,.*}', {
+    absolute: true,
+    deep: false,
+    case: false,
+    transform: fp => path.normalize(fp),
+  });
+  return readmePath;
+}
+
+async function findLicense() {
+  const [licensePath] = await globby('LICEN{S,C}E{,.*}', {
+    absolute: true,
+    deep: false,
+    case: false,
+    transform: fp => path.normalize(fp),
+  });
+  return licensePath;
+}
+
+async function createPublishPkgJson(outDir) {
+  let pkgJson;
+  try {
+    pkgJson = await fs.readJson(path.join(process.cwd(), 'package.json'));
+  } catch (err) {
+    console.error('No readable package.json at this root', err);
+  }
+
+  delete pkgJson.files; // because otherwise it would be wrong
+  delete pkgJson.scripts;
+  delete pkgJson.devDependencies;
+
+  // remove folder part from path
+  // lets the root pkg.json's main be accurate in case you want to install from github
+  const rMain = new RegExp(`${outDir}\\/?`);
+
+  if (pkgJson.main) pkgJson.main = pkgJson.main.replace(rMain, '');
+  if (pkgJson.module) pkgJson.module = pkgJson.module.replace(rMain, '');
+  await fs.outputJson(path.join(outDir, 'package.json'), pkgJson);
+}
 
 const { argv: _1 } = yargs
   .command(
@@ -69,6 +112,22 @@ const { argv: _1 } = yargs
         parents: true,
         rename: mjsRename,
       }),
+  )
+  .command(
+    'alt-publish-root',
+    false,
+    () => {},
+    async ({ outDir }) => {
+      await createPublishPkgJson(outDir);
+
+      const readme = await findReadme();
+      if (readme)
+        await fs.copyFile(readme, path.join(outDir, path.basename(readme)));
+
+      const license = await findLicense();
+      if (license)
+        await fs.copyFile(license, path.join(outDir, path.basename(license)));
+    },
   )
   .option('pattern', {
     type: 'array',
