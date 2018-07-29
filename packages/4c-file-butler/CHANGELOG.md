@@ -1,3 +1,11 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/4Catalyzer/file-butler/compare/v1.1.0...v1.1.1) (2018-07-29)
+
+
+### Bug Fixes
+
+* format json ([4ad9a50](https://github.com/4Catalyzer/file-butler/commit/4ad9a50))
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/4Catalyzer/file-butler/compare/v1.0.2...v1.1.0) (2018-07-29)
 
