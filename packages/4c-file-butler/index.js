@@ -57,7 +57,9 @@ async function createPublishPkgJson(outDir) {
 
   if (pkgJson.main) pkgJson.main = pkgJson.main.replace(rMain, '');
   if (pkgJson.module) pkgJson.module = pkgJson.module.replace(rMain, '');
-  await fs.outputJson(path.join(outDir, 'package.json'), pkgJson);
+  await fs.outputJson(path.join(outDir, 'package.json'), pkgJson, {
+    spaces: 2,
+  });
 }
 
 const { argv: _1 } = yargs
