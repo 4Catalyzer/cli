@@ -3,6 +3,7 @@ const fs = require('fs-extra');
 const chalk = require('chalk');
 const execa = require('execa');
 const semver = require('semver');
+const { createAltPublishDir } = require('@4c/file-butler');
 
 const GitUtilities = require('../GitUtilities');
 const ConsoleUtilities = require('../ConsoleUtilities');
@@ -30,38 +31,13 @@ async function maybeRollbackGit(tag, skipGit, skipVersion) {
   );
 }
 
-async function getReadme(cwd) {
-  return (await fs.readdir(cwd)).find(p =>
-    path
-      .basename(p)
-      .toLowerCase()
-      .startsWith('readme'),
-  );
-}
-
 async function bumpVersion(pkg, publishDir, cwd) {
   const json = pkg;
   const pkgPath = path.join(cwd, 'package.json');
   await writeJson(pkgPath, json);
 
   if (publishDir) {
-    delete json.files; // because otherwise it would be wrong
-    delete json.scripts;
-    delete json.devDependencies;
-    delete json.rollout;
-
-    // main: 'lib/index.js' -> index.js
-    json.main = json.main.replace(new RegExp(`${publishDir}\\/?`), '');
-
-    const readme = await getReadme(cwd);
-
-    await writeJson(path.join(cwd, publishDir, 'package.json'), json);
-
-    if (readme)
-      await fs.copyFile(
-        readme,
-        path.join(cwd, publishDir, path.basename(readme)),
-      );
+    await createAltPublishDir({ outDir: publishDir });
   }
 }
 
