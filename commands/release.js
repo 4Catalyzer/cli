@@ -10,6 +10,26 @@ const PromptUtilities = require('../PromptUtilities');
 
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
 
+async function runLifecycle(script, pkg) {
+  if (!pkg.scripts || !pkg.scripts[script]) return;
+  await execa('npm', ['run', script], { stdio: [0, 1, 'pipe'] });
+}
+
+async function maybeRollbackGit(tag, skipGit, skipVersion) {
+  if (skipGit) return;
+  const confirmed = await PromptUtilities.confirm(
+    'There was a problem publishing, do you want to rollback the git operations?',
+  );
+  await ConsoleUtilities.step(
+    `Rolling back git operations`,
+    async () => {
+      await GitUtilities.removeTag(tag);
+      if (!skipVersion) await GitUtilities.removeLastCommit();
+    },
+    !confirmed,
+  );
+}
+
 async function getReadme(cwd) {
   return (await fs.readdir(cwd)).find(p =>
     path
@@ -227,12 +247,11 @@ module.exports = {
       );
 
       if (!confirmed) return;
+      const gitTag = `v${nextVersion}`;
 
       await ConsoleUtilities.step(
         'Tagging and committing version bump',
         async () => {
-          const gitTag = `v${nextVersion}`;
-
           if (!skipVersion) {
             await GitUtilities.addFile(pkgPath);
             await GitUtilities.commit(`Publish ${gitTag}`);
@@ -242,32 +261,55 @@ module.exports = {
         skipGit,
       );
 
-      await ConsoleUtilities.step(
-        'Publishing to npm',
-        async () => {
-          const args = ['publish'];
-          if (publishDir) {
-            args.push(publishDir);
-          }
-          if (tag !== 'latest') {
-            args.push('--tag', tag);
-          }
+      try {
+        await ConsoleUtilities.step(
+          'Publishing to npm',
+          async () => {
+            const args = ['publish'];
+            if (publishDir) {
+              args.push(publishDir);
+              // We run the lifecycle scripts manually to ensure they run in
+              // the package root, not the publish dir
+              await runLifecycle('prepublish', pkg);
+              await runLifecycle('prepare', pkg);
+              await runLifecycle('prepublishOnly', pkg);
+            }
+            if (tag !== 'latest') {
+              args.push('--tag', tag);
+            }
 
-          if (isPublic != null) {
-            args.push('--access', isPublic ? 'public' : 'restricted');
-          }
+            if (isPublic != null) {
+              args.push('--access', isPublic ? 'public' : 'restricted');
+            }
+            await execa('npm', args, { stdio: [0, 1, 'pipe'] });
 
-          await execa('npm', args);
-        },
-        skipNpm,
-      );
+            try {
+              if (publishDir) {
+                await runLifecycle('publish', pkg);
+                await runLifecycle('postpublish', pkg);
+              }
+            } catch (err) {
+              console.error(err);
+              /* we've already published so we shouldn't try and rollback if these fail */
+            }
+          },
+          skipNpm,
+        );
+      } catch (err) {
+        await maybeRollbackGit(gitTag, skipGit, skipVersion);
+        throw err;
+      }
 
       if (!skipGit) {
         await GitUtilities.pushWithTags();
       }
 
       console.log(
-        `🎉  Done! \n\n  ${chalk.blue(`https://npm.im/${pkg.name}`)} \n`,
+        `🎉  Published v${nextVersion}@${tag}:  ${chalk.blue(
+          skipNpm
+            ? await GitUtilities.getRemoteUrl()
+            : `https://npm.im/${pkg.name}`,
+        )} \n`,
       );
     } catch (err) {
       /* ignore */
