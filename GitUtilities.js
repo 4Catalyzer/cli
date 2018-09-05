@@ -11,6 +11,9 @@ const repoName = name => name.replace(/^@.+\//, '');
 
 exports.repoName = repoName;
 
+exports.getRemoteUrl = () =>
+  execa.stdout('git', ['config', 'remote.origin.url']).catch(() => '');
+
 exports.remoteUrl = (name, org = '4Catalyzer') =>
   `https://github.com/${org}/${repoName(name)}.git`;
 
@@ -35,6 +38,8 @@ exports.addFile = file =>
 
 exports.commit = message =>
   execa('git', ['commit', '--no-verify', '-m', message]);
+
+exports.removeLastCommit = () => execa('git', ['reset', 'HEAD~1', '--hard']);
 
 exports.assertClean = async () => {
   if ((await execa.stdout('git', ['status', '--porcelain'])) !== '')
@@ -73,7 +78,6 @@ exports.addTag = async tag => {
 };
 
 exports.removeTag = tag => execa('git', ['tag', '-d', tag]);
-
 exports.getCurrentBranch = opts =>
   execa.stdout('git', ['rev-parse', '--abbrev-ref', 'HEAD'], opts);
 
