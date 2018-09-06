@@ -2,6 +2,9 @@
   "name": "@4c/cli-core",
   "version": "1.0.0",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "execa": "^1.0.0",
     "fs-extra": "^7.0.0",

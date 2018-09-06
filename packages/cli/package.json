@@ -1,12 +1,15 @@
 {
   "name": "@4c/cli",
-  "version": "0.3.1",
+  "version": "0.3.0",
   "main": "index.js",
   "repository": "https://github.com/4Catalyzer/init.git",
   "author": "4Catalyzer",
   "license": "MIT",
   "bin": {
     "4c": "index.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@4c/cli-core": "^1.0.0",
