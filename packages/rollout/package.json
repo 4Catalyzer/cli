@@ -1,0 +1,18 @@
+{
+  "name": "@4c/rollout",
+  "version": "1.0.0",
+  "main": "command.js",
+  "author": "4catalyzer",
+  "license": "MIT",
+  "bin": {
+    "rollout": "cli.js"
+  },
+  "dependencies": {
+    "@4c/cli-core": "^1.0.0",
+    "@4c/file-butler": "1.2.0",
+    "chalk": "^2.4.1",
+    "execa": "^1.0.0",
+    "fs-extra": "^7.0.0",
+    "semver": "^5.5.1"
+  }
+}

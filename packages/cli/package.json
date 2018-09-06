@@ -1,0 +1,25 @@
+{
+  "name": "@4c/cli",
+  "version": "0.3.1",
+  "main": "index.js",
+  "repository": "https://github.com/4Catalyzer/init.git",
+  "author": "4Catalyzer",
+  "license": "MIT",
+  "bin": {
+    "4c": "index.js"
+  },
+  "dependencies": {
+    "@4c/cli-core": "^1.0.0",
+    "@4c/file-butler": "^1.2.0",
+    "@4c/init": "^1.0.0",
+    "@4c/rollout": "^1.0.0",
+    "chalk": "^2.3.0",
+    "execa": "^1.0.0",
+    "fs-extra": "^7.0.0",
+    "inquirer": "^6.2.0",
+    "ora": "^3.0.0",
+    "semver": "^5.5.0",
+    "slash": "^2.0.0",
+    "yargs": "^12.0.1"
+  }
+}

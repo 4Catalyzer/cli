@@ -1,0 +1,17 @@
+{
+  "name": "@4c/init",
+  "version": "1.0.0",
+  "main": "command.js",
+  "author": "4catalyzer",
+  "license": "MIT",
+  "bin": {
+    "init": "cli.js"
+  },
+  "dependencies": {
+    "@4c/cli-core": "^1.0.0",
+    "execa": "^1.0.0",
+    "fs-extra": "^7.0.0",
+    "inquirer": "^6.2.0",
+    "yargs": "^12.0.1"
+  }
+}

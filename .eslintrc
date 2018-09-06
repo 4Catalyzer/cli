@@ -11,9 +11,6 @@
     {
       "files": ["**/__tests__/**", "test/**"],
       "plugins": ["jest"],
-      "env": {
-        "jest/globals": true
-      },
       "rules": {
         "no-await-in-loop": "off",
         "jest/no-disabled-tests": "warn",

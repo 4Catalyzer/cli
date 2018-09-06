@@ -1,0 +1,27 @@
+{
+  "name": "@4c/file-butler",
+  "version": "1.1.1",
+  "main": "lib.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/file-butler.git"
+  },
+  "author": "4Catalyzer",
+  "license": "MIT",
+  "bin": {
+    "file-butler": "cli.js"
+  },
+  "files": [
+    "lib.js",
+    "cli.js"
+  ],
+  "engines": {
+    "node": ">= 8.3"
+  },
+  "dependencies": {
+    "cpy": "^7.0.0",
+    "fs-extra": "^7.0.0",
+    "globby": "^8.0.1",
+    "yargs": "^12.0.1"
+  }
+}
