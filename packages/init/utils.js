@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs-extra');
 
 const templatePath = path.resolve(__dirname, './templates');
 
@@ -12,10 +11,7 @@ const getPackageNameFromPath = (scope, outDir) => {
   return `${scope}/${name}`;
 };
 
-const copyTemplate = (src, outDir, destName = src) =>
-  fs.copyFile(path.join(templatePath, src), path.join(outDir, destName));
-
 module.exports = {
   getPackageNameFromPath,
-  copyTemplate,
+  templatePath,
 };
