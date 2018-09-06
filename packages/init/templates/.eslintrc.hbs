@@ -1,24 +1,33 @@
 {
-  "extends": ["4catalyzer", "prettier"],
   "plugins": ["prettier"],
+  {{#if (eq type "node")}}
+  "extends": ["4catalyzer", "prettier"],
   "env": {
-    "node": true
+      "node": true
   },
   "rules": {
     "prettier/prettier": "error",
     "global-require": "off",
     "import/no-dynamic-require": "off"
   },
+  {{else}}
+  "extends": ["4catalyzer-react", "prettier", "prettier-react"],
+  "env": {
+      "web": true
+  },
+  "rules": {
+    "prettier/prettier": "error"
+  },
+  {{/if}}
   "overrides": [
     {
       "files": ["test/**"],
       "plugins": ["jest"],
-      "env": {
-        "jest/globals": true
-      },
       "rules": {
-        "no-console": "off",
+        "global-require": "off",
         "no-await-in-loop": "off",
+        "no-console": "off",
+        "import/no-dynamic-require": "off",
         "jest/no-disabled-tests": "warn",
         "jest/no-focused-tests": "error",
         "jest/no-identical-title": "error",

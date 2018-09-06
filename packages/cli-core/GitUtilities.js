@@ -60,17 +60,14 @@ exports.assertMatchesRemote = async () => {
     throw new Error('The remote differs from the local working tree');
 };
 
-exports.addRemote = (dest, name, org) => {
-  try {
-    execa('git', ['remote', 'add', 'origin', exports.remoteUrl(name, org)], {
-      cwd: dest,
-      stdio: 'inherit',
-    });
-  } catch (err) {
+exports.addRemote = (dest, name, org) =>
+  execa('git', ['remote', 'add', 'origin', exports.remoteUrl(name, org)], {
+    cwd: dest,
+    stdio: 'inherit',
+  }).catch(err => {
     if ((err.stderr || '').match(/remote origin already exists/)) return;
     throw err;
-  }
-};
+  });
 
 exports.addTag = async tag => {
   if (await hasTag(tag)) return;

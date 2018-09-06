@@ -1,0 +1,11 @@
+module.exports = api => ({
+  presets: [
+    [
+      '@4c/4catalyzer',
+      {
+        target: '{{type}}',
+        modules: api.env() === 'esm' ? false : 'commonjs'
+      },
+    ],
+  ]
+});

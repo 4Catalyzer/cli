@@ -1,8 +1,8 @@
 **/coverage/**
 **/es/**
+**/lib/**
 **/fixtures/**
 **/flow-typed/**
-**/lib/**
 **/node_modules/**
 **/CHANGELOG.md
 **/package.json
