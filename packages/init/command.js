@@ -5,8 +5,7 @@ const inquirer = require('inquirer');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
 
 const writePkgJson = require('./writePkgJson');
-
-const templatePath = path.resolve(__dirname, './templates');
+const { getPackageNameFromPath, copyTemplate } = require('./utils');
 
 exports.command = '$0 [location]';
 
@@ -24,18 +23,6 @@ exports.handler = async ({ location, cwd = process.cwd() }) => {
   const dest = path.isAbsolute(location)
     ? location
     : path.resolve(cwd, location);
-
-  const copyTemplate = (src, destName = src) =>
-    fs.copyFile(path.join(templatePath, src), path.join(dest, destName));
-
-  // my own convention of naming scoped repo's like 4c-foo on disk
-  const getName = ({ scope }) => {
-    let name = path.basename(dest);
-
-    if (!scope) return name;
-    name = name.replace(new RegExp(`^${scope.slice(1)}-`), '');
-    return `${scope}/${name}`;
-  };
 
   const answers = await inquirer.prompt([
     {
@@ -62,7 +49,7 @@ exports.handler = async ({ location, cwd = process.cwd() }) => {
       name: 'name',
       type: 'input',
       message: 'name',
-      default: getName,
+      default: _ => getPackageNameFromPath(_.scope, dest),
     },
     {
       name: 'type',

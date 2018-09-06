@@ -9,7 +9,7 @@ const {
   renameFiles,
 } = require('./lib');
 
-const { argv: _1 } = yargs
+const { argv: _ } = yargs
   .command(
     'cp [src]',
 

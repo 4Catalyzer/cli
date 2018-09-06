@@ -20,7 +20,7 @@ module.exports = async function setupNpm(dest, a) {
     eslint['eslint-config-4catalyzer'] = '^0.4.1';
   }
 
-  fs.writeJSON(
+  await fs.writeJSON(
     path.join(dest, 'package.json'),
     {
       name: a.name,
