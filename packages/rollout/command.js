@@ -2,9 +2,10 @@ const path = require('path');
 const fs = require('fs-extra');
 const execa = require('execa');
 const inquirer = require('inquirer');
-const GitUtilities = require('../GitUtilities');
 
-const templatePath = path.resolve(__dirname, '../templates');
+const GitUtilities = require('@4c/cli-core/GitUtilities');
+
+const templatePath = path.resolve(__dirname, './templates');
 
 async function setupNpm(dest, a) {
   const eslint = {
@@ -108,105 +109,106 @@ async function setupNpm(dest, a) {
   );
 }
 
-module.exports = {
-  command: 'new [location]',
-  describe: 'create a new package',
-  builder: _ =>
-    _.positional('location', {
-      type: 'string',
-      default: process.cwd(),
-      describe: 'the location of the package',
-      normalize: true,
-    }),
+exports.command = 'new [location]';
 
-  async handler({ location }) {
-    const dest = path.isAbsolute(location)
-      ? location
-      : path.resolve(process.cwd(), location);
+exports.describe = 'create a new package';
 
-    const copyTemplate = (src, destName = src) =>
-      fs.copyFile(path.join(templatePath, src), path.join(dest, destName));
+exports.builder = _ =>
+  _.positional('location', {
+    type: 'string',
+    default: process.cwd(),
+    describe: 'the location of the package',
+    normalize: true,
+  });
 
-    // my own convention of naming scoped repo's like 4c-foo on disk
-    const getName = ({ scope }) => {
-      let name = path.basename(dest);
+exports.handler = async ({ location, cwd = process.cwd() }) => {
+  const dest = path.isAbsolute(location)
+    ? location
+    : path.resolve(cwd, location);
 
-      if (!scope) return name;
-      name = name.replace(new RegExp(`^${scope.slice(1)}-`), '');
-      return `${scope}/${name}`;
-    };
+  const copyTemplate = (src, destName = src) =>
+    fs.copyFile(path.join(templatePath, src), path.join(dest, destName));
 
-    const answers = await inquirer.prompt([
-      {
-        name: 'scopePackage',
-        type: 'confirm',
-        message: 'Create a scoped package?',
-        default: true,
-      },
-      {
-        name: 'scope',
-        type: 'input',
-        message: 'package scope',
-        default: '@4c',
-        when: _ => !!_.scopePackage,
-      },
-      {
-        name: 'isPrivate',
-        type: 'confirm',
-        default: false,
-        message: 'Is this a private package?',
-        when: _ => !!_.scope,
-      },
-      {
-        name: 'name',
-        type: 'input',
-        message: 'name',
-        default: getName,
-      },
-      {
-        name: 'type',
-        type: 'list',
-        default: 'node',
-        choices: ['node', 'web'],
-        message: 'What type of library is this?',
-      },
-      {
-        name: 'babel',
-        type: 'confirm',
-        default: false,
-        message: 'Do you need babel (maybe not?)',
-        when: _ => _.type === 'node',
-      },
-      {
-        name: 'semanticRelease',
-        type: 'confirm',
-        default: true,
-        message: 'Do you want to use semantic-release to handle releases?',
-      },
-    ]);
+  // my own convention of naming scoped repo's like 4c-foo on disk
+  const getName = ({ scope }) => {
+    let name = path.basename(dest);
 
-    if (answers.type === 'web') {
-      answers.babel = true;
-    }
+    if (!scope) return name;
+    name = name.replace(new RegExp(`^${scope.slice(1)}-`), '');
+    return `${scope}/${name}`;
+  };
 
-    await fs.ensureDir(dest);
+  const answers = await inquirer.prompt([
+    {
+      name: 'scopePackage',
+      type: 'confirm',
+      message: 'Create a scoped package?',
+      default: true,
+    },
+    {
+      name: 'scope',
+      type: 'input',
+      message: 'package scope',
+      default: '@4c',
+      when: _ => !!_.scopePackage,
+    },
+    {
+      name: 'isPrivate',
+      type: 'confirm',
+      default: false,
+      message: 'Is this a private package?',
+      when: _ => !!_.scope,
+    },
+    {
+      name: 'name',
+      type: 'input',
+      message: 'name',
+      default: getName,
+    },
+    {
+      name: 'type',
+      type: 'list',
+      default: 'node',
+      choices: ['node', 'web'],
+      message: 'What type of library is this?',
+    },
+    {
+      name: 'babel',
+      type: 'confirm',
+      default: false,
+      message: 'Do you need babel (maybe not?)',
+      when: _ => _.type === 'node',
+    },
+    {
+      name: 'semanticRelease',
+      type: 'confirm',
+      default: true,
+      message: 'Do you want to use semantic-release to handle releases?',
+    },
+  ]);
 
-    await copyTemplate('gitignore', '.gitignore');
-    await copyTemplate('.travis.yml');
-    await copyTemplate(`${answers.type}.eslintrc`, '.eslintrc');
-    await copyTemplate('.eslintignore');
-    await copyTemplate('LICENSE');
+  if (answers.type === 'web') {
+    answers.babel = true;
+  }
 
-    await GitUtilities.init(dest);
-    await GitUtilities.addRemote(dest, answers.name);
+  await fs.ensureDir(dest);
 
-    await setupNpm(dest, answers);
+  await copyTemplate('gitignore', '.gitignore');
+  await copyTemplate('.travis.yml');
+  await copyTemplate(`${answers.type}.eslintrc`, '.eslintrc');
+  await copyTemplate('.eslintignore');
+  await copyTemplate('LICENSE');
 
-    if (answers.babel) {
-      await fs.ensureFile(path.join(dest, 'src/index.js'));
-      await fs.writeFile(
-        path.join(dest, '.babelrc.js'),
-        `
+  await GitUtilities.init(dest);
+  await GitUtilities.addRemote(dest, answers.name);
+
+  await setupNpm(dest, answers);
+
+  if (answers.babel) {
+    await fs.ensureFile(path.join(dest, 'src/index.js'));
+    await fs.writeFile(
+      path.join(dest, '.babelrc.js'),
+      `
 module.exports = api => ({
   presets: [
     [
@@ -219,23 +221,22 @@ module.exports = api => ({
   ]
 });
       `,
-      );
-    } else {
-      await fs.ensureFile(path.join(dest, 'index.js'));
-    }
+    );
+  } else {
+    await fs.ensureFile(path.join(dest, 'index.js'));
+  }
 
-    await execa('yarn', ['install'], { cwd: dest, stdio: 'inherit' });
-    await execa('yarn', ['upgrade-interactive', '--latest'], {
-      cwd: dest,
-      stdio: 'inherit',
-    });
+  await execa('yarn', ['install'], { cwd: dest, stdio: 'inherit' });
+  await execa('yarn', ['upgrade-interactive', '--latest'], {
+    cwd: dest,
+    stdio: 'inherit',
+  });
 
-    if (answers.semanticRelease) {
-      console.log(
-        '\nRun `npx semantic-release-cli setup` after pushing to github for the first time to setup semantic release\n',
-      );
-    } else {
-      console.log('Done!');
-    }
-  },
+  if (answers.semanticRelease) {
+    console.log(
+      '\nRun `npx semantic-release-cli setup` after pushing to github for the first time to setup semantic release\n',
+    );
+  } else {
+    console.log('Done!');
+  }
 };
