@@ -11,7 +11,7 @@ exports.step = async (text, fn, skip) => {
   }
 
   try {
-    await fn();
+    await fn(spinner);
     spinner.succeed();
   } catch (err) {
     spinner.fail(err.message);

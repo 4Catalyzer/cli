@@ -1,0 +1,6 @@
+{
+  "name": "@monastic.panic/test-pkg",
+  "version": "1.0.10",
+  "main": "./index.js",
+  "dependencies": {}
+}

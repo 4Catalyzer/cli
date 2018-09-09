@@ -31,16 +31,6 @@ async function maybeRollbackGit(tag, skipGit, skipVersion) {
   );
 }
 
-async function bumpVersion(pkg, publishDir, cwd) {
-  const json = pkg;
-  const pkgPath = path.join(cwd, 'package.json');
-  await writeJson(pkgPath, json);
-
-  if (publishDir) {
-    await createAltPublishDir({ outDir: publishDir });
-  }
-}
-
 async function getNextVersion(version, currentVersion, preid) {
   const patch = semver.inc(currentVersion, 'patch');
   const minor = semver.inc(currentVersion, 'minor');
@@ -112,6 +102,57 @@ async function getNextVersion(version, currentVersion, preid) {
   }
 }
 
+async function npmPublish(
+  spinner,
+  pkgJson,
+  options,
+  otpMessage = 'Enter one time password:',
+) {
+  const { publishDir, otp, isPublic, tag } = options;
+  const args = ['publish'];
+
+  if (publishDir) {
+    args.push(publishDir, '--ignore-scripts');
+
+    // We run the lifecycle scripts manually to ensure they run in
+    // the package root, not the publish dir
+    await runLifecycle('prepublish', pkgJson);
+    await runLifecycle('prepare', pkgJson);
+    await runLifecycle('prepublishOnly', pkgJson);
+
+    // do this after lifecycle scripts in case they clean the publishDir
+    await createAltPublishDir({ outDir: publishDir });
+  }
+  if (otp) {
+    args.push('--otp', otp);
+  }
+
+  if (tag !== 'latest') {
+    args.push('--tag', tag);
+  }
+
+  if (isPublic != null) {
+    args.push('--access', isPublic ? 'public' : 'restricted');
+  }
+
+  try {
+    return execa('npm', args, { stdio: [0, 1, 'pipe'] });
+  } catch (err) {
+    if (err.stderr.includes('OTP')) {
+      spinner.stop();
+      const nextOtp = await PromptUtilities.input(otpMessage);
+      spinner.start();
+      return npmPublish(
+        spinner,
+        pkgJson,
+        { ...options, otp: nextOtp },
+        'One time password was incorrect, try again:',
+      );
+    }
+    throw err;
+  }
+}
+
 exports.command = '$0 [nextVersion]';
 
 exports.describe = 'Publish a new version';
@@ -129,8 +170,12 @@ exports.builder = _ =>
       type: 'bool',
       default: false,
     })
+    .option('otp', {
+      type: 'string',
+    })
     .option('publish-dir', {
       type: 'string',
+      describe: 'Provide a two-factor authentication code for publishing',
     })
     .option('allow-branch', {
       group: 'Command Options:',
@@ -172,6 +217,7 @@ exports.handler = async ({
   skipVersion,
   allowBranch,
   publishDir,
+  otp,
   public: isPublic,
 }) => {
   const cwd = process.cwd();
@@ -209,7 +255,11 @@ exports.handler = async ({
         `Bumping version to: ${chalk.bold(nextVersion)}  (${chalk.dim(
           `was ${pkg.version}`,
         )})`,
-        () => bumpVersion({ ...pkg, version: nextVersion }, publishDir, cwd),
+        () =>
+          writeJson(path.join(cwd, 'package.json'), {
+            ...pkg,
+            version: nextVersion,
+          }),
       );
     }
 
@@ -238,24 +288,8 @@ exports.handler = async ({
     try {
       await ConsoleUtilities.step(
         'Publishing to npm',
-        async () => {
-          const args = ['publish'];
-          if (publishDir) {
-            args.push(publishDir);
-            // We run the lifecycle scripts manually to ensure they run in
-            // the package root, not the publish dir
-            await runLifecycle('prepublish', pkg);
-            await runLifecycle('prepare', pkg);
-            await runLifecycle('prepublishOnly', pkg);
-          }
-          if (tag !== 'latest') {
-            args.push('--tag', tag);
-          }
-
-          if (isPublic != null) {
-            args.push('--access', isPublic ? 'public' : 'restricted');
-          }
-          await execa('npm', args, { stdio: [0, 1, 'pipe'] });
+        async spinner => {
+          await npmPublish(spinner, pkg, { otp, publishDir, isPublic, tag });
 
           try {
             if (publishDir) {

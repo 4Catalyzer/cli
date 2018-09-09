@@ -1,0 +1,14 @@
+{
+  "name": "@monastic.panic/test-pkg",
+  "version": "1.0.10",
+  "main": "./lib/index.js",
+  "scripts": {
+    "prepublish": "echo 'prepublish'",
+    "prepublishOnly": "echo 'prepublish'",
+    "prepare": "echo 'prepare' && rm -rf lib && cp -r src lib",
+    "publish": "echo 'publish'",
+    "postpublish": "echo 'postpublish'"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
