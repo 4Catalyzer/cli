@@ -9,8 +9,11 @@
   },
   "overrides": [
     {
-      "files": ["**/__tests__/**", "test/**"],
+      "files": ["**/__tests__/**", "**/tests/**"],
       "plugins": ["jest"],
+      "env": {
+        "jest": true
+      },
       "rules": {
         "no-await-in-loop": "off",
         "jest/no-disabled-tests": "warn",

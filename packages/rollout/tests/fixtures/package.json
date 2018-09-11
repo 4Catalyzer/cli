@@ -1,6 +1,6 @@
 {
   "name": "@monastic.panic/test-pkg",
-  "version": "1.0.10",
+  "version": "1.4.0",
   "main": "./lib/index.js",
   "scripts": {
     "prepublish": "echo 'prepublish'",
