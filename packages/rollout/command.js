@@ -8,6 +8,7 @@ const { createAltPublishDir } = require('@4c/file-butler');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const PromptUtilities = require('@4c/cli-core/PromptUtilities');
+const { updateChangelog, recommendedBump } = require('./conventional-commits');
 
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
 
@@ -177,8 +178,13 @@ exports.builder = _ =>
       type: 'string',
       describe: 'Provide a two-factor authentication code for publishing',
     })
+    .option('conventional-commits', {
+      describe:
+        'Use conventional-changelog to calculate the next version and build changelog, from the commit history',
+      type: 'bool',
+      default: false,
+    })
     .option('allow-branch', {
-      group: 'Command Options:',
       describe: 'Specify which branches to allow publishing from.',
       type: 'array',
       default: ['master'],
@@ -217,10 +223,12 @@ exports.handler = async ({
   skipVersion,
   allowBranch,
   publishDir,
+  conventionalCommits,
   otp,
   public: isPublic,
 }) => {
   const cwd = process.cwd();
+  const changelogPath = path.join(cwd, 'CHANGELOG.md');
   const pkgPath = path.join(cwd, 'package.json');
   const pkg = require(pkgPath);
 
@@ -249,6 +257,10 @@ exports.handler = async ({
         `Using existing version: ${chalk.bold(nextVersion)}`,
       );
     } else {
+      if (conventionalCommits) {
+        version = (await recommendedBump(pkg.version)) || version; // eslint-disable-line no-param-reassign
+      }
+
       nextVersion = await getNextVersion(version, pkg.version, preid);
 
       await ConsoleUtilities.step(
@@ -276,7 +288,24 @@ exports.handler = async ({
     await ConsoleUtilities.step(
       'Tagging and committing version bump',
       async () => {
+        if (conventionalCommits) await updateChangelog(cwd, nextVersion);
+
+        await GitUtilities.addFile(pkgPath);
+        await GitUtilities.commit(`Publish ${gitTag}`);
+      },
+      skipVersion || !conventionalCommits,
+    );
+
+    await ConsoleUtilities.step(
+      'Tagging and committing version bump',
+      async () => {
         if (!skipVersion) {
+          try {
+            await GitUtilities.addFile(changelogPath);
+          } catch (err) {
+            /* ignore */
+          }
+
           await GitUtilities.addFile(pkgPath);
           await GitUtilities.commit(`Publish ${gitTag}`);
         }
