@@ -1,3 +1,20 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@2.0.0...@4c/file-butler@2.1.0) (2018-09-13)
+
+
+### Features
+
+* add conventional-commit option to rollout ([#11](https://github.com/4Catalyzer/file-butler/issues/11)) ([dea5a4d](https://github.com/4Catalyzer/file-butler/commit/dea5a4d))
+
+
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/4Catalyzer/file-butler/compare/v1.1.0...v1.1.1) (2018-07-29)
 

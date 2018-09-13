@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "main": "index.js",
   "repository": "https://github.com/4Catalyzer/init.git",
   "author": "4Catalyzer",
@@ -15,7 +15,7 @@
     "@4c/cli-core": "^1.1.0",
     "@4c/file-butler": "^1.2.0",
     "@4c/init": "^1.1.0",
-    "@4c/rollout": "^1.1.0",
+    "@4c/rollout": "^1.2.0",
     "chalk": "^2.3.0",
     "execa": "^1.0.0",
     "fs-extra": "^7.0.0",

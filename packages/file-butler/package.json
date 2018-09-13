@@ -1,6 +1,6 @@
 {
   "name": "@4c/file-butler",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "lib.js",
   "repository": {
     "type": "git",
