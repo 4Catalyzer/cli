@@ -15,7 +15,7 @@ exports.builder = _ =>
   });
 
 exports.handler = async ({ location }) => {
-  const plop = nodePlop('./plopfile.js');
+  const plop = nodePlop(`${__dirname}/plopfile.js`);
   const newPkg = plop.getGenerator('new-package');
 
   const answers = await newPkg.runPrompts([location]);
