@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/4Catalyzer/cli/compare/@4c/init@1.1.0...@4c/init@1.1.1) (2018-10-15)
+
+
+### Bug Fixes
+
+* correctly resolve plopfile to repo ([4edcfe7](https://github.com/4Catalyzer/cli/commit/4edcfe7))
+
+
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.0.0...@4c/init@1.1.0) (2018-09-09)
 
