@@ -19,6 +19,5 @@ exports.handler = async ({ location }) => {
   const newPkg = plop.getGenerator('new-package');
 
   const answers = await newPkg.runPrompts([location]);
-  const f = await newPkg.runActions(answers);
-  console.log('here', f);
+  await newPkg.runActions(answers);
 };

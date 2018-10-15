@@ -123,6 +123,7 @@ module.exports = plop => {
           : {
               type: 'add',
               path: `{{location}}/index.js`,
+              templateFile: `${templatePath}/index.js.hbs`,
               skipIfExists: true,
             },
         () =>
