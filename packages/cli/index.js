@@ -4,6 +4,7 @@ const yargs = require('yargs');
 
 const init = require('@4c/init/command');
 const rollout = require('@4c/rollout/command');
+const intl = require('@4c/intl/command');
 
 const setCmdName = (name, cmd) => ({
   ...cmd,
@@ -21,4 +22,5 @@ yargs
   .recommendCommands()
   .command(setCmdName('init', init))
   .command(setCmdName('release', rollout))
+  .command(setCmdName('intl', intl))
   .parse(process.argv.slice(2));
