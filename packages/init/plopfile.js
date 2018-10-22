@@ -1,12 +1,19 @@
 const path = require('path');
 const execa = require('execa');
+const fs = require('fs');
 const findWorkspaceRoot = require('find-yarn-workspace-root');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
-
+const prettier = require('prettier');
 const addHelpers = require('./addHelpers');
 const { getPackageNameFromPath, templatePath } = require('./utils');
 
 const ignore = () => {};
+
+let $workspaceRoot;
+const getRoot = location => {
+  if (!$workspaceRoot) $workspaceRoot = findWorkspaceRoot(location);
+  return $workspaceRoot;
+};
 
 const prompts = [
   {
@@ -34,7 +41,7 @@ const prompts = [
     type: 'confirm',
     default: false,
     message: 'Is this a private package?',
-    when: _ => !!_.scope,
+    when: _ => !getRoot(_.location) && !!_.scope,
   },
   {
     name: 'name',
@@ -61,6 +68,7 @@ const prompts = [
     type: 'confirm',
     default: true,
     message: 'Do you want to use semantic-release to handle releases?',
+    when: _ => !getRoot(_.location),
   },
 ];
 
@@ -75,7 +83,7 @@ module.exports = plop => {
     prompts,
     actions(answers) {
       const { type, location } = answers;
-      const workspaceRoot = findWorkspaceRoot(location);
+      const workspaceRoot = getRoot(location);
       // mutate so templates have the correct value
       if (type === 'web') answers.babel = true; // eslint-disable-line no-param-reassign
       const data = {
@@ -86,39 +94,52 @@ module.exports = plop => {
       return [
         {
           type: 'add',
-          path: '{{location}}/package.json',
+          path: '{{location}}/_package.json',
           templateFile: `${templatePath}/package.json.hbs`,
           data,
         },
-        {
+        // we run through prettier to remove any trailing commas. We have to
+        // rename the file b/c otherwise prettier will try and parse the
+        // pkg.json to read a config which fails bc of the trailing commas
+        () => {
+          fs.writeFileSync(
+            `${location}/package.json`,
+            prettier.format(
+              fs.readFileSync(`${location}/_package.json`, 'utf8'),
+              { parser: 'json-stringify' },
+            ),
+          );
+          fs.unlinkSync(`${location}/_package.json`);
+        },
+        !workspaceRoot && {
           type: 'add',
           path: '{{location}}/.gitignore',
           templateFile: `${templatePath}/gitignore`,
           skipIfExists: true,
           data,
         },
-        {
+        !workspaceRoot && {
           type: 'add',
           path: `{{location}}/.travis.yml`,
           templateFile: `${templatePath}/.travis.yml.hbs`,
           skipIfExists: true,
           data,
         },
-        {
+        !workspaceRoot && {
           type: 'add',
           path: `{{location}}/.eslintrc`,
           templateFile: `${templatePath}/.eslintrc.hbs`,
           skipIfExists: true,
           data,
         },
-        {
+        !workspaceRoot && {
           type: 'add',
           path: `{{location}}/.eslintignore`,
           templateFile: `${templatePath}/.eslintignore`,
           skipIfExists: true,
           data,
         },
-        {
+        !workspaceRoot && {
           type: 'add',
           path: `{{location}}/LICENSE`,
           templateFile: `${templatePath}/LICENSE.hbs`,
@@ -146,7 +167,8 @@ module.exports = plop => {
           execa(
             'prettier',
             [
-              `${location}/**/*.{js,json,md}`,
+              `${location}/package.json`, // to fix any HBS trailing comma issues
+              `'${location}/**/*.{js,json,md}'`,
               `${location}/.eslintrc`,
               '--write',
             ],
@@ -158,17 +180,17 @@ module.exports = plop => {
             cwd: location,
             stdio: 'inherit',
           }),
-
-        ({ semanticRelease }) => {
-          if (semanticRelease) {
-            console.log(
-              '\nRun `npx semantic-release-cli setup` after pushing to github for the first time to setup semantic release\n',
-            );
-          } else {
-            console.log('Done!');
-          }
-        },
-      ];
+        !workspaceRoot &&
+          (({ semanticRelease }) => {
+            if (semanticRelease) {
+              console.log(
+                '\nRun `npx semantic-release-cli setup` after pushing to github for the first time to setup semantic release\n',
+              );
+            } else {
+              console.log('Done!');
+            }
+          }),
+      ].filter(Boolean);
     },
   });
 };

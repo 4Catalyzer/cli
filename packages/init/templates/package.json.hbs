@@ -19,13 +19,19 @@
       "prepublishOnly": "yarn run build",
     {{/if}}
       "tdd": "jest --watch",
+
+    {{#if workspaceRoot}}
+      "test": "jest",
+    {{else}}
       "test": "npm run lint && jest",
       "testonly": "jest",
+    {{/if}}
+
     {{#unless workspaceRoot}}
       "lint": "eslint . && prettier --list-different --ignore-path .eslintignore '**/*.{json,css,md}'",
       "format": "eslint . --fix && prettier --write --ignore-path .eslintignore '**/*.{json,css,md}'",
       "precommit": "lint-staged"
-    {{#unless}}
+    {{/unless}}
 
   },
   "publishConfig": {
@@ -44,7 +50,7 @@
         "git add"
       ]
     },
-  {{#unless}}
+  {{/unless}}
   "jest": {
     "roots": ["<rootDir>/test"],
     "testEnvironment": "{{iff (eq type 'node') 'node' 'jsdom'}}"
@@ -55,7 +61,7 @@
         "extends": ["@4c/semantic-release-config"]
       },
     {{/if}}
-  {{#unless}}
+  {{/unless}}
 
   "devDependencies": {
     {{#if babel}}
@@ -87,7 +93,7 @@
       "husky": "^0.14.3",
       "lint-staged": "^7.1.0",
       "prettier": "^1.14.2",
-    {{#unless}}
+    {{/unless}}
     "jest": "^23.5.0"
   }
 }
