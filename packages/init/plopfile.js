@@ -1,5 +1,6 @@
 const path = require('path');
 const execa = require('execa');
+const findWorkspaceRoot = require('find-yarn-workspace-root');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
 
 const addHelpers = require('./addHelpers');
@@ -72,59 +73,74 @@ module.exports = plop => {
   plop.setGenerator('new-package', {
     description: 'create a new package',
     prompts,
-    actions({ type, babel, location }) {
-      if (type === 'web') babel = true; // eslint-disable-line no-param-reassign
+    actions(answers) {
+      const { type, location } = answers;
+      const workspaceRoot = findWorkspaceRoot(location);
+      // mutate so templates have the correct value
+      if (type === 'web') answers.babel = true; // eslint-disable-line no-param-reassign
+      const data = {
+        workspaceRoot,
+        includeEslint: !workspaceRoot && type === 'web',
+      };
 
       return [
         {
           type: 'add',
           path: '{{location}}/package.json',
           templateFile: `${templatePath}/package.json.hbs`,
+          data,
         },
         {
           type: 'add',
           path: '{{location}}/.gitignore',
           templateFile: `${templatePath}/gitignore`,
           skipIfExists: true,
+          data,
         },
         {
           type: 'add',
           path: `{{location}}/.travis.yml`,
           templateFile: `${templatePath}/.travis.yml.hbs`,
           skipIfExists: true,
+          data,
         },
         {
           type: 'add',
           path: `{{location}}/.eslintrc`,
           templateFile: `${templatePath}/.eslintrc.hbs`,
           skipIfExists: true,
+          data,
         },
         {
           type: 'add',
           path: `{{location}}/.eslintignore`,
           templateFile: `${templatePath}/.eslintignore`,
           skipIfExists: true,
+          data,
         },
         {
           type: 'add',
           path: `{{location}}/LICENSE`,
           templateFile: `${templatePath}/LICENSE.hbs`,
           skipIfExists: true,
+          data,
         },
         () => GitUtilities.init(location).catch(ignore),
         _ => GitUtilities.addRemote(location, _.name).catch(ignore),
-        babel
+        answers.babel
           ? {
               type: 'add',
               path: `{{location}}/.babelrc.js`,
               templateFile: `${templatePath}/babelrc.js.hbs`,
               skipIfExists: true,
+              data,
             }
           : {
               type: 'add',
               path: `{{location}}/index.js`,
               templateFile: `${templatePath}/index.js.hbs`,
               skipIfExists: true,
+              data,
             },
         () =>
           execa(
