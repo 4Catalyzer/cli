@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.1.2...@4c/init@1.2.0) (2018-10-26)
+
+
+### Features
+
+* workspace aware init ([#13](https://github.com/4Catalyzer/cli/issues/13)) ([36982f0](https://github.com/4Catalyzer/cli/commit/36982f0))
+
+
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/4Catalyzer/cli/compare/@4c/init@1.1.1...@4c/init@1.1.2) (2018-10-15)
 
