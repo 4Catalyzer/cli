@@ -19,5 +19,13 @@ exports.handler = async ({ location }) => {
   const newPkg = plop.getGenerator('new-package');
 
   const answers = await newPkg.runPrompts([location]);
-  await newPkg.runActions(answers);
+  const result = await newPkg.runActions(answers);
+  if (result.failures) {
+    result.failures.forEach(
+      f =>
+        f.error &&
+        !f.error.startsWith('Aborted due to previous') &&
+        console.error(f.error),
+    );
+  }
 };
