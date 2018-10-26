@@ -29,10 +29,8 @@
 
     {{#unless workspaceRoot}}
       "lint": "eslint . && prettier --list-different --ignore-path .eslintignore '**/*.{json,css,md}'",
-      "format": "eslint . --fix && prettier --write --ignore-path .eslintignore '**/*.{json,css,md}'",
-      "precommit": "lint-staged"
+      "format": "eslint . --fix && prettier --write --ignore-path .eslintignore '**/*.{json,css,md}'"
     {{/unless}}
-
   },
   "publishConfig": {
     "access": "{{iff isPrivate 'restricted' 'public'}}"
@@ -42,6 +40,9 @@
       "printWidth": 79,
       "singleQuote": true,
       "trailingComma": "all"
+    },
+    "husky": {
+      "hooks": { "pre-commit": "lint-staged" }
     },
     "lint-staged": {
       "*.js": ["eslint --fix", "git add"],
@@ -74,24 +75,26 @@
     {{#unless workspaceRoot}}
       "eslint": "^4.16.0",
       "babel-eslint": "^9.0.0",
-      "eslint-config-prettier": "^3.0.1",
+      "eslint-config-4catalyzer": "^0.5.0",
+
+      "eslint-config-prettier": "^3.1.0",
       "eslint-plugin-import": "^2.8.0",
-      "eslint-plugin-prettier": "^2.5.0",
-      "eslint-plugin-jest": "^21.7.0",
+      "eslint-plugin-prettier": "^3.0.0",
+      "eslint-plugin-jest": "^21.26.2",
       {{#if (eq type 'web') }}
-        "eslint-config-4catalyzer-react": "^0.4.1",
-        "eslint-plugin-react": "^7.5.1",
+        "eslint-config-4catalyzer-react": "^0.5.0",
+        "eslint-plugin-react": "^7.7.0",
         "eslint-plugin-jsx-a11y": "^6.0.3",
       {{else}}
-        "eslint-config-4catalyzer": "^0.4.1",
+        "eslint-config-4catalyzer": "^0.5.0",
       {{/if}}
       {{#if semanticRelease}}
         "@4c/semantic-release-config": "^1.0.2",
         "semantic-release": "^15.5.0",
         "travis-deploy-once": "^5.0.0",
       {{/if}}
-      "husky": "^0.14.3",
-      "lint-staged": "^7.1.0",
+      "husky": "^1.1.2",
+      "lerna": "^3.4.3",
       "prettier": "^1.14.2",
     {{/unless}}
     "jest": "^23.5.0"
