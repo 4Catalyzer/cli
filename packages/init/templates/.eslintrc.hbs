@@ -1,7 +1,7 @@
 {
   "plugins": ["prettier"],
   {{#if (eq type "node")}}
-  "extends": ["4catalyzer", "prettier"],
+  "extends": ["4catalyzer", "prettier", {{~#if typescript}}"4catalyzer-typescript"{{/if}}],
   "env": {
       "node": true
   },
@@ -11,9 +11,9 @@
     "import/no-dynamic-require": "off"
   },
   {{else}}
-  "extends": ["4catalyzer-react", "prettier", "prettier-react"],
+  "extends": ["4catalyzer-react", "prettier", "prettier-react", {{~#if typescript}}"4catalyzer-typescript"{{/if}}],
   "env": {
-      "web": true
+      "browser": true
   },
   "rules": {
     "prettier/prettier": "error"
