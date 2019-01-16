@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.2.0...@4c/init@1.3.0) (2019-01-16)
+
+
+### Features
+
+* typescript scaffolding support ([#16](https://github.com/4Catalyzer/cli/issues/16)) ([9b4867f](https://github.com/4Catalyzer/cli/commit/9b4867f))
+
+
+
+
+
 # [1.2.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.1.2...@4c/init@1.2.0) (2018-10-26)
 
 
