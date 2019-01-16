@@ -60,7 +60,7 @@ const prompts = [
     name: 'typescript',
     type: 'confirm',
     default: false,
-    message: 'Do want top use TypeScript?',
+    message: 'Do you want to use TypeScript?',
   },
   {
     name: 'babel',
@@ -72,7 +72,7 @@ const prompts = [
   {
     name: 'semanticRelease',
     type: 'confirm',
-    default: true,
+    default: false,
     message: 'Do you want to use semantic-release to handle releases?',
     when: _ => !getRoot(_.location),
   },
@@ -157,7 +157,7 @@ module.exports = plop => {
         answers.typescript && {
           type: 'add',
           path: `{{location}}/tsconfig.json`,
-          templateFile: `${templatePath}/tsconfig.json`,
+          templateFile: `${templatePath}/tsconfig.json.hbs`,
           skipIfExists: true,
           data,
         },
@@ -184,6 +184,7 @@ module.exports = plop => {
               `${location}/package.json`, // to fix any HBS trailing comma issues
               `'${location}/**/*.{js,json,md}'`,
               `${location}/.eslintrc`,
+              `${location}/tsconfig.json`,
               '--write',
             ],
             { cwd: location },

@@ -33,7 +33,7 @@
     {{#unless workspaceRoot}}
       "eslint": "eslint . {{#if typescript}}--ext .js,.ts,.tsx{{/if}}",
       "prettier": "prettier --ignore-path .eslintignore '**/*.{json,css,md}'",
-      "import-sort": "import-sort '**/src/**/*.{js,ts,tsx}' '!**/__generated__/*'",
+      "import-sort": "import-sort '**/src/**/*.{{iff typescript '{js,ts,tsx}' 'js'}}' '!**/__generated__/*'{{#if typescript}} '!**/*.d.ts'{{/if}}",
       "lint": "{{#if typescript}}tsc --noEmit && {{/if}}yarn eslint && yarn import-sort --list-different && yarn prettier --list-different",
       "format": "yarn eslint && yarn import-sort --write && yarn prettier --write"
     {{/unless}}
@@ -97,6 +97,11 @@
       "@babel/core": "^7.2.2",
       "@4c/babel-preset-4catalyzer": "^4.1.1",
       "babel-core": "^7.0.0-bridge.0",
+    {{/if}}
+    {{#if typescript}}
+      {{#if (eq type 'node')}}
+        "@types/node": "*",
+      {{/if}}
     {{/if}}
     {{#unless workspaceRoot}}
       "eslint": "^5.12.0",
