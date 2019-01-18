@@ -13,7 +13,7 @@
   "license": "MIT",
   "scripts": {
     {{#if babel}}
-      "build:base": "babel src --ignore **/__tests__ --delete-dir-on-start{{#if typescript}}-x .js,.ts,.tsx{{/if}}",
+      "build:base": "babel src --ignore **/__tests__ --delete-dir-on-start{{#if typescript}} -x .js,.ts,.tsx{{/if}}",
       "build:es": "yarn build:base -d es --env-name esm",
       "build:lib": "yarn build:base -d lib",
       {{#if typescript}}
