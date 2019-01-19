@@ -19,7 +19,7 @@
       {{#if typescript}}
       "build:types": "tsc --outDir lib && tsc --outDir es",
       {{/if}}
-      "build": "yarn build:lib && yarn build:es",
+      "build": "yarn build:lib && yarn build:es{{#if typescript}} && yarn build:types{{/if}}",
       "prepublishOnly": "yarn run build",
     {{/if}}
       "tdd": "jest --watch",
