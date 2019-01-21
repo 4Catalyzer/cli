@@ -13,13 +13,11 @@
   "license": "MIT",
   "scripts": {
     {{#if babel}}
-      "build:base": "babel src --ignore **/__tests__ --delete-dir-on-start{{#if typescript}} -x .js,.ts,.tsx{{/if}}",
-      "build:es": "yarn build:base -d es --env-name esm",
-      "build:lib": "yarn build:base -d lib",
+      "babel": "babel src --ignore **/__tests__ --delete-dir-on-start{{#if typescript}} -x .js,.ts,.tsx{{/if}}",
       {{#if typescript}}
-      "build:types": "tsc --outDir lib && tsc --outDir es",
+      "build:types": "tsc --outDir lib{{#if esm}} && tsc --outDir es{{/if}}",
       {{/if}}
-      "build": "yarn build:lib && yarn build:es{{#if typescript}} && yarn build:types{{/if}}",
+      "build": "yarn babel -d lib{{#if esm}} && yarn babel -d es --env-name esm{{/if}}{{#if typescript}} && yarn build:types{{/if}}",
       "prepublishOnly": "yarn run build",
     {{/if}}
       "tdd": "jest --watch",
@@ -80,7 +78,6 @@
   {{/unless}}
   "jest": {
     "preset": "@4c/jest-preset",
-    "roots": ["<rootDir>/test"],
     "testEnvironment": "{{iff (eq type 'node') 'node' 'jsdom'}}"
   },
   {{#unless workspaceRoot}}
@@ -110,6 +107,7 @@
       "eslint-plugin-import": "^2.8.0",
       "eslint-plugin-prettier": "^3.0.1",
       "eslint-plugin-jest": "^22.1.2",
+      "eslint-config-4catalyzer-jest": "^1.1.0",
       {{#if (eq type 'web') }}
         "eslint-config-4catalyzer-react": "^0.7.0",
         "eslint-plugin-react": "^7.12.3",
