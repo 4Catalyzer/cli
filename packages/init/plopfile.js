@@ -1,19 +1,31 @@
 const path = require('path');
-const execa = require('execa');
 const fs = require('fs');
 const findWorkspaceRoot = require('find-yarn-workspace-root');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
 const prettier = require('prettier');
+const glob = require('glob');
 const addHelpers = require('./addHelpers');
 const { getPackageNameFromPath, templatePath } = require('./utils');
 
-const ignore = () => {};
+const ignore = err => {
+  console.error(err);
+};
 
 let $workspaceRoot;
 const getRoot = location => {
   if (!$workspaceRoot) $workspaceRoot = findWorkspaceRoot(location);
   return $workspaceRoot;
 };
+
+const runPrettier = (pattern, cwd) =>
+  glob
+    .sync(pattern, { cwd, absolute: true, dot: true })
+    .map(filepath =>
+      fs.writeFileSync(
+        filepath,
+        prettier.format(fs.readFileSync(filepath, 'utf8'), { filepath }),
+      ),
+    );
 
 const prompts = [
   {
@@ -94,28 +106,16 @@ module.exports = plop => {
       if (type === 'web' || typescript) answers.babel = true; // eslint-disable-line no-param-reassign
       const data = {
         workspaceRoot,
+        esm: answers.babel && type === 'web',
         includeEslint: !workspaceRoot && type === 'web',
       };
 
       return [
         {
           type: 'add',
-          path: '{{location}}/_package.json',
+          path: '{{location}}/package.json',
           templateFile: `${templatePath}/package.json.hbs`,
           data,
-        },
-        // we run through prettier to remove any trailing commas. We have to
-        // rename the file b/c otherwise prettier will try and parse the
-        // pkg.json to read a config which fails bc of the trailing commas
-        () => {
-          fs.writeFileSync(
-            `${location}/package.json`,
-            prettier.format(
-              fs.readFileSync(`${location}/_package.json`, 'utf8'),
-              { parser: 'json-stringify' },
-            ),
-          );
-          fs.unlinkSync(`${location}/_package.json`);
         },
         !workspaceRoot && {
           type: 'add',
@@ -133,7 +133,7 @@ module.exports = plop => {
         },
         !workspaceRoot && {
           type: 'add',
-          path: `{{location}}/.eslintrc`,
+          path: `{{location}}/.eslintrc.json`,
           templateFile: `${templatePath}/.eslintrc.hbs`,
           skipIfExists: true,
           data,
@@ -177,24 +177,10 @@ module.exports = plop => {
           skipIfExists: true,
           data,
         },
-        () =>
-          execa(
-            'prettier',
-            [
-              `${location}/package.json`, // to fix any HBS trailing comma issues
-              `'${location}/**/*.{js,json,md}'`,
-              `${location}/.eslintrc`,
-              `${location}/tsconfig.json`,
-              '--write',
-            ],
-            { cwd: location },
-          ).catch(ignore),
-        () => execa('yarn', ['install'], { cwd: location, stdio: 'inherit' }),
-        () =>
-          execa('yarn', ['upgrade-interactive', '--latest'], {
-            cwd: location,
-            stdio: 'inherit',
-          }),
+        // we run through prettier to remove any trailing commas
+        // caused by templating combinations
+        () => runPrettier('**/*.{js,json,md}', location),
+
         !workspaceRoot &&
           (({ semanticRelease }) => {
             if (semanticRelease) {

@@ -1,39 +1,18 @@
 {
   "plugins": ["prettier"],
-  {{#if (eq type "node")}}
-  "extends": ["4catalyzer", "prettier", {{~#if typescript}}"4catalyzer-typescript"{{/if}}],
+  "extends": ["4catalyzer-react", "4catalyzer-jest", "prettier", "prettier-react", {{~#if typescript}}"4catalyzer-typescript"{{/if}}],
   "env": {
+      {{#if (eq type "node")}}
       "node": true
+      {{else}}
+      "browser": true
+      {{/if}}
   },
   "rules": {
     "prettier/prettier": "error",
+    {{#if (eq type "node")}}
     "global-require": "off",
     "import/no-dynamic-require": "off"
-  },
-  {{else}}
-  "extends": ["4catalyzer-react", "prettier", "prettier-react", {{~#if typescript}}"4catalyzer-typescript"{{/if}}],
-  "env": {
-      "browser": true
-  },
-  "rules": {
-    "prettier/prettier": "error"
-  },
-  {{/if}}
-  "overrides": [
-    {
-      "files": ["test/**"],
-      "plugins": ["jest"],
-      "rules": {
-        "global-require": "off",
-        "no-await-in-loop": "off",
-        "no-console": "off",
-        "import/no-dynamic-require": "off",
-        "jest/no-disabled-tests": "warn",
-        "jest/no-focused-tests": "error",
-        "jest/no-identical-title": "error",
-        "jest/prefer-to-have-length": "warn",
-        "jest/valid-expect": "error"
-      }
-    }
-  ]
+    {{/if}}
+  }
 }

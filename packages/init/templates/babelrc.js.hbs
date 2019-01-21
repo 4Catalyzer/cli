@@ -4,7 +4,9 @@ module.exports = api => ({
       '@4c/4catalyzer',
       {
         target: '{{type}}',
+        {{#if (eq type 'web')}}
         modules: api.env() === 'esm' ? false : 'commonjs'
+        {{/if}}
       },
     ],
     {{~#if typescript~}}
