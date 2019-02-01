@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.3.0...@4c/init@1.4.0) (2019-02-01)
+
+
+### Bug Fixes
+
+* build types when releasing ([#18](https://github.com/4Catalyzer/cli/issues/18)) ([1201d03](https://github.com/4Catalyzer/cli/commit/1201d03))
+* fix ts build ([#17](https://github.com/4Catalyzer/cli/issues/17)) ([998dffa](https://github.com/4Catalyzer/cli/commit/998dffa))
+
+
+### Features
+
+* use jest eslint config, clean up build scripts ([#19](https://github.com/4Catalyzer/cli/issues/19)) ([6898fd5](https://github.com/4Catalyzer/cli/commit/6898fd5))
+
+
+
+
+
 # [1.3.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.2.0...@4c/init@1.3.0) (2019-01-16)
 
 
