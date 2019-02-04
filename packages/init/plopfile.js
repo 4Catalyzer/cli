@@ -1,11 +1,15 @@
 const path = require('path');
-const fs = require('fs');
+
 const findWorkspaceRoot = require('find-yarn-workspace-root');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
-const prettier = require('prettier');
-const glob = require('glob');
+
 const addHelpers = require('./addHelpers');
-const { getPackageNameFromPath, templatePath } = require('./utils');
+const {
+  runPrettier,
+  sortJsonPath,
+  templatePath,
+  getPackageNameFromPath,
+} = require('./utils');
 
 const ignore = err => {
   console.error(err);
@@ -16,16 +20,6 @@ const getRoot = location => {
   if (!$workspaceRoot) $workspaceRoot = findWorkspaceRoot(location);
   return $workspaceRoot;
 };
-
-const runPrettier = (pattern, cwd) =>
-  glob
-    .sync(pattern, { cwd, absolute: true, dot: true })
-    .map(filepath =>
-      fs.writeFileSync(
-        filepath,
-        prettier.format(fs.readFileSync(filepath, 'utf8'), { filepath }),
-      ),
-    );
 
 const prompts = [
   {
@@ -180,6 +174,13 @@ module.exports = plop => {
         // we run through prettier to remove any trailing commas
         // caused by templating combinations
         () => runPrettier('**/*.{js,json,md}', location),
+        () =>
+          sortJsonPath(`${location}/package.json`, [
+            'dependencies',
+            'devDependencies',
+            'peetDepdencies',
+            'scripts',
+          ]),
 
         !workspaceRoot &&
           (({ semanticRelease }) => {
