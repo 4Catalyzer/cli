@@ -178,7 +178,7 @@ module.exports = plop => {
           sortJsonPath(`${location}/package.json`, [
             'dependencies',
             'devDependencies',
-            'peetDepdencies',
+            'peerDependencies',
             'scripts',
           ]),
 
