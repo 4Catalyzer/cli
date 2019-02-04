@@ -1,4 +1,7 @@
 const path = require('path');
+const fs = require('fs');
+const prettier = require('prettier');
+const glob = require('glob');
 
 const templatePath = path.resolve(__dirname, './templates');
 
@@ -11,7 +14,37 @@ const getPackageNameFromPath = (scope, outDir) => {
   return `${scope}/${name}`;
 };
 
+const sortJsonPath = (jsonFile, paths) => {
+  const obj = require(jsonFile);
+  paths.forEach(p => {
+    if (!obj[p]) return;
+
+    const result = {};
+    Object.keys(obj[p])
+      .sort()
+      .forEach(k => {
+        result[k] = obj[p][k];
+      });
+
+    obj[p] = result;
+  });
+
+  fs.writeFileSync(jsonFile, JSON.stringify(obj, null, 2));
+};
+
+const runPrettier = (pattern, cwd) =>
+  glob
+    .sync(pattern, { cwd, absolute: true, dot: true })
+    .map(filepath =>
+      fs.writeFileSync(
+        filepath,
+        prettier.format(fs.readFileSync(filepath, 'utf8'), { filepath }),
+      ),
+    );
+
 module.exports = {
   getPackageNameFromPath,
   templatePath,
+  sortJsonPath,
+  runPrettier,
 };

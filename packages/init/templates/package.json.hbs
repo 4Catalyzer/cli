@@ -20,7 +20,8 @@
       "build": "yarn babel -d lib{{#if esm}} && yarn babel -d es --env-name esm{{/if}}{{#if typescript}} && yarn build:types{{/if}}",
       "prepublishOnly": "yarn run build",
     {{/if}}
-      "tdd": "jest --watch",
+
+    "tdd": "jest --watch",
 
     {{#if workspaceRoot}}
       "test": "jest",
@@ -34,7 +35,8 @@
       "prettier": "prettier --ignore-path .eslintignore '**/*.{json,css,md}'",
       "import-sort": "import-sort '**/src/**/*.{{iff typescript '{js,ts,tsx}' 'js'}}' '!**/__generated__/*'{{#if typescript}} '!**/*.d.ts'{{/if}}",
       "lint": "{{#if typescript}}tsc --noEmit && {{/if}}yarn eslint && yarn import-sort --list-different && yarn prettier --list-different",
-      "format": "yarn eslint && yarn import-sort --write && yarn prettier --write"
+      "format": "yarn eslint && yarn import-sort --write && yarn prettier --write",
+      "release": "rollout"
     {{/unless}}
   },
   "publishConfig": {
@@ -49,13 +51,13 @@
     "importSort": {
       {{#unless typescript}}
       ".js": {
-        "parser": "import-sort-style-4catalyzer/parser",
-        "style": "import-sort-style-4catalyzer"
+        "parser": "@4c/import-sort/parser",
+        "style": "@4c/import-sort/style"
       },
       {{else}}
       ".js, .ts, .tsx": {
-        "parser": "import-sort-style-4catalyzer/parser-ts",
-        "style": "import-sort-style-4catalyzer"
+        "parser": "@4c/import-sort/parser-ts",
+        "style": "@4c/import-sort/style"
       }
       {{/unless}}
     },
@@ -81,11 +83,20 @@
     "testEnvironment": "{{iff (eq type 'node') 'node' 'jsdom'}}"
   },
   {{#unless workspaceRoot}}
+    "release": {
     {{#if semanticRelease}}
-      "release": {
-        "extends": ["@4c/semantic-release-config"]
-      },
+      {{#if babel}}
+        "pkgRoot": "lib",
+      {{/if}}
+      "extends": [
+        "@4c/semantic-release-config"
+      ]
+    {{else}}
+      {{#if babel}}
+        "publishDir": "lib"
+      {{/if}}
     {{/if}}
+    },
   {{/unless}}
 
   "devDependencies": {
@@ -122,11 +133,13 @@
         "@typescript-eslint/eslint-plugin": "^1.1.1",
       {{/if}}
       "import-sort-cli": "^5.2.0",
-      "import-sort-style-4catalyzer": "^4.3.0",
+      "@4c/import-sort": "^4.3.0",
       {{#if semanticRelease}}
         "@4c/semantic-release-config": "^1.0.2",
         "semantic-release": "^15.5.0",
         "travis-deploy-once": "^5.0.0",
+      {{else}}
+        "@4c/rollout": "^1.2.0",
       {{/if}}
       "husky": "^1.1.2",
       "lint-staged": "^8.1.0",
