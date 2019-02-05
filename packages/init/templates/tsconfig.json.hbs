@@ -1,27 +1,7 @@
 {
+  "extends": "@4c/tsconfig/{{#if (eq type 'node')}}node{{else}}web{{/if}}",
   "compilerOptions": {
     "rootDir": "src",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
-    "lib": [{{#if (eq type 'web')}}"dom", {{/if}}"es2016", "es2017"],
-    {{#if (eq type 'node')}}
-    "types": ["node"],
-    {{/if}}
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUnusedParameters": true,
-    "strict": true,
-    "strictFunctionTypes": false,
-    "sourceMap": true,
-    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
