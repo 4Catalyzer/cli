@@ -3,40 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.4.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.3.0...@4c/init@1.4.0) (2019-02-01)
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.4.0...@4c/init@1.5.0) (2019-02-11)
 
 
 ### Bug Fixes
 
-* build types when releasing ([#18](https://github.com/4Catalyzer/cli/issues/18)) ([1201d03](https://github.com/4Catalyzer/cli/commit/1201d03))
-* fix ts build ([#17](https://github.com/4Catalyzer/cli/issues/17)) ([998dffa](https://github.com/4Catalyzer/cli/commit/998dffa))
+* add emitDeclarationOnly flag on tsconfig ([#26](https://github.com/4Catalyzer/cli/issues/26)) ([ed8f137](https://github.com/4Catalyzer/cli/commit/ed8f137))
+* build:types ([#22](https://github.com/4Catalyzer/cli/issues/22)) ([7052dce](https://github.com/4Catalyzer/cli/commit/7052dce))
+* import sort for ts ([#23](https://github.com/4Catalyzer/cli/issues/23)) ([1255b33](https://github.com/4Catalyzer/cli/commit/1255b33))
+* install react eslint plugins only in web ([#21](https://github.com/4Catalyzer/cli/issues/21)) ([00cbfb6](https://github.com/4Catalyzer/cli/commit/00cbfb6))
 
 
 ### Features
 
-* use jest eslint config, clean up build scripts ([#19](https://github.com/4Catalyzer/cli/issues/19)) ([6898fd5](https://github.com/4Catalyzer/cli/commit/6898fd5))
-
-
-
-
-
-# [1.3.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.2.0...@4c/init@1.3.0) (2019-01-16)
-
-
-### Features
-
-* typescript scaffolding support ([#16](https://github.com/4Catalyzer/cli/issues/16)) ([9b4867f](https://github.com/4Catalyzer/cli/commit/9b4867f))
-
-
-
-
-
-# [1.2.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.1.2...@4c/init@1.2.0) (2018-10-26)
-
-
-### Features
-
-* workspace aware init ([#13](https://github.com/4Catalyzer/cli/issues/13)) ([36982f0](https://github.com/4Catalyzer/cli/commit/36982f0))
+* add release config and rollout to init ([#24](https://github.com/4Catalyzer/cli/issues/24)) ([26b3d09](https://github.com/4Catalyzer/cli/commit/26b3d09))
 
 
 
