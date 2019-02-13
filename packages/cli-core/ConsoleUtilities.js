@@ -1,4 +1,9 @@
 const ora = require('ora');
+const isCI = require('is-ci');
+
+exports.isCI = () => isCI;
+
+exports.isTTY = () => process.stdout.isTTY && !isCI;
 
 exports.spinner = text => ora(text).start();
 
