@@ -11,15 +11,30 @@ const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 
 const debug = debuglog('pedantic');
 
-function sortFileImports(content, filePath) {
+const DEFAULT_SORT_CONFIGS = {
+  '.js, .jsx, .mjs, .ts, .tsx': {
+    parser: require.resolve('import-sort-parser-babylon'),
+    style: require.resolve('@4c/import-sort/style'),
+  },
+};
+
+function sortFileImports(content, filePath, includeTypeDefs = false) {
+  const noChanges = { code: content, changes: [] };
+
+  if (!includeTypeDefs && filePath.matches('.d.ts')) {
+    debug('Not attempting to sort imports in type def file:', filePath);
+    return noChanges;
+  }
+
   const resolvedConfig = getConfig(
     path.extname(filePath),
     path.dirname(filePath),
+    DEFAULT_SORT_CONFIGS,
   );
 
   if (!resolvedConfig || !resolvedConfig.parser || !resolvedConfig.style) {
     debug('could not resolve import sort config for:', filePath);
-    return { code: content, changes: [] };
+    return noChanges;
   }
 
   const { parser, style, options } = resolvedConfig;
