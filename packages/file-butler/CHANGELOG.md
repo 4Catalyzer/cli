@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@2.1.0...@4c/file-butler@2.1.1) (2019-02-20)
+
+**Note:** Version bump only for package @4c/file-butler
+
+
+
+
+
 <a name="2.1.0"></a>
 
 # [2.1.0](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@2.0.0...@4c/file-butler@2.1.0) (2018-09-13)

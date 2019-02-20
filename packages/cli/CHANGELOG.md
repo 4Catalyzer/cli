@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/4Catalyzer/init/compare/@4c/cli@0.5.3...@4c/cli@0.6.0) (2019-02-20)
+
+
+### Features
+
+* add format command ([#27](https://github.com/4Catalyzer/init/issues/27)) ([5a5bbec](https://github.com/4Catalyzer/init/commit/5a5bbec))
+
+
+
+
+
 <a name="0.5.3"></a>
 
 ## [0.5.3](https://github.com/4Catalyzer/init/compare/@4c/cli@0.5.2...@4c/cli@0.5.3) (2019-02-11)
