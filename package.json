@@ -1,7 +1,7 @@
 {
   "name": "4c-cli-root",
   "version": "0.3.1",
-  "repository": "https://github.com/4Catalyzer/init.git",
+  "repository": "https://github.com/4Catalyzer/cli.git",
   "author": "4Catalyzer",
   "license": "MIT",
   "private": true,
@@ -17,8 +17,8 @@
   },
   "importSort": {
     ".js": {
-      "parser": "4catalyzer",
-      "style": "4catalyzer"
+      "parser": "@4c/import-sort/parser",
+      "style": "@4c/import-sort/style"
     }
   },
   "lint-staged": {
@@ -35,6 +35,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@4c/import-sort": "^4.3.1",
     "@babel/core": "^7.0.0-beta.39",
     "babel-eslint": "^9.0.0",
     "eslint": "^4.16.0",
