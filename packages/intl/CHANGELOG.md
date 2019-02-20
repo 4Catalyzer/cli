@@ -5,7 +5,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # 1.1.0 (2018-10-26)
 
-
 ### Features
 
-* add intl cli support ([#12](https://github.com/4Catalyzer/cli/issues/12)) ([eae19d9](https://github.com/4Catalyzer/cli/commit/eae19d9))
+- add intl cli support ([#12](https://github.com/4Catalyzer/cli/issues/12)) ([eae19d9](https://github.com/4Catalyzer/cli/commit/eae19d9))

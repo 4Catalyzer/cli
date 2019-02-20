@@ -19,10 +19,10 @@
   },
   "dependencies": {
     "@4c/cli-core": "^1.1.0",
-    "chalk": "^2.4.1",
+    "chalk": "^2.4.2",
     "glob": "^7.1.3"
   },
   "devDependencies": {
-    "jest": "^23.6.0"
+    "jest": "^24.1.0"
   }
 }

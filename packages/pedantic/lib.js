@@ -19,11 +19,9 @@ const DEFAULT_SORT_CONFIGS = {
 };
 
 function sortFileImports(content, filePath, includeTypeDefs = false) {
-  const noChanges = { code: content, changes: [] };
-
   if (!includeTypeDefs && filePath.endsWith('.d.ts')) {
     debug('Not attempting to sort imports in type def file:', filePath);
-    return noChanges;
+    return content;
   }
 
   const resolvedConfig = getConfig(
@@ -34,7 +32,7 @@ function sortFileImports(content, filePath, includeTypeDefs = false) {
 
   if (!resolvedConfig || !resolvedConfig.parser || !resolvedConfig.style) {
     debug('could not resolve import sort config for:', filePath);
-    return noChanges;
+    return content;
   }
 
   const { parser, style, options } = resolvedConfig;
@@ -71,40 +69,45 @@ module.exports = async (
     );
   }
   let numDifferent = 0;
+  try {
+    await Promise.all(
+      filePaths.map(async filePath => {
+        let content;
+        let code;
 
-  await Promise.all(
-    filePaths.map(async filePath => {
-      let content;
-      let code;
+        try {
+          content = await fs.readFile(filePath, 'utf8');
 
-      try {
-        content = await fs.readFile(filePath, 'utf8');
+          code = sortFileImports(content, filePath);
+          code = await runPrettier(code, filePath, ignorePath);
+        } catch (err) {
+          // Don't exit the process if one file failed
+          process.exitCode = 2;
+          console.error(err, filePath);
+          return;
+        }
 
-        code = sortFileImports(content, filePath);
-        code = await runPrettier(code, filePath, ignorePath);
-      } catch (err) {
-        // Don't exit the process if one file failed
-        process.exitCode = 2;
-        console.error(err, filePath);
-        return;
-      }
+        if (content === code) return;
 
-      if (content === code) return;
+        numDifferent++;
 
-      numDifferent++;
-
-      if (check) {
-        spinner.stopAndPersist(); // we don't want these to replace each other
-        console.log(`  -> ${chalk.dim(filePath)}`);
-      } else if (write) {
-        spinner.text = chalk.dim(path.relative(cwd, filePath));
-        await fs.writeFile(filePath, code, 'utf8');
-      } else {
-        spinner.stopAndPersist();
-        process.stdout.write(code);
-      }
-    }),
-  );
+        if (check) {
+          // we don't want these to replace each other
+          if (spinner.isSpinning) spinner.stopAndPersist();
+          console.log(`  -> ${chalk.dim(filePath)}`);
+        } else if (write) {
+          spinner.text = chalk.dim(path.relative(cwd, filePath));
+          await fs.writeFile(filePath, code, 'utf8');
+        } else {
+          spinner.stopAndPersist();
+          process.stdout.write(code);
+        }
+      }),
+    );
+  } catch (err) {
+    spinner.stop();
+    throw err;
+  }
 
   if (!numDifferent) {
     spinner.succeed(
@@ -116,7 +119,7 @@ module.exports = async (
   if (check) {
     process.exitCode = 1;
   }
-  const files = `files${numDifferent === 1 ? '' : 's'}`;
+  const files = `file${numDifferent === 1 ? '' : 's'}`;
   if (check) {
     spinner.fail(
       `Code style issues found in the above ${numDifferent} ${files}`,
