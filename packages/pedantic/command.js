@@ -7,6 +7,7 @@ exports.describe = 'Format files';
 exports.builder = _ =>
   _.option('write', {
     type: 'boolean',
+    default: true,
     describe: 'Format and write the files back to disk',
   })
     .option('check', {

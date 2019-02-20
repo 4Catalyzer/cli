@@ -21,7 +21,7 @@ const DEFAULT_SORT_CONFIGS = {
 function sortFileImports(content, filePath, includeTypeDefs = false) {
   const noChanges = { code: content, changes: [] };
 
-  if (!includeTypeDefs && filePath.matches('.d.ts')) {
+  if (!includeTypeDefs && filePath.endsWith('.d.ts')) {
     debug('Not attempting to sort imports in type def file:', filePath);
     return noChanges;
   }
@@ -53,37 +53,24 @@ async function runPrettier(content, filePath, ignorePath) {
 
 module.exports = async (
   filePatterns,
-  {
-    cwd = process.cwd(),
-    ignorePath,
-    ignoreNodeModules,
-    write,
-    check,
-    listDifferent,
-  },
+  { cwd = process.cwd(), ignorePath, ignoreNodeModules, write, check },
 ) => {
-  const different = [];
   debug('patterns:', filePatterns, 'write:', write, 'cwd', cwd);
-  console.log('Checking formatting…');
+  const spinner = ConsoleUtilities.spinner('Checking formatting…');
 
   const filePaths = await ArgUtilities.resolveFilePatterns(filePatterns, {
     ignoreNodeModules,
     cwd,
   });
 
-  let spinner;
-  if (ConsoleUtilities.isTTY()) {
-    spinner = ConsoleUtilities.spinner();
-  }
-
   if (!filePaths.length) {
     process.exitCode = 1;
-    if (spinner) spinner.fail();
-    console.error(
+    spinner.fail(
       "The provided file patterns didn't match any files: ",
       filePatterns.join(', '),
     );
   }
+  let numDifferent = 0;
 
   await Promise.all(
     filePaths.map(async filePath => {
@@ -104,34 +91,41 @@ module.exports = async (
 
       if (content === code) return;
 
-      if (spinner) {
-        spinner.text = path.relative(cwd, filePath);
-      }
+      numDifferent++;
 
-      if (write) {
+      if (check) {
+        spinner.stopAndPersist(); // we don't want these to replace each other
+        console.log(`  -> ${chalk.dim(filePath)}`);
+      } else if (write) {
+        spinner.text = chalk.dim(path.relative(cwd, filePath));
         await fs.writeFile(filePath, code, 'utf8');
-      }
-      if (check || listDifferent) {
-        different.push(filePath);
+      } else {
+        spinner.stopAndPersist();
+        process.stdout.write(code);
       }
     }),
   );
 
-  if (different.length) {
+  if (!numDifferent) {
+    spinner.succeed(
+      `All ${filePaths.length} of matched files are properly formatted`,
+    );
+    return;
+  }
+
+  if (check) {
     process.exitCode = 1;
-
-    if (spinner) spinner.stop();
-
-    different.forEach(f => console.log(`  -> ${chalk.dim(f)}`));
-
-    if (spinner) {
-      if (write) {
-        spinner.succeed('Code style issues fixed in the above file(s).');
-      } else if (check || listDifferent) {
-        spinner.fail('Code style issues found in the above file(s).');
-      }
-    }
-  } else if (spinner) {
-    spinner.succeed('All matched files are properly formatted');
+  }
+  const files = `files${numDifferent === 1 ? '' : 's'}`;
+  if (check) {
+    spinner.fail(
+      `Code style issues found in the above ${numDifferent} ${files}`,
+    );
+  } else if (write) {
+    spinner.succeed(
+      `Code style issues fixed in ${numDifferent} of ${
+        filePaths.length
+      } ${files} checked.`,
+    );
   }
 };
