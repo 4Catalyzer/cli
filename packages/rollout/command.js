@@ -12,6 +12,8 @@ const { updateChangelog, recommendedBump } = require('./conventional-commits');
 
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
 
+function run(cmd, args) {}
+
 async function runLifecycle(script, pkg) {
   if (!pkg.scripts || !pkg.scripts[script]) return;
   await execa('npm', ['run', script], { stdio: [0, 1, 'pipe'] });
@@ -235,7 +237,7 @@ exports.handler = async ({
   try {
     await ConsoleUtilities.step(
       'Checking repo and running tests',
-      async () => {
+      async function* step() {
         if (!skipGit) {
           await GitUtilities.assertClean();
           await GitUtilities.assertMatchesRemote();
@@ -245,7 +247,7 @@ exports.handler = async ({
         if (!allowBranch.includes(branch))
           throw new Error(`Cannot publish from branch: ${chalk.bold(branch)}`);
 
-        await execa('npm', ['test'], { stdio: [0, 1, 'pipe'] });
+        yield* await execa('npm', ['test']);
       },
       skipChecks,
     );
