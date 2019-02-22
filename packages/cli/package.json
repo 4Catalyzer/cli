@@ -12,6 +12,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@4c/build": "^1.0.0",
     "@4c/cli-core": "^1.2.0",
     "@4c/file-butler": "^2.1.1",
     "@4c/init": "^1.5.1",

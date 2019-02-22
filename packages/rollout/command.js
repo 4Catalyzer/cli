@@ -209,7 +209,7 @@ exports.builder = _ =>
       type: 'boolean',
     })
     .option('public', {
-      type: 'bool',
+      type: 'boolean',
       default: undefined,
     });
 
