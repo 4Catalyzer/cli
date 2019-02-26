@@ -16,6 +16,8 @@ const interpolate = pattern => filename => {
 const flowRename = interpolate('[basename].flow[extname]');
 const mjsRename = interpolate('[basename].mjs');
 
+const mains = ['main', 'module', 'browser', 'style', 'types'];
+
 async function findReadme() {
   const [readmePath] = await globby('README{,.*}', {
     absolute: true,
@@ -52,8 +54,11 @@ async function createPublishPkgJson(outDir) {
   // lets the root pkg.json's main be accurate in case you want to install from github
   const rMain = new RegExp(`${outDir}\\/?`);
 
-  if (pkgJson.main) pkgJson.main = pkgJson.main.replace(rMain, '');
-  if (pkgJson.module) pkgJson.module = pkgJson.module.replace(rMain, '');
+  for (const main of mains) {
+    if (!pkgJson[main]) continue;
+    pkgJson[main] = pkgJson[main].replace(rMain, '');
+  }
+
   await fs.outputJson(path.join(outDir, 'package.json'), pkgJson, {
     spaces: 2,
   });
