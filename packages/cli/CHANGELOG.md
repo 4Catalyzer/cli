@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/4Catalyzer/init/compare/@4c/cli@0.6.0...@4c/cli@0.7.0) (2019-02-26)
+
+
+### Features
+
+* add build command ([#28](https://github.com/4Catalyzer/init/issues/28)) ([20f4b00](https://github.com/4Catalyzer/init/commit/20f4b00))
+
+
+
+
+
 # [0.6.0](https://github.com/4Catalyzer/init/compare/@4c/cli@0.5.3...@4c/cli@0.6.0) (2019-02-20)
 
 ### Features
