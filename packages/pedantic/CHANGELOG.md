@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/4Catalyzer/cli/compare/pedantic@1.2.0...pedantic@1.2.1) (2019-02-26)
+
+
+### Bug Fixes
+
+* prettier ignore ([b09d2f9](https://github.com/4Catalyzer/cli/commit/b09d2f9))
+
+
+
+
+
 # [1.2.0](https://github.com/4Catalyzer/cli/compare/pedantic@1.1.0...pedantic@1.2.0) (2019-02-26)
 
 
