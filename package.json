@@ -24,11 +24,11 @@
   "lint-staged": {
     "*.js": [
       "eslint --fix",
-      "yarn cli format --ignore-path .eslintignore",
+      "yarn cli format",
       "git add"
     ],
     "*.{json,css,md}": [
-      "yarn cli format --ignore-path .eslintignore",
+      "yarn cli format",
       "git add"
     ]
   },

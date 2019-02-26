@@ -41,7 +41,7 @@ function sortFileImports(content, filePath, includeTypeDefs = false) {
   return result.code;
 }
 
-async function runPrettier(content, filePath, ignorePath) {
+async function runPrettier(content, filePath, ignorePath = '.prettierignore') {
   const { ignored } = await prettier.getFileInfo(filePath, { ignorePath });
   if (ignored) return content;
   const options = await prettier.resolveConfig(filePath);
