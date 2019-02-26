@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @4c/init
 
-
-
-
-
 <a name="1.5.0"></a>
 
 # [1.5.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.4.0...@4c/init@1.5.0) (2019-02-11)

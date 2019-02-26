@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const build = require('@4c/build/command');
 const init = require('@4c/init/command');
 const rollout = require('@4c/rollout/command');
 const yargs = require('yargs');
@@ -20,6 +21,7 @@ yargs
   .demandCommand(1, `Pass --help to see all available commands and options.`)
   .strict()
   .recommendCommands()
+  .command(setCmdName('build', build))
   .command(setCmdName('init', init))
   .command(setCmdName('release', rollout))
   .command(setCmdName('intl', intl))

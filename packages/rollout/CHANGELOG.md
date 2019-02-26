@@ -7,10 +7,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @4c/rollout
 
-
-
-
-
 <a name="1.2.0"></a>
 
 # [1.2.0](https://github.com/4Catalyzer/cli/compare/@4c/rollout@1.1.0...@4c/rollout@1.2.0) (2018-09-13)
