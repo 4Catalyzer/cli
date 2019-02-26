@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@2.2.0...@4c/file-butler@2.3.0) (2019-02-26)
+
+
+### Features
+
+* handle more mains for alt publish ([49dd2fc](https://github.com/4Catalyzer/file-butler/commit/49dd2fc))
+
+
+
+
+
 # [2.2.0](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@2.1.1...@4c/file-butler@2.2.0) (2019-02-26)
 
 
