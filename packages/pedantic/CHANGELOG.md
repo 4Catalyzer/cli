@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/4Catalyzer/cli/compare/pedantic@2.0.0...pedantic@2.0.1) (2019-03-05)
+
+
+### Bug Fixes
+
+* reporting logic a bit ([a7fbe34](https://github.com/4Catalyzer/cli/commit/a7fbe34))
+
+
+
+
+
 # [2.0.0](https://github.com/4Catalyzer/cli/compare/pedantic@1.2.1...pedantic@2.0.0) (2019-03-05)
 
 
