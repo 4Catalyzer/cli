@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/4Catalyzer/cli/compare/@4c/cli-core@1.3.0...@4c/cli-core@1.4.0) (2019-03-05)
+
+
+### Features
+
+* r-eexport chalk, table and trip-ansi ([17b8995](https://github.com/4Catalyzer/cli/commit/17b8995))
+
+
+
+
+
 # [1.3.0](https://github.com/4Catalyzer/cli/compare/@4c/cli-core@1.2.0...@4c/cli-core@1.3.0) (2019-02-26)
 
 
