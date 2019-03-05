@@ -92,30 +92,24 @@ module.exports = async (
         }
       }),
     );
-  } catch (err) {
+  } finally {
     progress.stop();
-    throw err;
   }
 
-  if (!numDifferent && !linter.hasChanges) {
-    progress.succeed(
-      `All ${
-        filePaths.length
-      } of matched files are properly formatted and linted`,
-    );
+  const noUnfixedChanges = !linter.hasChanges && (numDifferent === 0 || fix);
 
-    return;
-  }
-
-  const files = `file${numDifferent === 1 ? '' : 's'}`;
-  progress.stop();
-
-  if (!check) {
-    if (fix) {
+  if (noUnfixedChanges || !check) {
+    if (numDifferent === 0) {
       progress.succeed(
-        `Code style issues fixed in ${numDifferent} of ${
+        `All ${
           filePaths.length
-        } ${files} checked.`,
+        } of matched files are properly formatted and linted`,
+      );
+    } else if (fix) {
+      progress.succeed(
+        `Code format and lint issues fixed in ${numDifferent} of ${
+          filePaths.length
+        } files checked.`,
       );
     }
     return;
