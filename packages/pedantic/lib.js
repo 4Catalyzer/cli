@@ -1,85 +1,75 @@
 const path = require('path');
-const chalk = require('chalk');
 const { promises: fs } = require('fs');
-const { default: sortImports } = require('import-sort');
 const { debuglog } = require('util');
-const prettier = require('prettier');
-const { getConfig } = require('import-sort-config');
 
-const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
+const {
+  spinner,
+  chalk,
+  stripAnsi,
+  table,
+} = require('@4c/cli-core/ConsoleUtilities');
 const ArgUtilities = require('@4c/cli-core/ArgUtilities');
+
+const sortImports = require('./sort-imports');
+const runPrettier = require('./prettier');
+const Linter = require('./Linter');
 
 const debug = debuglog('pedantic');
 
-const DEFAULT_SORT_CONFIGS = {
-  '.js, .jsx, .mjs, .ts, .tsx': {
-    parser: require.resolve('import-sort-parser-babylon'),
-    style: require.resolve('@4c/import-sort/style'),
-  },
-};
-
-function sortFileImports(content, filePath, includeTypeDefs = false) {
-  if (!includeTypeDefs && filePath.endsWith('.d.ts')) {
-    debug('Not attempting to sort imports in type def file:', filePath);
-    return content;
-  }
-
-  const resolvedConfig = getConfig(
-    path.extname(filePath),
-    path.dirname(filePath),
-    DEFAULT_SORT_CONFIGS,
-  );
-
-  if (!resolvedConfig || !resolvedConfig.parser || !resolvedConfig.style) {
-    debug('could not resolve import sort config for:', filePath);
-    return content;
-  }
-
-  const { parser, style, options } = resolvedConfig;
-  const result = sortImports(content, parser, style, filePath, options);
-
-  return result.code;
-}
-
-async function runPrettier(content, filePath, ignorePath = '.prettierignore') {
-  const { ignored } = await prettier.getFileInfo(filePath, { ignorePath });
-  if (ignored) return content;
-  const options = await prettier.resolveConfig(filePath);
-
-  return prettier.format(content, { filepath: filePath, ...options });
-}
-
+/**
+ * possible combinations are:
+ *  - fix: fix errors, don't report non-fixable errors
+ *  - fix & check: fix anything that's fixable and report non-fixable errors
+ *  - check: report fixable and non-fixable errors
+ */
 module.exports = async (
   filePatterns,
-  { cwd = process.cwd(), ignorePath, ignoreNodeModules, write, check },
+  { cwd = process.cwd(), ignorePath, ignoreNodeModules, fix, check },
 ) => {
-  debug('patterns:', filePatterns, 'write:', write, 'cwd', cwd);
-  const spinner = ConsoleUtilities.spinner('Checking formatting…');
+  debug('patterns:', filePatterns, 'fix:', fix, 'cwd', cwd);
+  const progress = spinner('Checking formatting…');
+  const linter = new Linter({ cwd, fix, check });
 
   const filePaths = await ArgUtilities.resolveFilePatterns(filePatterns, {
-    ignoreNodeModules,
     cwd,
+    ignoreNodeModules,
+    absolute: true,
   });
 
   if (!filePaths.length) {
     process.exitCode = 1;
-    spinner.fail(
+    progress.fail(
       "The provided file patterns didn't match any files: ",
       filePatterns.join(', '),
     );
   }
+
   let numDifferent = 0;
+  const needsFormatting = [];
+
   try {
     await Promise.all(
       filePaths.map(async filePath => {
         let content;
         let code;
 
+        // Prettier has the largest pool of files it can format so if
+        // it can't parse it assume nothing else can and move on
+        const canParse = await runPrettier.canParse(filePath);
+        if (!canParse) {
+          return;
+        }
+
         try {
           content = await fs.readFile(filePath, 'utf8');
 
-          code = sortFileImports(content, filePath);
+          code = sortImports(content, filePath);
+
           code = await runPrettier(code, filePath, ignorePath);
+
+          if (code !== content) needsFormatting.push(filePath);
+
+          code = linter.check(code, filePath);
         } catch (err) {
           // Don't exit the process if one file failed
           process.exitCode = 2;
@@ -87,48 +77,72 @@ module.exports = async (
           return;
         }
 
-        if (content === code) return;
+        if (content === code) {
+          return;
+        }
 
         numDifferent++;
 
-        if (check) {
-          // we don't want these to replace each other
-          if (spinner.isSpinning) spinner.stopAndPersist();
-          console.log(`  -> ${chalk.dim(filePath)}`);
-        } else if (write) {
-          spinner.text = chalk.dim(path.relative(cwd, filePath));
+        progress.text = chalk.dim(path.relative(cwd, filePath));
+
+        if (fix) {
           await fs.writeFile(filePath, code, 'utf8');
-        } else {
-          spinner.stopAndPersist();
+        } else if (!check) {
           process.stdout.write(code);
         }
       }),
     );
   } catch (err) {
-    spinner.stop();
+    progress.stop();
     throw err;
   }
 
-  if (!numDifferent) {
-    spinner.succeed(
-      `All ${filePaths.length} of matched files are properly formatted`,
+  if (!numDifferent && !linter.hasChanges) {
+    progress.succeed(
+      `All ${
+        filePaths.length
+      } of matched files are properly formatted and linted`,
     );
+
     return;
   }
 
-  if (check) {
-    process.exitCode = 1;
-  }
   const files = `file${numDifferent === 1 ? '' : 's'}`;
-  if (check) {
-    spinner.fail(
-      `Code style issues found in the above ${numDifferent} ${files}`,
+  progress.stop();
+
+  if (!check) {
+    if (fix) {
+      progress.succeed(
+        `Code style issues fixed in ${numDifferent} of ${
+          filePaths.length
+        } ${files} checked.`,
+      );
+    }
+    return;
+  }
+
+  process.exitCode = 1;
+
+  console.log(linter.output());
+
+  if (!fix) {
+    let output = '\n';
+    output += `${table(
+      needsFormatting.map(filePath => [
+        '',
+        path.relative(cwd, filePath).trim(),
+      ]),
+      {
+        align: ['', 'l'],
+        stringLength: str => stripAnsi(str).length,
+      },
+    )}
+
+  `;
+
+    output += chalk.red.bold(
+      `\u2716 ${needsFormatting.length} Formatting issues`,
     );
-  } else if (write) {
-    spinner.succeed(
-      `Code style issues fixed in ${numDifferent} of ${
-        filePaths.length
-      } ${files} checked.`,
-    );
+    console.log(output);
   }
 };
