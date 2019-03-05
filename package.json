@@ -7,9 +7,9 @@
   "private": true,
   "scripts": {
     "test": "npm run lint",
-    "lint": "eslint . && yarn cli format  --check '**/*.{json,css,md}'",
+    "lint": "yarn cli lint .",
     "cli": "node packages/cli",
-    "format": "yarn cli format '**/*.{json,css,md}'"
+    "format": "yarn cli format ."
   },
   "prettier": {
     "printWidth": 79,
@@ -23,12 +23,11 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
-      "yarn cli format",
+      "yarn cli lint --fix",
       "git add"
     ],
     "*.{json,css,md}": [
-      "yarn cli format",
+      "yarn cli lint --fix",
       "git add"
     ]
   },

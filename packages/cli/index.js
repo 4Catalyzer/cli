@@ -5,7 +5,8 @@ const init = require('@4c/init/command');
 const rollout = require('@4c/rollout/command');
 const yargs = require('yargs');
 const intl = require('@4c/intl/command');
-const pedantic = require('pedantic/command');
+const format = require('pedantic/format');
+const lint = require('pedantic/lint');
 
 const setCmdName = (name, cmd) => ({
   ...cmd,
@@ -25,5 +26,6 @@ yargs
   .command(setCmdName('init', init))
   .command(setCmdName('release', rollout))
   .command(setCmdName('intl', intl))
-  .command(setCmdName('format', pedantic))
+  .command(format)
+  .command(lint)
   .parse(process.argv.slice(2));
