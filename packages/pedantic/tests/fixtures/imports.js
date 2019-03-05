@@ -1,5 +1,3 @@
-/*  eslint-disable */
-
 import createFarceRouter from 'found/lib/createFarceRouter';
 import ScrollManager from 'found-scroll/lib/ScrollManager';
 import PropTypes from 'prop-types';
@@ -39,7 +37,7 @@ import styles from './foo.css';
 
 const foo: string = (
   <>
-    <div>foo</div>
+    <div f='fg'>{foo} </div>
   </>
 );
 

@@ -2,7 +2,7 @@ const globby = require('globby');
 
 exports.resolveFilePatterns = (
   patterns,
-  { ignoreNodeModules = true, cwd = process.cwd() } = {},
+  { ignoreNodeModules = true, ...rest } = {},
 ) => {
   let fullPatterns = patterns;
 
@@ -17,5 +17,5 @@ exports.resolveFilePatterns = (
     '!./.{git,svn,hg}/**',
   ]);
 
-  return globby(fullPatterns, { dot: true, nodir: true, cwd });
+  return globby(fullPatterns, { dot: true, nodir: true, ...rest });
 };

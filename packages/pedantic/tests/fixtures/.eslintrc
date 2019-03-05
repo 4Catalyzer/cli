@@ -2,6 +2,7 @@
   "extends": ["4catalyzer", "prettier"],
   "plugins": ["prettier"],
   "rules": {
+    "prettier/prettier": "error",
     "global-require": "off",
     "no-console": "off",
     "import/no-dynamic-require": "off"

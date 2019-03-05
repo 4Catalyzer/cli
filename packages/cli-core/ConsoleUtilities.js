@@ -1,5 +1,12 @@
 const ora = require('ora');
 const isCI = require('is-ci');
+const chalk = require('chalk');
+const stripAnsi = require('strip-ansi');
+const table = require('text-table');
+
+exports.chalk = chalk;
+exports.stripAnsi = stripAnsi;
+exports.table = table;
 
 exports.isCI = () => isCI;
 
