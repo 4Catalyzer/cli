@@ -9,7 +9,12 @@ class Linter {
 
     this.cli = new CLIEngine({ cwd, fix });
     this.results = [];
-    this.hasChanges = false;
+    this.errorCount = 0;
+    this.warningCount = 0;
+  }
+
+  get hasChanges() {
+    return !!(this.errorCount || this.warningCount);
   }
 
   check(content, filePath) {
@@ -32,8 +37,8 @@ class Linter {
       result.messages = result.messages.filter(msg => msg.fix);
     }
 
-    this.hasChanges =
-      this.hasChanges || !!result.errorCount || !!result.warningCount;
+    this.errorCount += result.errorCount;
+    this.warningCount += result.warningCount;
 
     this.results.push(result);
 

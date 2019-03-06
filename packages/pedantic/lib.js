@@ -115,11 +115,13 @@ module.exports = async (
     return;
   }
 
-  process.exitCode = 1;
+  if (numDifferent || linter.errorCount) {
+    process.exitCode = 1;
+  }
 
   console.log(linter.output());
 
-  if (!fix) {
+  if (!fix && needsFormatting.length) {
     let output = '\n';
     output += `${table(
       needsFormatting.map(filePath => [
