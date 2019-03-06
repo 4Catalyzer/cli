@@ -9,19 +9,26 @@ exports.builder = _ =>
     type: 'boolean',
     default: false,
     describe: 'Automatically fix any fixable errors',
-  }).option('with-node-modules', {
-    type: 'boolean',
-    default: false,
-    describe:
-      'By default node_modules is ignored, to opt out of this behavior pass this flag',
-  });
+  })
+    .option('with-warnings', {
+      type: 'boolean',
+      default: false,
+      describe: 'Include warnings when triggering a nonzero exit code',
+    })
+    .option('with-node-modules', {
+      type: 'boolean',
+      default: false,
+      describe:
+        'By default node_modules is ignored, to opt out of this behavior pass this flag',
+    });
 
 exports.handler = async argv => {
-  const { _, patterns, fix, withNodeModules, ...options } = argv;
+  const { _, patterns, fix, withWarnings, withNodeModules, ...options } = argv;
 
   await format(patterns, {
     fix,
     check: true,
+    withWarnings,
     ignoreNodeModules: !withNodeModules,
     ...options,
   });

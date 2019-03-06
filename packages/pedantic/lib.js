@@ -24,7 +24,14 @@ const debug = debuglog('pedantic');
  */
 module.exports = async (
   filePatterns,
-  { cwd = process.cwd(), ignorePath, ignoreNodeModules, fix, check },
+  {
+    cwd = process.cwd(),
+    withWarnings,
+    ignorePath,
+    ignoreNodeModules,
+    fix,
+    check,
+  },
 ) => {
   debug('patterns:', filePatterns, 'fix:', fix, 'cwd', cwd);
   const progress = spinner('Checking formatting…');
@@ -115,7 +122,11 @@ module.exports = async (
     return;
   }
 
-  if (numDifferent || linter.errorCount) {
+  if (
+    numDifferent ||
+    linter.errorCount ||
+    (withWarnings && linter.warningCount)
+  ) {
     process.exitCode = 1;
   }
 
