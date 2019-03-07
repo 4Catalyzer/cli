@@ -2,8 +2,10 @@ const ora = require('ora');
 const isCI = require('is-ci');
 const chalk = require('chalk');
 const stripAnsi = require('strip-ansi');
+const symbols = require('log-symbols');
 const table = require('text-table');
 
+exports.symbols = symbols;
 exports.chalk = chalk;
 exports.stripAnsi = stripAnsi;
 exports.table = table;

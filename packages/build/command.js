@@ -2,7 +2,8 @@ const path = require('path');
 const { debuglog } = require('util');
 const fs = require('fs-extra');
 const execa = require('execa');
-const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
+const Listr = require('listr');
+const { chalk, symbols } = require('@4c/cli-core/ConsoleUtilities');
 
 const debug = debuglog('@4c/build');
 
@@ -62,8 +63,13 @@ exports.builder = _ =>
 
 function run(...args) {
   return execa(...args, {
-    stdio: ['ignore', 'ignore', process.stderr],
     env: { FORCE_COLOR: true },
+  }).catch(err => {
+    throw new Error(
+      `\n${symbols.error} ${chalk.brightRed(
+        'There was a running build command:',
+      )}\n${err.stdout}\n${err.stderr}`,
+    );
   });
 }
 
@@ -80,6 +86,12 @@ function runBabel(args, passthrough) {
   return run(babelCmd, builtArgs);
 }
 
+const safeToDelete = (dir, cwd = process.cwd()) => {
+  const resolvedDir = path.isAbsolute(dir) ? dir : path.resolve(cwd, dir);
+
+  return resolvedDir.startsWith(cwd) && resolvedDir !== cwd;
+};
+
 exports.handler = async ({
   patterns,
   esm,
@@ -94,74 +106,100 @@ exports.handler = async ({
 
   const buildTypes = types && !!fs.existsSync('tsconfig.json');
   const tscCmd = buildTypes && getCli('typescript', 'tsc');
-  let spinner = ConsoleUtilities.spinner();
 
   if (!outDir) {
     // eslint-disable-next-line no-param-reassign
     outDir = pkg.main && path.dirname(pkg.main);
   }
 
-  try {
-    spinner.text = 'Building CommonJS files…';
+  let esmRoot;
+  let esmRootInOutDir = false;
+  if (esm !== false) {
+    esmRoot = pkg.module && path.dirname(pkg.module);
 
-    if (!onlyTypes) {
-      await runBabel(
-        [
-          ...patterns,
-          '--out-dir',
-          outDir,
-          clean && '--delete-dir-on-start',
-          '-x',
-          extensions.join(','),
-        ],
-        passthrough,
+    if (esm === true && !esmRoot) {
+      throw new Error(
+        '--esm argument provided but no `module` entrypoint was specified in the package.json',
       );
     }
 
-    if (buildTypes) {
-      spinner.text = 'Building type definition files…';
-      await run(tscCmd, ['--emitDeclarationOnly', '--outDir', outDir]);
-    }
-    spinner.succeed(`CommonJS files built to: ${outDir}`);
+    if (esmRoot) esmRootInOutDir = esmRoot.startsWith(outDir);
+  }
 
-    if (esm !== false) {
-      const esmRoot = pkg.module && path.dirname(pkg.module);
+  const tasks = new Listr(
+    [
+      {
+        title: 'Building CommonJS',
+        task: () =>
+          new Listr([
+            {
+              title: 'Compiling with Babel',
+              skip: () => !!onlyTypes,
+              task: () =>
+                runBabel(
+                  [
+                    ...patterns,
+                    '--out-dir',
+                    outDir,
+                    clean && safeToDelete(outDir) && '--delete-dir-on-start',
+                    '-x',
+                    extensions.join(','),
+                  ],
+                  passthrough,
+                ),
+            },
+            {
+              title: 'building types',
+              skip: () => !buildTypes,
+              task: () =>
+                run(tscCmd, ['--emitDeclarationOnly', '--outDir', outDir]),
+            },
+          ]),
+      },
+    ],
+    { concurrent: !esmRootInOutDir },
+  );
 
-      if (esm === true && !esmRoot) {
-        throw new Error(
-          '--esm argument provided but no `module` entrypoint was specified in the package.json',
-        );
-      } else if (esmRoot) {
-        spinner = ConsoleUtilities.spinner();
-        spinner.text = 'Building ES Module files…';
-        if (!onlyTypes) {
-          await runBabel(
-            [
-              ...patterns,
-              '--out-dir',
-              esmRoot,
-              clean && !esmRoot.startsWith(outDir) && '--delete-dir-on-start',
-              '--env-name',
-              'esm',
-              '-x',
-              extensions.join(','),
-            ],
-            passthrough,
-          );
-        }
+  if (esmRoot) {
+    tasks.add({
+      title: 'Building ES Module files…',
+      task: () =>
+        new Listr([
+          {
+            title: 'Compiling with Babel',
+            skip: () => !!onlyTypes,
+            task: () =>
+              runBabel(
+                [
+                  ...patterns,
+                  '--out-dir',
+                  esmRoot,
+                  clean &&
+                    !esmRootInOutDir &&
+                    safeToDelete(esmRoot) &&
+                    '--delete-dir-on-start',
+                  '--env-name',
+                  'esm',
+                  '-x',
+                  extensions.join(','),
+                ],
+                passthrough,
+              ),
+          },
+          {
+            title: 'building types',
+            skip: () => !buildTypes,
+            task: () =>
+              run(tscCmd, ['--emitDeclarationOnly', '--outDir', esmRoot]),
+          },
+        ]),
+    });
+  }
 
-        if (buildTypes) {
-          spinner.text = 'Building type definition files…';
-          await run(tscCmd, ['--emitDeclarationOnly', '--outDir', esmRoot]);
-        }
-        spinner.succeed(`ES Modules built to: ${esmRoot}`);
-      }
-    }
+  try {
+    await tasks.run();
   } catch (err) {
-    spinner.stop();
-
-    if (err.failed) return;
-    console.log('HELLLO', err.failed);
-    throw err;
+    console.error(err.message);
+    process.exitCode = 1;
   }
 };
