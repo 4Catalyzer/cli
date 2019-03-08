@@ -1,6 +1,6 @@
 {
   "name": "pedantic",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "main": "lib.js",
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "jest": "^24.0.0"
   },
   "dependencies": {
-    "@4c/cli-core": "^1.4.0",
+    "@4c/cli-core": "^1.4.1",
     "@4c/import-sort": "^4.3.1",
     "chalk": "^2.4.2",
     "eslint": "^5.14.1",
