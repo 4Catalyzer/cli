@@ -126,6 +126,12 @@ exports.handler = async ({
     if (esmRoot) esmRootInOutDir = esmRoot.startsWith(outDir);
   }
 
+  if (!outDir && !esmRoot) {
+    throw new Error(
+      '--out-dir or --esm was not provided and none could not be inferred from main fields',
+    );
+  }
+
   const tasks = new Listr(
     [
       {
