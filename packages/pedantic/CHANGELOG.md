@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/4Catalyzer/cli/compare/pedantic@2.1.1...pedantic@2.2.0) (2019-03-08)
+
+
+### Features
+
+* expose ignore path ([59a9e5e](https://github.com/4Catalyzer/cli/commit/59a9e5e))
+
+
+
+
+
 ## [2.1.1](https://github.com/4Catalyzer/cli/compare/pedantic@2.1.0...pedantic@2.1.1) (2019-03-08)
 
 **Note:** Version bump only for package pedantic
