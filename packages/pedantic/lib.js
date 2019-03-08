@@ -27,7 +27,7 @@ module.exports = async (
   {
     cwd = process.cwd(),
     withWarnings,
-    ignorePath,
+    prettierIgnore,
     ignoreNodeModules,
     fix,
     check,
@@ -72,7 +72,7 @@ module.exports = async (
 
           code = sortImports(content, filePath);
 
-          code = await runPrettier(code, filePath, ignorePath);
+          code = await runPrettier(code, filePath, prettierIgnore);
 
           if (code !== content) needsFormatting.push(filePath);
 

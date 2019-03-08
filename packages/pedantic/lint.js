@@ -10,6 +10,11 @@ exports.builder = _ =>
     default: false,
     describe: 'Automatically fix any fixable errors',
   })
+    .option('prettier-ignore', {
+      type: 'string',
+      default: '.prettierignore',
+      describe: 'The prettier ignore file',
+    })
     .option('with-warnings', {
       type: 'boolean',
       default: false,
