@@ -66,8 +66,8 @@ function run(...args) {
     env: { FORCE_COLOR: true },
   }).catch(err => {
     throw new Error(
-      `\n${symbols.error} ${chalk.brightRed(
-        'There was a running build command:',
+      `\n${symbols.error} ${chalk.redBright(
+        'There was a problem running the build command:',
       )}\n${err.stdout}\n${err.stderr}`,
     );
   });
@@ -80,8 +80,10 @@ function runBabel(args, passthrough) {
 
   const builtArgs = args
     .filter(Boolean)
-    .concat(['--ignore', '"**/__tests__"']);
-  if (passthrough) builtArgs.push(passthrough);
+    .concat(['--ignore', '"**/__tests__"', '--ignore', '"**/*.d.ts"']);
+
+  if (passthrough) builtArgs.push(...passthrough);
+
   debug(babelCmd, ...builtArgs);
   return run(babelCmd, builtArgs);
 }
@@ -100,6 +102,7 @@ exports.handler = async ({
   types,
   onlyTypes,
   extensions,
+  copyFiles,
   '--': passthrough,
 }) => {
   const pkg = await fs.readJson('package.json');
@@ -147,6 +150,7 @@ exports.handler = async ({
                     ...patterns,
                     '--out-dir',
                     outDir,
+                    copyFiles && '--copy-files',
                     clean && safeToDelete(outDir) && '--delete-dir-on-start',
                     '-x',
                     extensions.join(','),
@@ -155,7 +159,7 @@ exports.handler = async ({
                 ),
             },
             {
-              title: 'building types',
+              title: 'Building types',
               skip: () => !buildTypes,
               task: () =>
                 run(tscCmd, ['--emitDeclarationOnly', '--outDir', outDir]),
@@ -180,6 +184,7 @@ exports.handler = async ({
                   ...patterns,
                   '--out-dir',
                   esmRoot,
+                  copyFiles && '--copy-files',
                   clean &&
                     !esmRootInOutDir &&
                     safeToDelete(esmRoot) &&
@@ -193,7 +198,7 @@ exports.handler = async ({
               ),
           },
           {
-            title: 'building types',
+            title: 'Building types',
             skip: () => !buildTypes,
             task: () =>
               run(tscCmd, ['--emitDeclarationOnly', '--outDir', esmRoot]),
