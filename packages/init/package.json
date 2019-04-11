@@ -1,6 +1,6 @@
 {
   "name": "@4c/init",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "main": "command.js",
   "author": "4catalyzer",
   "license": "MIT",

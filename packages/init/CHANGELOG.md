@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.3](https://github.com/4Catalyzer/cli/compare/@4c/init@1.6.2...@4c/init@1.6.3) (2019-04-11)
+
+
+### Bug Fixes
+
+* node eslintrc ([#30](https://github.com/4Catalyzer/cli/issues/30)) ([eca17c4](https://github.com/4Catalyzer/cli/commit/eca17c4))
+
+
+
+
+
 ## [1.6.2](https://github.com/4Catalyzer/cli/compare/@4c/init@1.6.1...@4c/init@1.6.2) (2019-03-08)
 
 **Note:** Version bump only for package @4c/init
