@@ -31,11 +31,11 @@
     {{/if}}
 
     {{#unless workspaceRoot}}
+      "import-sort": "import-sort '**/src/**/*.{{iff typescript '{js,ts,tsx}' 'js'}}' '!**/__generated__/*'{{#if typescript}} '!**/*.d.ts'{{/if}}",
       "eslint": "eslint . {{#if typescript}}--ext .js,.ts,.tsx{{/if}}",
       "prettier": "prettier --ignore-path .eslintignore '**/*.{json,css,md}'",
-      "import-sort": "import-sort '**/src/**/*.{{iff typescript '{js,ts,tsx}' 'js'}}' '!**/__generated__/*'{{#if typescript}} '!**/*.d.ts'{{/if}}",
-      "lint": "{{#if typescript}}tsc --noEmit && {{/if}}yarn eslint && yarn import-sort --list-different && yarn prettier --list-different",
-      "format": "yarn eslint && yarn import-sort --write && yarn prettier --write",
+      "lint": "yarn import-sort --list-different && yarn eslint && yarn prettier --list-different{{#if typescript}}&& tsc --noEmit {{/if}}",
+      "format": "yarn import-sort --write && yarn eslint && yarn prettier --write",
       "release": "rollout"
     {{/unless}}
   },
