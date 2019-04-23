@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.11](https://github.com/4Catalyzer/init/compare/@4c/cli@0.7.10...@4c/cli@0.7.11) (2019-04-23)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
 ## [0.7.10](https://github.com/4Catalyzer/init/compare/@4c/cli@0.7.9...@4c/cli@0.7.10) (2019-04-11)
 
 **Note:** Version bump only for package @4c/cli

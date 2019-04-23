@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/4Catalyzer/build/compare/@4c/build@1.1.3...@4c/build@1.1.4) (2019-04-23)
+
+
+### Bug Fixes
+
+* clean up copy files during build ([#36](https://github.com/4Catalyzer/build/issues/36)) ([888e75e](https://github.com/4Catalyzer/build/commit/888e75e))
+
+
+
+
+
 ## [1.1.3](https://github.com/4Catalyzer/build/compare/@4c/build@1.1.2...@4c/build@1.1.3) (2019-03-08)
 
 

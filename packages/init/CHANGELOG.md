@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.4](https://github.com/4Catalyzer/cli/compare/@4c/init@1.6.3...@4c/init@1.6.4) (2019-04-23)
+
+
+### Bug Fixes
+
+* Fix order of lint commands ([#34](https://github.com/4Catalyzer/cli/issues/34)) ([8b8b167](https://github.com/4Catalyzer/cli/commit/8b8b167))
+* Update Travis template ([#35](https://github.com/4Catalyzer/cli/issues/35)) ([cffd607](https://github.com/4Catalyzer/cli/commit/cffd607))
+
+
+
+
+
 ## [1.6.3](https://github.com/4Catalyzer/cli/compare/@4c/init@1.6.2...@4c/init@1.6.3) (2019-04-11)
 
 
