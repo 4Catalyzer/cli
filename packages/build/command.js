@@ -5,6 +5,8 @@ const execa = require('execa');
 const Listr = require('listr');
 const { chalk, symbols } = require('@4c/cli-core/ConsoleUtilities');
 
+const copy = require('./copy');
+
 const debug = debuglog('@4c/build');
 
 function getCli(pkg, cmd) {
@@ -80,7 +82,7 @@ function runBabel(args, passthrough) {
 
   const builtArgs = args
     .filter(Boolean)
-    .concat(['--ignore', '"**/__tests__"', '--ignore', '"**/*.d.ts"']);
+    .concat(['--ignore', '**/__tests__/**,**/__mocks__/**,**/*.d.ts']);
 
   if (passthrough) builtArgs.push(...passthrough);
 
@@ -150,13 +152,17 @@ exports.handler = async ({
                     ...patterns,
                     '--out-dir',
                     outDir,
-                    copyFiles && '--copy-files',
                     clean && safeToDelete(outDir) && '--delete-dir-on-start',
                     '-x',
                     extensions.join(','),
                   ],
                   passthrough,
                 ),
+            },
+            {
+              title: 'Copying files',
+              skip: () => !copyFiles,
+              task: () => copy(patterns, outDir, extensions),
             },
             {
               title: 'Building types',
@@ -184,7 +190,6 @@ exports.handler = async ({
                   ...patterns,
                   '--out-dir',
                   esmRoot,
-                  copyFiles && '--copy-files',
                   clean &&
                     !esmRootInOutDir &&
                     safeToDelete(esmRoot) &&
@@ -196,6 +201,11 @@ exports.handler = async ({
                 ],
                 passthrough,
               ),
+          },
+          {
+            title: 'Copying files',
+            skip: () => !copyFiles,
+            task: () => copy(patterns, esmRoot, extensions),
           },
           {
             title: 'Building types',
