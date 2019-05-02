@@ -11,10 +11,6 @@ const {
   getPackageNameFromPath,
 } = require('./utils');
 
-const ignore = err => {
-  console.error(err);
-};
-
 let $workspaceRoot;
 const getRoot = location => {
   if (!$workspaceRoot) $workspaceRoot = findWorkspaceRoot(location);
@@ -87,8 +83,6 @@ const prompts = [
 module.exports = plop => {
   addHelpers(plop);
 
-  plop.setHelper('gitUrl', name => GitUtilities.remoteUrl(name));
-
   // controller generator
   plop.setGenerator('new-package', {
     description: 'create a new package',
@@ -100,11 +94,18 @@ module.exports = plop => {
       if (type === 'web' || typescript) answers.babel = true; // eslint-disable-line no-param-reassign
       const data = {
         workspaceRoot,
+        workspaceLocation:
+          workspaceRoot && path.relative(workspaceRoot, location),
         esm: answers.babel && type === 'web',
         includeEslint: !workspaceRoot && type === 'web',
       };
 
       return [
+        async () => {
+          data.gitRepo =
+            (await GitUtilities.getRemoteUrl(workspaceRoot)) ||
+            GitUtilities.remoteUrl(answers.name);
+        },
         {
           type: 'add',
           path: '{{location}}/package.json',
@@ -135,7 +136,14 @@ module.exports = plop => {
         !workspaceRoot && {
           type: 'add',
           path: `{{location}}/.eslintignore`,
-          templateFile: `${templatePath}/.eslintignore`,
+          templateFile: `${templatePath}/ignore`,
+          skipIfExists: true,
+          data,
+        },
+        !workspaceRoot && {
+          type: 'add',
+          path: `{{location}}/.prettierignore`,
+          templateFile: `${templatePath}/ignore`,
           skipIfExists: true,
           data,
         },
@@ -146,8 +154,17 @@ module.exports = plop => {
           skipIfExists: true,
           data,
         },
-        () => GitUtilities.init(location).catch(ignore),
-        _ => GitUtilities.addRemote(location, _.name).catch(ignore),
+        async _ => {
+          const isGitRepo = await GitUtilities.isGitRepo(location);
+          if (!isGitRepo) return;
+
+          try {
+            await GitUtilities.init(location);
+            await GitUtilities.addRemote(location, _.name);
+          } catch {
+            /* ignore */
+          }
+        },
         answers.typescript && {
           type: 'add',
           path: `{{location}}/tsconfig.json`,
