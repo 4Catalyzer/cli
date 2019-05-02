@@ -288,17 +288,10 @@ exports.handler = async ({
     await ConsoleUtilities.step(
       'Tagging and committing version bump',
       async () => {
-        if (conventionalCommits) await updateChangelog(cwd, nextVersion);
+        if (conventionalCommits) {
+          await updateChangelog(cwd, nextVersion);
+        }
 
-        await GitUtilities.addFile(pkgPath);
-        await GitUtilities.commit(`Publish ${gitTag}`);
-      },
-      skipVersion || !conventionalCommits,
-    );
-
-    await ConsoleUtilities.step(
-      'Tagging and committing version bump',
-      async () => {
         if (!skipVersion) {
           try {
             await GitUtilities.addFile(changelogPath);
