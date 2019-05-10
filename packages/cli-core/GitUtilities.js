@@ -11,8 +11,10 @@ const repoName = name => name.replace(/^@.+\//, '');
 
 exports.repoName = repoName;
 
-exports.getRemoteUrl = () =>
-  execa.stdout('git', ['config', 'remote.origin.url']).catch(() => '');
+exports.getRemoteUrl = cwd =>
+  execa
+    .stdout('git', ['config', 'remote.origin.url'], { cwd })
+    .catch(() => '');
 
 exports.remoteUrl = (name, org = '4Catalyzer') =>
   `https://github.com/${org}/${repoName(name)}.git`;
