@@ -1,6 +1,6 @@
 {
   "name": "@4c/intl",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "command.js",
   "author": "4catalyzer",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "transform": {}
   },
   "dependencies": {
-    "@4c/cli-core": "^1.4.1",
+    "@4c/cli-core": "^1.4.2",
     "chalk": "^2.4.2",
     "glob": "^7.1.3"
   },
