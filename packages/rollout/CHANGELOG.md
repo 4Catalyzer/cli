@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.6](https://github.com/4Catalyzer/cli/compare/@4c/rollout@1.3.5...@4c/rollout@1.3.6) (2019-05-14)
+
+
+### Bug Fixes
+
+* cli defaults ([#38](https://github.com/4Catalyzer/cli/issues/38)) ([dba48c1](https://github.com/4Catalyzer/cli/commit/dba48c1))
+
+
+
+
+
 ## [1.3.5](https://github.com/4Catalyzer/cli/compare/@4c/rollout@1.3.4...@4c/rollout@1.3.5) (2019-05-10)
 
 **Note:** Version bump only for package @4c/rollout
