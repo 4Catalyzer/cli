@@ -169,7 +169,6 @@ exports.builder = _ =>
     })
     .option('prerelease', {
       type: 'bool',
-      default: false,
     })
     .option('otp', {
       type: 'string',
@@ -182,7 +181,6 @@ exports.builder = _ =>
       describe:
         'Use conventional-changelog to calculate the next version and build changelog, from the commit history',
       type: 'bool',
-      default: false,
     })
     .option('allow-branch', {
       describe: 'Specify which branches to allow publishing from.',
