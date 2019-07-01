@@ -100,7 +100,7 @@ var element = (
 );
 var Svg = React.forwardRef(function (props, ref) {
   var next = { ref: ref };
-  for (key in props) {
+  for (var key in props) {
     if (props.hasOwnProperty(key)) {
       next[key] = props[key];
     }
