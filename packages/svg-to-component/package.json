@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@4c/cli-core": "^1.4.2",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.11",
     "prettier": "^1.18.2",

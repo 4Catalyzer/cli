@@ -2,6 +2,7 @@
 const { promises: fs } = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const { transformAsync } = require('@babel/core');
 const camelCase = require('lodash/camelCase');
 const upperFirst = require('lodash/upperFirst');
 const Svgo = require('svgo');
@@ -89,15 +90,22 @@ module.exports = async function svg2c(
 
   const exportName = esModules ? 'export default' : 'module.exports =';
 
+  const { code } = await transformAsync(
+    (await svgo.optimize(source)).data.trim(),
+    {
+      presets: [
+        [require.resolve('@babel/preset-react'), { development: false }],
+      ],
+    },
+  );
   return `/* eslint-disable */
 /* prettier-ignore-start */
 // [GENERATED FILE; DO NOT EDIT BY HAND]
 
 ${reactImport}
 
-var element = (
-  ${(await svgo.optimize(source)).data.trim()}
-);
+var element = ${code}
+
 var Svg = React.forwardRef(function (props, ref) {
   var next = { ref: ref };
   for (var key in props) {
