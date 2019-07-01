@@ -6,6 +6,13 @@ Optimize and convert SVG files into React components via SVGO.
 svg2c 'svgs/**' --out-dir src/assets
 ```
 
+```jsx
+// some file
+import Flower from './assets/Flower';
+
+<Flower />
+```
+
 That's it, `svg2c` will make sure to convert attributes to the proper case and any
 other React specific things that need to be done. You can then require the generated files in your react app and they will render as normal. `refs` are automatically forwarded to the `<svg>` element.
 
@@ -59,3 +66,14 @@ there is a loader for you.
   }
 }
 ```
+
+Then in your App:
+```jsx
+import Flower from './svgs/Flower.svg'
+
+function MyPage() {
+  return <Flower />
+}
+```
+
+
