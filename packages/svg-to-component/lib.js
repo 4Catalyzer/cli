@@ -100,13 +100,15 @@ var element = (
 );
 var Svg = React.forwardRef(function (props, ref) {
   var next = { ref: ref };
-  for (key in props) if (props.hasOwnProperty(key)) {
-    next[key] = props[key];
+  for (key in props) {
+    if (props.hasOwnProperty(key)) {
+      next[key] = props[key];
+    }
   }
   return React.cloneElement(element, next);
 });
 Svg.displayName = "${displayName}";
-SVg.element = element;
+Svg.element = element;
 ${exportName} Svg;
 `;
 };
