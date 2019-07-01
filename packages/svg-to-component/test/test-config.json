@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    {
+      "addAttributesToSVGElement": {
+        "attributes": [{ "fill": "currentColor" }, { "aria-hidden": true }]
+      }
+    }
+  ]
+}
