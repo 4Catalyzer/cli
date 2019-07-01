@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/4Catalyzer/init/compare/@4c/cli@0.7.14...@4c/cli@0.8.0) (2019-07-01)
+
+
+### Features
+
+* add cli for generating components from svgs ([#39](https://github.com/4Catalyzer/init/issues/39)) ([26ce5f8](https://github.com/4Catalyzer/init/commit/26ce5f8))
+
+
+
+
+
 ## [0.7.14](https://github.com/4Catalyzer/init/compare/@4c/cli@0.7.13...@4c/cli@0.7.14) (2019-05-14)
 
 **Note:** Version bump only for package @4c/cli
