@@ -7,6 +7,7 @@ const yargs = require('yargs');
 const intl = require('@4c/intl/command');
 const format = require('pedantic/format');
 const lint = require('pedantic/lint');
+const svg2c = require('svg2c/command');
 
 const setCmdName = (name, cmd) => ({
   ...cmd,
@@ -26,6 +27,7 @@ yargs
   .command(setCmdName('init', init))
   .command(setCmdName('release', rollout))
   .command(setCmdName('intl', intl))
+  .command(setCmdName('icons', svg2c))
   .command(format)
   .command(lint)
   .parse(process.argv.slice(2));
