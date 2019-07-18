@@ -1,6 +1,6 @@
 {
   "name": "pedantic",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "main": "lib.js",
   "repository": {
     "type": "git",

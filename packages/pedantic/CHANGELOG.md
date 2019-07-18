@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.2](https://github.com/4Catalyzer/cli/compare/pedantic@2.2.1...pedantic@2.2.2) (2019-07-18)
+
+
+### Bug Fixes
+
+* use prettier ignore to import sorting ([8a6b6db](https://github.com/4Catalyzer/cli/commit/8a6b6db))
+
+
+
+
+
 ## [2.2.1](https://github.com/4Catalyzer/cli/compare/pedantic@2.2.0...pedantic@2.2.1) (2019-05-10)
 
 **Note:** Version bump only for package pedantic
