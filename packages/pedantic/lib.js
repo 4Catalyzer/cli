@@ -10,8 +10,7 @@ const {
 } = require('@4c/cli-core/ConsoleUtilities');
 const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 
-const sortImports = require('./sort-imports');
-const runPrettier = require('./prettier');
+const FileFormatter = require('./FileFormatter');
 const Linter = require('./Linter');
 
 const debug = debuglog('pedantic');
@@ -60,19 +59,21 @@ module.exports = async (
         let content;
         let code;
 
+        const formatter = new FileFormatter({
+          filePath,
+          ignorePath: prettierIgnore,
+        });
+
         // Prettier has the largest pool of files it can format so if
         // it can't parse it assume nothing else can and move on
-        const canParse = await runPrettier.canParse(filePath);
-        if (!canParse) {
+        if (!(await formatter.canParse())) {
           return;
         }
 
         try {
           content = await fs.readFile(filePath, 'utf8');
 
-          code = sortImports(content, filePath);
-
-          code = await runPrettier(code, filePath, prettierIgnore);
+          code = await formatter.format(content);
 
           if (code !== content) needsFormatting.push(filePath);
 

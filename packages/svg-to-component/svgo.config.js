@@ -5,7 +5,7 @@ const SPECIAL_ATTRS = {
 };
 
 ['rowSpan', 'colSpan', 'contentEditable', 'spellCheck'].forEach(name => {
-  SPECIAL_ATTRS[name] = name.toLowerCase();
+  SPECIAL_ATTRS[name.toLowerCase()] = name;
 });
 
 const camelCaseAttributes = {
