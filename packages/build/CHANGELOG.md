@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/4Catalyzer/build/compare/@4c/build@1.1.5...@4c/build@1.2.0) (2019-08-08)
+
+
+### Features
+
+* **build:** copy types over ([#40](https://github.com/4Catalyzer/build/issues/40)) ([f3cd12a](https://github.com/4Catalyzer/build/commit/f3cd12a))
+
+
+
+
+
 ## [1.1.5](https://github.com/4Catalyzer/build/compare/@4c/build@1.1.4...@4c/build@1.1.5) (2019-05-10)
 
 **Note:** Version bump only for package @4c/build
