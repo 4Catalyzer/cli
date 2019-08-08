@@ -10,7 +10,7 @@ svg2c 'svgs/**' --out-dir src/assets
 // some file
 import Flower from './assets/Flower';
 
-<Flower />
+<Flower />;
 ```
 
 That's it, `svg2c` will make sure to convert attributes to the proper case and any
@@ -68,12 +68,11 @@ there is a loader for you.
 ```
 
 Then in your App:
+
 ```jsx
-import Flower from './svgs/Flower.svg'
+import Flower from './svgs/Flower.svg';
 
 function MyPage() {
-  return <Flower />
+  return <Flower />;
 }
 ```
-
-

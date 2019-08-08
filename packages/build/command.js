@@ -5,7 +5,7 @@ const execa = require('execa');
 const Listr = require('listr');
 const { chalk, symbols } = require('@4c/cli-core/ConsoleUtilities');
 
-const copy = require('./copy');
+const { copy, copyRest } = require('./copy');
 
 const debug = debuglog('@4c/build');
 
@@ -29,6 +29,11 @@ exports.builder = _ =>
       alias: 'd',
       type: 'string',
     })
+    .option('type-dir', {
+      type: 'string',
+      describe:
+        'The location of any additional type defs, to be copied to the output folders',
+    })
     .option('esm', {
       type: 'boolean',
       default: undefined,
@@ -48,6 +53,7 @@ exports.builder = _ =>
       type: 'boolean',
       describe: 'Compile only the type definitions',
     })
+    // off with `no-types`
     .option('types', {
       type: 'boolean',
       default: true,
@@ -102,6 +108,7 @@ exports.handler = async ({
   outDir,
   clean,
   types,
+  typeDir,
   onlyTypes,
   extensions,
   copyFiles,
@@ -109,7 +116,7 @@ exports.handler = async ({
 }) => {
   const pkg = await fs.readJson('package.json');
 
-  const buildTypes = types && !!fs.existsSync('tsconfig.json');
+  const buildTypes = types && !!fs.existsSync(`tsconfig.json`);
   const tscCmd = buildTypes && getCli('typescript', 'tsc');
 
   if (!outDir) {
@@ -137,6 +144,19 @@ exports.handler = async ({
     );
   }
 
+  function getTypeTask(out) {
+    return async (_, task) => {
+      if (buildTypes) {
+        await run(tscCmd, ['--emitDeclarationOnly', '--outDir', out]);
+      }
+      if (typeDir) {
+        // eslint-disable-next-line no-param-reassign
+        task.output = 'Copying type def files';
+        await copy(['**/*.d.ts'], typeDir, out);
+      }
+    };
+  }
+
   const tasks = new Listr(
     [
       {
@@ -162,13 +182,12 @@ exports.handler = async ({
             {
               title: 'Copying files',
               skip: () => !copyFiles,
-              task: () => copy(patterns, outDir, extensions),
+              task: () => copyRest(patterns, outDir, extensions),
             },
             {
               title: 'Building types',
-              skip: () => !buildTypes,
-              task: () =>
-                run(tscCmd, ['--emitDeclarationOnly', '--outDir', outDir]),
+              skip: () => !buildTypes && !typeDir,
+              task: getTypeTask(outDir),
             },
           ]),
       },
@@ -205,13 +224,12 @@ exports.handler = async ({
           {
             title: 'Copying files',
             skip: () => !copyFiles,
-            task: () => copy(patterns, esmRoot, extensions),
+            task: () => copyRest(patterns, esmRoot, extensions),
           },
           {
             title: 'Building types',
-            skip: () => !buildTypes,
-            task: () =>
-              run(tscCmd, ['--emitDeclarationOnly', '--outDir', esmRoot]),
+            skip: () => !buildTypes && !typeDir,
+            task: getTypeTask(esmRoot),
           },
         ]),
     });
