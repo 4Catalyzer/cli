@@ -11,4 +11,4 @@ declare const Svg: ForwardRefExoticComponent<
 >;
 
 export default Svg;
-`;
+`.trimLeft();
