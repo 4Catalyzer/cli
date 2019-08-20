@@ -5,6 +5,7 @@ const camelCase = require('lodash/camelCase');
 const upperFirst = require('lodash/upperFirst');
 const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 const svg2c = require('./lib');
+const typeDef = require('./typeDef');
 
 exports.command = '$0 <patterns..>';
 
@@ -41,6 +42,10 @@ exports.builder = _ =>
     .option('es-modules', {
       type: 'boolean',
       describe: 'Output ES modules instead of commonJs',
+    })
+    .option('no-types', {
+      type: 'boolean',
+      describe: 'Disable the generation of typescript types',
     });
 
 exports.handler = async ({
@@ -49,6 +54,7 @@ exports.handler = async ({
   baseDir,
   extensions,
   esModules,
+  noTypes,
   config: extraConfig,
 }) => {
   const files = await ArgUtilities.resolveFilePatterns(patterns, {
@@ -69,6 +75,7 @@ exports.handler = async ({
       const relative = path.dirname(path.relative(base, file));
 
       const output = path.join(outDir, relative, `${displayName}.js`);
+      const typeOut = path.join(outDir, relative, `${displayName}.d.ts`);
 
       const code = await svg2c(src, {
         config,
@@ -77,7 +84,11 @@ exports.handler = async ({
       });
 
       await fs.mkdir(path.dirname(output), { recursive: true });
-      await fs.writeFile(output, code, 'utf8');
+
+      await Promise.all([
+        fs.writeFile(output, code, 'utf8'),
+        !noTypes && fs.writeFile(typeOut, typeDef, 'utf8'),
+      ]);
     }),
   );
 };
