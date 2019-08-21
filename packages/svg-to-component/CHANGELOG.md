@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/4Catalyzer/cli/compare/svg2c@1.2.0...svg2c@1.3.0) (2019-08-21)
+
+
+### Features
+
+* generate svg icon type defs ([#41](https://github.com/4Catalyzer/cli/issues/41)) ([df7b126](https://github.com/4Catalyzer/cli/commit/df7b126))
+
+
+
+
+
 # [1.2.0](https://github.com/4Catalyzer/cli/compare/svg2c@1.1.2...svg2c@1.2.0) (2019-08-08)
 
 
