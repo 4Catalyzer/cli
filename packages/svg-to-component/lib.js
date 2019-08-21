@@ -98,6 +98,7 @@ module.exports = async function svg2c(
       ],
     },
   );
+
   return `/* eslint-disable */
 /* prettier-ignore-start */
 // [GENERATED FILE; DO NOT EDIT BY HAND]
