@@ -1,6 +1,7 @@
 const ora = require('ora');
 const isCI = require('is-ci');
 const chalk = require('chalk');
+const { debuglog } = require('util');
 const stripAnsi = require('strip-ansi');
 const symbols = require('log-symbols');
 const table = require('text-table');
@@ -32,3 +33,23 @@ exports.step = async (text, fn, skip) => {
     throw err;
   }
 };
+
+Object.assign(exports, {
+  debug: debuglog,
+
+  info: msg => {
+    console.log(chalk.blue(`${symbols.info}  ${msg}`));
+  },
+
+  warn: msg => {
+    console.log(chalk.yellow(`${symbols.warn}  ${msg}`));
+  },
+
+  error: msg => {
+    console.log(chalk.red(`${symbols.error}  ${msg}`));
+  },
+
+  success: msg => {
+    console.log(chalk.green(`${symbols.success}  ${msg}`));
+  },
+});

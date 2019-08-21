@@ -4,8 +4,11 @@ const path = require('path');
 const camelCase = require('lodash/camelCase');
 const upperFirst = require('lodash/upperFirst');
 const ArgUtilities = require('@4c/cli-core/ArgUtilities');
+const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const svg2c = require('./lib');
 const typeDef = require('./typeDef');
+
+const debug = ConsoleUtilities.debug('svg2c');
 
 exports.command = '$0 <patterns..>';
 
@@ -60,12 +63,21 @@ exports.handler = async ({
   const files = await ArgUtilities.resolveFilePatterns(patterns, {
     absolute: true,
   });
+
+  if (!files.length) {
+    ConsoleUtilities.error('The provided file patterns returned no files');
+    process.exit(1);
+  }
+
   const config = await svg2c.getConfig(extraConfig);
+  let count = 0;
 
   await Promise.all(
     files.map(async file => {
       const extname = path.extname(file);
       if (!extensions.includes(extname)) return;
+
+      count++;
 
       const src = await fs.readFile(file, 'utf8');
 
@@ -76,6 +88,8 @@ exports.handler = async ({
 
       const output = path.join(outDir, relative, `${displayName}.js`);
       const typeOut = path.join(outDir, relative, `${displayName}.d.ts`);
+
+      debug(`${path.basename(file)} -> ${displayName}`);
 
       const code = await svg2c(src, {
         config,
@@ -91,4 +105,6 @@ exports.handler = async ({
       ]);
     }),
   );
+
+  ConsoleUtilities.success(`Successfully built ${count} svg components`);
 };
