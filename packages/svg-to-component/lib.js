@@ -85,7 +85,7 @@ module.exports = async function svg2c(
   const displayName = upperFirst(camelCase(path.basename(filename, extname)));
 
   const reactImport = esModules
-    ? 'import { cloneElement } from "react"'
+    ? 'import React from "react"'
     : 'var React = require("react");';
 
   const exportName = esModules ? 'export default' : 'module.exports =';
