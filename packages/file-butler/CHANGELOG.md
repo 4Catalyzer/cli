@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@2.3.0...@4c/file-butler@3.0.0) (2019-08-26)
+
+
+### Features
+
+* clean up alt publish command ([156aa55](https://github.com/4Catalyzer/file-butler/commit/156aa55))
+
+
+### BREAKING CHANGES
+
+* change name of file-butler command to prepare-publish-dir
+
+
+
+
+
 # [2.3.0](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@2.2.0...@4c/file-butler@2.3.0) (2019-02-26)
 
 
