@@ -64,16 +64,16 @@ async function createPublishPkgJson(outDir) {
   });
 }
 
-const createAltPublishDir = async ({ outDir }) => {
-  await createPublishPkgJson(outDir);
+const createAltPublishDir = async ({ publishDir }) => {
+  await createPublishPkgJson(publishDir);
 
   const readme = await findReadme();
   if (readme)
-    await fs.copyFile(readme, path.join(outDir, path.basename(readme)));
+    await fs.copyFile(readme, path.join(publishDir, path.basename(readme)));
 
   const license = await findLicense();
   if (license)
-    await fs.copyFile(license, path.join(outDir, path.basename(license)));
+    await fs.copyFile(license, path.join(publishDir, path.basename(license)));
 };
 
 const renameMjs = ({ src, pattern, outDir }) =>

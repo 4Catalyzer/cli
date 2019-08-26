@@ -9,26 +9,27 @@ const {
   renameFiles,
 } = require('./lib');
 
-const { argv: _ } = yargs
+yargs
   .command(
     'cp [src]',
 
     true,
-    a =>
-      a
-        .positional('src', { type: 'string', default: 'src' })
-        .option('rename', {
-          type: 'string',
-          describe:
-            'Provide a file name pattern to rename against. interpolate values with [basename] and or [extname]',
-        }),
+    _ =>
+      _.positional('src', {
+        type: 'string',
+        default: 'src',
+      }).option('rename', {
+        type: 'string',
+        describe:
+          'Provide a file name pattern to rename against. interpolate values with [basename] and or [extname]',
+      }),
     renameFiles,
   )
   .command(
     'flow [src]',
     true,
-    a =>
-      a.positional('src', {
+    _ =>
+      _.positional('src', {
         type: 'string',
         default: 'src',
       }),
@@ -37,26 +38,22 @@ const { argv: _ } = yargs
   .command(
     'mjs [src]',
     false,
-    a =>
-      a.positional('src', {
+    _ =>
+      _.positional('src', {
         type: 'string',
         default: 'src',
       }),
     renameMjs,
   )
-  .command('alt-publish-root', false, () => {}, createAltPublishDir)
-  .option('pattern', {
-    type: 'array',
-    describe: 'A glob pattern to select files against the source directory',
-    default: ['**/*.js', '!**/__tests__/**'],
-    global: true,
-  })
-  .option('out-dir', {
-    type: 'string',
-    global: true,
-    default: 'lib',
-    describe: 'the output directory files are moved to',
-  })
-  .alias('out-dir', 'o')
+  .command(
+    'prepare-publish-dir',
+    false,
+    _ =>
+      _.positional('publish-dir', {
+        type: 'string',
+        default: 'lib',
+      }),
+    createAltPublishDir,
+  )
   .help()
   .alias('help', 'h');
