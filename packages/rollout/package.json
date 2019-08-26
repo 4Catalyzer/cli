@@ -23,16 +23,16 @@
     "@4c/file-butler": "^3.0.1",
     "chalk": "^2.4.2",
     "common-tags": "^1.8.0",
-    "conventional-changelog": "^3.0.6",
+    "conventional-changelog": "^3.1.10",
     "conventional-changelog-angular": "^5.0.3",
-    "conventional-recommended-bump": "^4.0.4",
-    "execa": "^1.0.0",
-    "fs-extra": "^7.0.1",
-    "semver": "^5.6.0"
+    "conventional-recommended-bump": "^6.0.0",
+    "execa": "^2.0.4",
+    "fs-extra": "^8.1.0",
+    "semver": "^6.3.0"
   },
   "devDependencies": {
-    "jest": "^24.1.0",
+    "jest": "^24.9.0",
     "shelljs": "^0.8.3",
-    "tmp": "^0.0.33"
+    "tmp": "^0.1.0"
   }
 }
