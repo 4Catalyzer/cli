@@ -3,12 +3,18 @@ const fs = require('fs-extra');
 const chalk = require('chalk');
 const execa = require('execa');
 const semver = require('semver');
+
+const Listr = require('listr');
+const { from } = require('rxjs');
+const { catchError } = require('rxjs/operators');
 const { createAltPublishDir } = require('@4c/file-butler');
 
 const GitUtilities = require('@4c/cli-core/GitUtilities');
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const PromptUtilities = require('@4c/cli-core/PromptUtilities');
+const { readPackageJson } = require('@4c/cli-core/FileUtilities');
 const { updateChangelog, recommendedBump } = require('./conventional-commits');
+const handleNpmError = require('./handleNpmError');
 
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
 
@@ -103,12 +109,7 @@ async function getNextVersion(version, currentVersion, preid) {
   }
 }
 
-async function npmPublish(
-  spinner,
-  pkgJson,
-  options,
-  otpMessage = 'Enter one time password:',
-) {
+async function npmPublish(pkgJson, options) {
   const { publishDir, otp, isPublic, tag } = options;
   const args = ['publish'];
 
@@ -136,22 +137,16 @@ async function npmPublish(
     args.push('--access', isPublic ? 'public' : 'restricted');
   }
 
-  try {
-    return execa('npm', args, { stdio: [0, 1, 'pipe'] });
-  } catch (err) {
-    if (err.stderr.includes('OTP')) {
-      spinner.stop();
-      const nextOtp = await PromptUtilities.input(otpMessage);
-      spinner.start();
-      return npmPublish(
-        spinner,
-        pkgJson,
-        { ...options, otp: nextOtp },
-        'One time password was incorrect, try again:',
-      );
-    }
-    throw err;
+  await execa('npm', args, { stdio: [0, 1, 'pipe'] });
+
+  if (publishDir) {
+    await runLifecycle('publish', pkgJson);
+    await runLifecycle('postpublish', pkgJson);
   }
+}
+
+function runTasks(tasks) {
+  return new Listr(tasks.filter(Boolean)).run();
 }
 
 exports.command = '$0 [nextVersion]';
@@ -163,7 +158,6 @@ exports.builder = _ =>
     type: 'string',
     describe: 'The next version',
   })
-    .pkgConf('release')
     .option('preid', {
       type: 'string',
     })
@@ -172,10 +166,13 @@ exports.builder = _ =>
     })
     .option('otp', {
       type: 'string',
+      describe: 'Provide a two-factor authentication code for publishing',
     })
     .option('publish-dir', {
       type: 'string',
-      describe: 'Provide a two-factor authentication code for publishing',
+      describe:
+        'An alternative directory to publish besides the package root. ' +
+        '`publishDir` will also be read from package.json field `publishConfig.directory`.',
     })
     .option('conventional-commits', {
       describe:
@@ -185,7 +182,6 @@ exports.builder = _ =>
     .option('allow-branch', {
       describe: 'Specify which branches to allow publishing from.',
       type: 'array',
-      default: ['master'],
     })
     .option('npm-tag', {
       type: 'string',
@@ -211,67 +207,83 @@ exports.builder = _ =>
       default: undefined,
     });
 
-exports.handler = async ({
-  preid,
-  nextVersion: version,
-  npmTag,
-  skipChecks,
-  skipGit,
-  skipNpm,
-  skipVersion,
-  allowBranch,
-  publishDir,
-  conventionalCommits,
-  otp,
-  public: isPublic,
-}) => {
+exports.handler = async argv => {
   const cwd = process.cwd();
   const changelogPath = path.join(cwd, 'CHANGELOG.md');
-  const pkgPath = path.join(cwd, 'package.json');
-  const pkg = require(pkgPath);
+  const { path: pkgPath, package: pkg } = await readPackageJson({ cwd });
+
+  const {
+    otp,
+    preid,
+    npmTag,
+    skipChecks,
+    skipGit,
+    skipNpm,
+    skipVersion,
+    conventionalCommits,
+    public: isPublic,
+    allowBranch = ['master'],
+  } = { ...pkg.release, ...argv };
+
+  let { publishDir, nextVersion: version } = argv;
+
+  // lerna
+  if (!publishDir && pkg.publishConfig)
+    publishDir = pkg.publishConfig.directory;
+  // older rollout
+  if (!publishDir && pkg.release) {
+    publishDir = pkg.release.publishDir;
+    if (publishDir)
+      ConsoleUtilities.warn(
+        'publishDir in package.json `release` field is deprecated. Use the `publishConfig.directory` field instead.',
+      );
+  }
 
   try {
-    await ConsoleUtilities.step(
-      'Checking repo and running tests',
-      async () => {
-        if (!skipGit) {
-          await GitUtilities.assertClean();
-          await GitUtilities.assertMatchesRemote();
-        }
-        const branch = await GitUtilities.getCurrentBranch();
+    await runTasks([
+      {
+        title: 'Preforming hygiene checks',
+        skip: () => skipChecks,
+        task: () =>
+          new Listr([
+            {
+              title: 'Checking that repo is clean',
+              task: GitUtilities.assertClean,
+            },
+            {
+              title: 'Local matches remote',
+              task: GitUtilities.assertMatchesRemote,
+            },
+            {
+              title: 'Branch allowed',
+              task: async () => {
+                const branch = await GitUtilities.getCurrentBranch();
 
-        if (!allowBranch.includes(branch))
-          throw new Error(`Cannot publish from branch: ${chalk.bold(branch)}`);
-
-        await execa('npm', ['test'], { stdio: [0, 1, 'pipe'] });
+                if (!allowBranch.includes(branch))
+                  throw new Error(
+                    `Cannot publish from branch: ${chalk.bold(branch)}`,
+                  );
+              },
+            },
+          ]),
       },
-      skipChecks,
-    );
+      {
+        title: 'running tests',
+        task: () => execa('npm', ['test'], { stdio: [0, 1, 'pipe'] }),
+      },
+    ]);
 
     let nextVersion = pkg.version;
 
-    if (skipVersion) {
-      ConsoleUtilities.spinner().warn(
-        `Using existing version: ${chalk.bold(nextVersion)}`,
-      );
-    } else {
+    if (!skipVersion) {
       if (conventionalCommits) {
         version = (await recommendedBump(pkg.version)) || version; // eslint-disable-line no-param-reassign
       }
 
       nextVersion = await getNextVersion(version, pkg.version, preid);
-
-      await ConsoleUtilities.step(
-        `Bumping version to: ${chalk.bold(nextVersion)}  (${chalk.dim(
-          `was ${pkg.version}`,
-        )})`,
-        () =>
-          writeJson(path.join(cwd, 'package.json'), {
-            ...pkg,
-            version: nextVersion,
-          }),
-      );
     }
+
+    const isSameVersion = nextVersion === pkg.version;
 
     const isPrerelease = !!semver.prerelease(nextVersion);
     const tag = npmTag || isPrerelease ? 'next' : 'latest';
@@ -283,27 +295,64 @@ exports.handler = async ({
     if (!confirmed) return;
     const gitTag = `v${nextVersion}`;
 
-    await ConsoleUtilities.step(
-      'Tagging and committing version bump',
-      async () => {
-        if (conventionalCommits) {
-          await updateChangelog(cwd, nextVersion);
-        }
-
-        if (!skipVersion) {
-          try {
-            await GitUtilities.addFile(changelogPath);
-          } catch (err) {
-            /* ignore */
-          }
-
-          await GitUtilities.addFile(pkgPath);
-          await GitUtilities.commit(`Publish ${gitTag}`);
-        }
-        await GitUtilities.addTag(gitTag);
+    await runTasks([
+      {
+        title: isSameVersion
+          ? 'Bumping package version'
+          : `Bumping version to: ${chalk.bold(nextVersion)}  (${chalk.dim(
+              `was ${pkg.version}`,
+            )})`,
+        skip: () => skipVersion || (isSameVersion && 'Version is unchanged'),
+        task: () =>
+          writeJson(path.join(cwd, 'package.json'), {
+            ...pkg,
+            version: nextVersion,
+          }),
       },
-      skipGit,
-    );
+      conventionalCommits && {
+        title: 'Updating Changelog',
+        task: () => updateChangelog(cwd, nextVersion),
+      },
+      {
+        title: 'Tagging and committing version bump',
+        skip: () => skipGit,
+        task: () =>
+          new Listr([
+            {
+              title: 'Commiting changes',
+              task: async () => {
+                try {
+                  await GitUtilities.addFile(changelogPath);
+                  await GitUtilities.addFile(pkgPath);
+                  await GitUtilities.commit(`Publish ${gitTag}`);
+                } catch (err) {
+                  /* ignore */
+                }
+              },
+            },
+            {
+              title: 'Tagging',
+              task: () => GitUtilities.addTag(gitTag),
+            },
+          ]),
+      },
+      {
+        title: 'Publishing to npm',
+        task: (context, task) => {
+          const input = { otp, publishDir, isPublic, tag };
+
+          return from(npmPublish(pkg, input)).pipe(
+            catchError(error =>
+              handleNpmError(error, task, nextOtp => {
+                // eslint-disable-next-line no-param-reassign
+                context.otp = nextOtp;
+                return npmPublish(pkg, { ...input, otp: nextOtp });
+              }),
+            ),
+          );
+        },
+      },
+    ]);
 
     try {
       await ConsoleUtilities.step(
