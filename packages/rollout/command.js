@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const chalk = require('chalk');
 const execa = require('execa');
+const exitHook = require('async-exit-hook');
 const semver = require('semver');
 
 const Listr = require('listr');
@@ -13,14 +14,15 @@ const GitUtilities = require('@4c/cli-core/GitUtilities');
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const PromptUtilities = require('@4c/cli-core/PromptUtilities');
 const { readPackageJson } = require('@4c/cli-core/FileUtilities');
-const { updateChangelog, recommendedBump } = require('./conventional-commits');
 const handleNpmError = require('./handleNpmError');
+const { updateChangelog, recommendedBump } = require('./conventional-commits');
+const { exec } = require('./rx');
 
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
 
 async function runLifecycle(script, pkg) {
   if (!pkg.scripts || !pkg.scripts[script]) return;
-  await execa('npm', ['run', script], { stdio: [0, 1, 'pipe'] });
+  await execa('npm', ['run', script]);
 }
 
 async function maybeRollbackGit(tag, skipGit, skipVersion) {
@@ -28,14 +30,11 @@ async function maybeRollbackGit(tag, skipGit, skipVersion) {
   const confirmed = await PromptUtilities.confirm(
     'There was a problem publishing, do you want to rollback the git operations?',
   );
-  await ConsoleUtilities.step(
-    `Rolling back git operations`,
-    async () => {
-      await GitUtilities.removeTag(tag);
-      if (!skipVersion) await GitUtilities.removeLastCommit();
-    },
-    !confirmed,
-  );
+
+  if (!confirmed) return;
+
+  await GitUtilities.removeTag(tag);
+  if (!skipVersion) await GitUtilities.removeLastCommit();
 }
 
 async function getNextVersion(version, currentVersion, preid) {
@@ -239,62 +238,73 @@ exports.handler = async argv => {
       );
   }
 
-  try {
-    await runTasks([
-      {
-        title: 'Preforming hygiene checks',
-        skip: () => skipChecks,
-        task: () =>
-          new Listr([
-            {
-              title: 'Checking that repo is clean',
-              task: GitUtilities.assertClean,
+  await runTasks([
+    {
+      title: 'Preforming hygiene checks',
+      skip: () => skipChecks,
+      task: () =>
+        new Listr([
+          {
+            title: 'Checking that repo is clean',
+            task: GitUtilities.assertClean,
+          },
+          {
+            title: 'Local matches remote',
+            task: GitUtilities.assertMatchesRemote,
+          },
+          {
+            title: 'Branch allowed',
+            task: async () => {
+              const branch = await GitUtilities.getCurrentBranch();
+
+              if (!allowBranch.includes(branch))
+                throw new Error(
+                  `Cannot publish from branch: ${chalk.bold(branch)}`,
+                );
             },
-            {
-              title: 'Local matches remote',
-              task: GitUtilities.assertMatchesRemote,
-            },
-            {
-              title: 'Branch allowed',
-              task: async () => {
-                const branch = await GitUtilities.getCurrentBranch();
+          },
+        ]),
+    },
+    {
+      title: 'running tests',
+      task: () => exec('npm', ['test']),
+    },
+  ]);
 
-                if (!allowBranch.includes(branch))
-                  throw new Error(
-                    `Cannot publish from branch: ${chalk.bold(branch)}`,
-                  );
-              },
-            },
-          ]),
-      },
-      {
-        title: 'running tests',
-        task: () => execa('npm', ['test'], { stdio: [0, 1, 'pipe'] }),
-      },
-    ]);
+  let nextVersion = pkg.version;
 
-    let nextVersion = pkg.version;
-
-    if (!skipVersion) {
-      if (conventionalCommits) {
-        version = (await recommendedBump(pkg.version)) || version; // eslint-disable-line no-param-reassign
-      }
-
-      nextVersion = await getNextVersion(version, pkg.version, preid);
+  if (!skipVersion) {
+    if (conventionalCommits) {
+      version = (await recommendedBump(pkg.version)) || version; // eslint-disable-line no-param-reassign
     }
 
-    const isSameVersion = nextVersion === pkg.version;
+    nextVersion = await getNextVersion(version, pkg.version, preid);
+  }
 
-    const isPrerelease = !!semver.prerelease(nextVersion);
-    const tag = npmTag || isPrerelease ? 'next' : 'latest';
+  const isSameVersion = nextVersion === pkg.version;
 
-    const confirmed = await PromptUtilities.confirm(
-      `Are you sure you want to publish version: ${nextVersion}@${tag}?`,
-    );
+  const isPrerelease = !!semver.prerelease(nextVersion);
+  const tag = npmTag || isPrerelease ? 'next' : 'latest';
 
-    if (!confirmed) return;
-    const gitTag = `v${nextVersion}`;
+  const confirmed = await PromptUtilities.confirm(
+    `Are you sure you want to publish version: ${nextVersion}@${tag}?`,
+  );
 
+  if (!confirmed) return;
+  const gitTag = `v${nextVersion}`;
+
+  let hasPublished = false;
+
+  exitHook(callback => {
+    if (!hasPublished) {
+      (async () => {
+        await maybeRollbackGit(gitTag, skipGit, skipVersion);
+        callback();
+      })();
+    }
+  });
+
+  try {
     await runTasks([
       {
         title: isSameVersion
@@ -341,7 +351,11 @@ exports.handler = async argv => {
         task: (context, task) => {
           const input = { otp, publishDir, isPublic, tag };
 
-          return from(npmPublish(pkg, input)).pipe(
+          return from(
+            npmPublish(pkg, input).then(() => {
+              hasPublished = true;
+            }),
+          ).pipe(
             catchError(error =>
               handleNpmError(error, task, nextOtp => {
                 // eslint-disable-next-line no-param-reassign
@@ -352,43 +366,21 @@ exports.handler = async argv => {
           );
         },
       },
+      !skipGit && {
+        title: 'Pushing tags',
+        task: GitUtilities.pushWithTags,
+      },
     ]);
-
-    try {
-      await ConsoleUtilities.step(
-        'Publishing to npm',
-        async spinner => {
-          await npmPublish(spinner, pkg, { otp, publishDir, isPublic, tag });
-
-          try {
-            if (publishDir) {
-              await runLifecycle('publish', pkg);
-              await runLifecycle('postpublish', pkg);
-            }
-          } catch (err) {
-            console.error(err);
-            /* we've already published so we shouldn't try and rollback if these fail */
-          }
-        },
-        skipNpm,
-      );
-    } catch (err) {
-      await maybeRollbackGit(gitTag, skipGit, skipVersion);
-      throw err;
-    }
-
-    if (!skipGit) {
-      await GitUtilities.pushWithTags();
-    }
-
-    console.log(
-      `🎉  Published v${nextVersion}@${tag}:  ${chalk.blue(
-        skipNpm
-          ? await GitUtilities.getRemoteUrl()
-          : `https://npm.im/${pkg.name}`,
-      )} \n`,
-    );
   } catch (err) {
+    await maybeRollbackGit(gitTag, skipGit, skipVersion);
     /* ignore */
   }
+
+  console.log(
+    `🎉  Published v${nextVersion}@${tag}:  ${chalk.blue(
+      skipNpm
+        ? await GitUtilities.getRemoteUrl()
+        : `https://npm.im/${pkg.name}`,
+    )} \n`,
+  );
 };
