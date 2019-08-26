@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/4Catalyzer/cli/compare/@4c/cli-core@1.5.0...@4c/cli-core@1.5.1) (2019-08-26)
+
+
+### Bug Fixes
+
+* file-butler ([eadc624](https://github.com/4Catalyzer/cli/commit/eadc624))
+
+
+
+
+
 # [1.5.0](https://github.com/4Catalyzer/cli/compare/@4c/cli-core@1.4.2...@4c/cli-core@1.5.0) (2019-08-21)
 
 
