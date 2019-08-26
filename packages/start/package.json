@@ -1,0 +1,43 @@
+{
+  "name": "@4c/start",
+  "version": "1.0.0",
+  "main": "lib.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git",
+    "directory": "packages/start"
+  },
+  "bin": {
+    "start": "cli.js"
+  },
+  "author": "4Catalyzer",
+  "license": "MIT",
+  "scripts": {
+    "tdd": "jest --watch",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest": {
+    "preset": "@4c/jest-preset",
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@4c/cli": "^0.7.12",
+    "@4c/import-sort": "^4.3.3",
+    "@4c/jest-preset": "^1.3.0",
+    "@4c/prettier-config": "^1.1.0",
+    "jest": "^24.0.0",
+    "webpack": "^4.39.2"
+  },
+  "dependencies": {
+    "@4c/cli-core": "^1.5.0",
+    "fork-ts-checker-webpack-plugin": "^1.5.0",
+    "react-dev-utils": "^9.0.3",
+    "resolve": "^1.12.0",
+    "webpack-dev-server": "^3.8.0",
+    "webpack-notifier": "^1.8.0",
+    "webpackbar": "^4.0.0"
+  }
+}
