@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const yargs = require('yargs');
+const { success } = require('@4c/cli-core/ConsoleUtilities');
+const { readPackageJson } = require('@4c/cli-core/FileUtilities');
 
 const {
   createAltPublishDir,
@@ -46,14 +48,38 @@ yargs
     renameMjs,
   )
   .command(
-    'prepare-publish-dir',
-    false,
+    'prepare-publish-dir [publish-dir]',
+    true,
     _ =>
       _.positional('publish-dir', {
         type: 'string',
-        default: 'lib',
       }),
-    createAltPublishDir,
+    async options => {
+      let { publishDir } = options;
+      if (!publishDir) {
+        const result = await readPackageJson({ cwd: process.cwd });
+
+        if (result) {
+          const { release, publishConfig } = result.package;
+          // lerna config and newer rollout
+          if (publishConfig)
+            publishDir = publishDir || publishConfig.directory;
+
+          // The rollout or semantic release option
+          if (release && !publishDir)
+            publishDir = release.publishDir || release.pkgRoot;
+        }
+      }
+
+      if (!publishDir) {
+        throw new Error(
+          'No publish directory specified and no local package config found with `publishConfig.directory` or `release.publishDir`',
+        );
+      }
+      await createAltPublishDir({ publishDir });
+      success('Done');
+    },
   )
   .help()
-  .alias('help', 'h');
+  .alias('help', 'h')
+  .parse(process.argv.slice(2));

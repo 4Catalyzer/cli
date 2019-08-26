@@ -42,7 +42,7 @@ Object.assign(exports, {
   },
 
   warn: msg => {
-    console.log(chalk.yellow(`${symbols.warn}  ${msg}`));
+    console.log(chalk.yellow(`${symbols.warning}  ${msg}`));
   },
 
   error: msg => {
