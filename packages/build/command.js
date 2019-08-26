@@ -124,6 +124,8 @@ exports.handler = async ({
     outDir = pkg.main && path.dirname(pkg.main);
   }
 
+  const isSameEntry = pkg.module === pkg.main;
+
   let esmRoot;
   let esmRootInOutDir = false;
   if (esm !== false) {
@@ -135,7 +137,9 @@ exports.handler = async ({
       );
     }
 
-    if (esmRoot) esmRootInOutDir = esmRoot.startsWith(outDir);
+    if (esmRoot) {
+      esmRootInOutDir = !isSameEntry && esmRoot.startsWith(outDir);
+    }
   }
 
   if (!outDir && !esmRoot) {
@@ -159,8 +163,41 @@ exports.handler = async ({
 
   const tasks = new Listr(
     [
-      {
-        title: 'Building CommonJS',
+      outDir &&
+        !isSameEntry && {
+          title: 'Building CommonJS',
+          task: () =>
+            new Listr([
+              {
+                title: 'Compiling with Babel',
+                skip: () => !!onlyTypes,
+                task: () =>
+                  runBabel(
+                    [
+                      ...patterns,
+                      '--out-dir',
+                      outDir,
+                      clean && safeToDelete(outDir) && '--delete-dir-on-start',
+                      '-x',
+                      extensions.join(','),
+                    ],
+                    passthrough,
+                  ),
+              },
+              {
+                title: 'Copying files',
+                skip: () => !copyFiles,
+                task: () => copyRest(patterns, outDir, extensions),
+              },
+              {
+                title: 'Building types',
+                skip: () => !buildTypes && !typeDir,
+                task: getTypeTask(outDir),
+              },
+            ]),
+        },
+      esmRoot && {
+        title: 'Building ES Module files…',
         task: () =>
           new Listr([
             {
@@ -171,8 +208,13 @@ exports.handler = async ({
                   [
                     ...patterns,
                     '--out-dir',
-                    outDir,
-                    clean && safeToDelete(outDir) && '--delete-dir-on-start',
+                    esmRoot,
+                    clean &&
+                      !esmRootInOutDir &&
+                      safeToDelete(esmRoot) &&
+                      '--delete-dir-on-start',
+                    '--env-name',
+                    'esm',
                     '-x',
                     extensions.join(','),
                   ],
@@ -182,58 +224,18 @@ exports.handler = async ({
             {
               title: 'Copying files',
               skip: () => !copyFiles,
-              task: () => copyRest(patterns, outDir, extensions),
+              task: () => copyRest(patterns, esmRoot, extensions),
             },
             {
               title: 'Building types',
               skip: () => !buildTypes && !typeDir,
-              task: getTypeTask(outDir),
+              task: getTypeTask(esmRoot),
             },
           ]),
       },
-    ],
+    ].filter(Boolean),
     { concurrent: !esmRootInOutDir },
   );
-
-  if (esmRoot) {
-    tasks.add({
-      title: 'Building ES Module files…',
-      task: () =>
-        new Listr([
-          {
-            title: 'Compiling with Babel',
-            skip: () => !!onlyTypes,
-            task: () =>
-              runBabel(
-                [
-                  ...patterns,
-                  '--out-dir',
-                  esmRoot,
-                  clean &&
-                    !esmRootInOutDir &&
-                    safeToDelete(esmRoot) &&
-                    '--delete-dir-on-start',
-                  '--env-name',
-                  'esm',
-                  '-x',
-                  extensions.join(','),
-                ],
-                passthrough,
-              ),
-          },
-          {
-            title: 'Copying files',
-            skip: () => !copyFiles,
-            task: () => copyRest(patterns, esmRoot, extensions),
-          },
-          {
-            title: 'Building types',
-            skip: () => !buildTypes && !typeDir,
-            task: getTypeTask(esmRoot),
-          },
-        ]),
-    });
-  }
 
   try {
     await tasks.run();
