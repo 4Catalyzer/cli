@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@4c/build": "^1.2.2",
+    "@4c/start": "^1.0.0",
     "@4c/cli-core": "^1.5.1",
     "@4c/file-butler": "^3.0.1",
     "@4c/init": "^1.6.7",
