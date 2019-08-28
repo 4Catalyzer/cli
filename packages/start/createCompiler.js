@@ -1,36 +1,24 @@
-const {
-  chalk,
-  error,
-  success,
-  warn,
-  isTTY,
-} = require('@4c/cli-core/ConsoleUtilities');
+const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
 
 const WebpackBar = require('webpackbar');
 const WebpackNotifierPlugin = require('webpack-notifier');
 
-const clearConsole = require('react-dev-utils/clearConsole');
-const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
-const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
+const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
+const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
+const getFormatters = require('./formatters');
+const getTransformers = require('./transformers');
 
-function printInstructions(appName, urls) {
-  console.log();
-  console.log(`You can now view ${chalk.bold(appName)} in the browser.`);
-  console.log();
+const passthroughTSFormatter = msg => msg;
 
-  if (urls.lanUrlForTerminal) {
-    console.log(
-      `  ${chalk.bold('Local:')}            ${urls.localUrlForTerminal}`,
-    );
-    console.log(
-      `  ${chalk.bold('On Your Network:')}  ${urls.lanUrlForTerminal}`,
-    );
-  } else {
-    console.log(`  ${urls.localUrlForTerminal}`);
-  }
+function getMaxSeverityErrors(errors) {
+  const maxSeverity = errors.reduce(
+    (res, curr) => (curr.severity > res ? curr.severity : res),
+    0,
+  );
 
-  console.log();
+  return errors.filter(e => e.severity === maxSeverity);
 }
 
 module.exports = function createCompiler({
@@ -38,7 +26,6 @@ module.exports = function createCompiler({
   config,
   devSocket,
   urls,
-  useYarn,
   useTypeScript,
   webpack,
 }) {
@@ -55,7 +42,35 @@ module.exports = function createCompiler({
     process.exit(1);
   }
 
-  const progress = new WebpackBar({ name: appName });
+  const formatters = getFormatters(compiler);
+  const transformers = getTransformers(compiler);
+
+  function printErrors(errors, severity) {
+    const topErrors = getMaxSeverityErrors(
+      transformErrors(errors, transformers),
+    );
+
+    const subtitle =
+      severity === 'error'
+        ? `Failed to compile with ${topErrors.length} ${severity}s`
+        : `Compiled with ${topErrors.length} ${severity}s`;
+
+    console.log(`${colors.formatText(severity, subtitle)}\n\n`);
+
+    formatErrors(topErrors, formatters, severity).forEach(err =>
+      console.log(err),
+    );
+  }
+
+  function printAppInfo() {
+    console.log(
+      `${colors.formatTitle('info', 'I')} ` +
+        `Your application is running here: ${urls.lanUrlForTerminal}`,
+    );
+    console.log();
+  }
+
+  const progress = new WebpackBar({ name: appName || 'App' });
   const notifier = new WebpackNotifierPlugin({
     title: appName,
     excludeWarnings: true,
@@ -65,129 +80,103 @@ module.exports = function createCompiler({
   progress.apply(compiler);
   notifier.apply(compiler);
 
-  // "invalid" event fires when you have changed a file, and Webpack is
-  // recompiling a bundle. WebpackDevServer takes care to pause serving the
-  // bundle, so if you refresh, it'll wait instead of serving the old one.
-  // "invalid" is short for "bundle invalidated", it doesn't imply any errors.
-  compiler.hooks.invalid.tap('invalid', () => {
-    if (isTTY) {
-      clearConsole();
-    }
-
-    // spinner('Compiling...').start();
-  });
-
-  let isFirstCompile = true;
+  let isTsAsync = false;
   let tsMessagesPromise;
   let tsMessagesResolver;
 
   if (useTypeScript) {
     // doesn't rely on the plugins instances being deduped
-    let forkTsCheckerWebpackPlugin = compiler.options.plugins
-      .map(p => p.constructor)
-      .find(({ name }) => name === 'ForkTsCheckerWebpackPlugin');
+    let forkTsCheckerWebpackPlugin = compiler.options.plugins.find(
+      p => p.constructor.name === 'ForkTsCheckerWebpackPlugin',
+    );
 
     if (!forkTsCheckerWebpackPlugin) {
-      forkTsCheckerWebpackPlugin = ForkTsCheckerWebpackPlugin;
+      forkTsCheckerWebpackPlugin = new ForkTsCheckerWebpackPlugin({
+        async: true,
+        silent: true,
+        tslint: false,
+        compilerOptions: {
+          noUnusedLocals: false,
+          noUnusedParameters: false,
+        },
+      });
+      forkTsCheckerWebpackPlugin.apply(compiler);
     }
 
-    compiler.hooks.beforeCompile.tap('beforeCompile', () => {
-      tsMessagesPromise = new Promise(resolve => {
-        tsMessagesResolver = msgs => resolve(msgs);
-      });
-    });
+    forkTsCheckerWebpackPlugin.formatter = passthroughTSFormatter;
 
-    forkTsCheckerWebpackPlugin
-      .getCompilerHooks(compiler)
-      .receive.tap('afterTypeScriptCheck', (diagnostics, lints) => {
-        const allMsgs = [...diagnostics, ...lints];
-        const format = message =>
-          `${message.file}\n${typescriptFormatter(message, true)}`;
+    isTsAsync = !!forkTsCheckerWebpackPlugin.options.async;
 
-        tsMessagesResolver({
-          errors: allMsgs.filter(msg => msg.severity === 'error').map(format),
-          warnings: allMsgs
-            .filter(msg => msg.severity === 'warning')
-            .map(format),
+    // in the async case forkTsChecker will emit errors _after_ the compilation
+    // has already happened so we need wait and log them ourselves
+    if (isTsAsync) {
+      compiler.hooks.beforeCompile.tap('beforeCompile', () => {
+        tsMessagesPromise = new Promise(resolve => {
+          tsMessagesResolver = msgs => resolve(msgs);
         });
       });
+
+      forkTsCheckerWebpackPlugin.constructor
+        .getCompilerHooks(compiler)
+        .receive.tap('afterTypeScriptCheck', (diagnostics, lints) => {
+          const allMsgs = [...diagnostics, ...lints];
+
+          // this is the format these errors are inserted in when not async
+          const format = msg => ({
+            file: msg.file,
+            message: msg,
+            location: {
+              line: msg.line,
+              character: msg.character,
+            },
+          });
+
+          tsMessagesResolver({
+            errors: allMsgs.filter(m => m.severity === 'error').map(format),
+            warnings: allMsgs
+              .filter(m => m.severity === 'warning')
+              .map(format),
+          });
+        });
+    }
   }
 
   // "done" event fires when Webpack has finished recompiling the bundle.
   // Whether or not you have warnings or errors, you will get this event.
   compiler.hooks.done.tap('done', async stats => {
-    if (isTTY) {
-      clearConsole();
-    }
-
-    // We have switched off the default Webpack output in WebpackDevServer
-    // options so we are going to "massage" the warnings and errors and present
-    // them in a readable focused way.
-    // We only construct the warnings and errors for speed:
-    // https://github.com/facebook/create-react-app/issues/4492#issuecomment-421959548
     const statsData = stats.toJson({
       all: false,
       warnings: true,
       errors: true,
     });
 
-    if (useTypeScript && statsData.errors.length === 0) {
+    if (isTsAsync && statsData.errors.length === 0) {
       const delayedMsg = setTimeout(() => {
-        console.log(
-          chalk.yellow(
-            'Files successfully emitted, waiting for typecheck results...',
-          ),
-        );
+        console.log(chalk.yellow('waiting for typecheck results...'));
+        console.log();
       }, 100);
-
       const messages = await tsMessagesPromise;
       clearTimeout(delayedMsg);
+
       statsData.errors.push(...messages.errors);
       statsData.warnings.push(...messages.warnings);
 
-      // Push errors and warnings into compilation result
-      // to show them after page refresh triggered by user.
-      stats.compilation.errors.push(...messages.errors);
-      stats.compilation.warnings.push(...messages.warnings);
-
       if (messages.errors.length > 0) {
         devSocket.errors(messages.errors);
+        messages.errors.forEach(m => console.log(m));
       } else if (messages.warnings.length > 0) {
         devSocket.warnings(messages.warnings);
-      }
-
-      if (isTTY) {
-        clearConsole();
+        messages.warning.forEach(m => console.log(m));
       }
     }
 
-    const messages = formatWebpackMessages(statsData);
-    const isSuccessful = !messages.errors.length && !messages.warnings.length;
-    if (isSuccessful) {
-      success('Compiled successfully!');
+    if (statsData.errors.length) {
+      printErrors(statsData.errors, 'error');
+    } else if (statsData.warnings.length) {
+      printErrors(statsData.warnings, 'warning');
     }
 
-    if (!messages.errors.length && (isTTY || isFirstCompile)) {
-      printInstructions(appName, urls, useYarn);
-    }
-    isFirstCompile = false;
-
-    // If errors exist, only show errors.
-    if (messages.errors.length) {
-      // Only keep the first error. Others are often indicative
-      // of the same problem, but confuse the reader with noise.
-      if (messages.errors.length > 1) {
-        messages.errors.length = 1;
-      }
-      error(chalk.red('Failed to compile.\n'));
-      console.log(messages.errors.join('\n\n'));
-      return;
-    }
-
-    if (messages.warnings.length) {
-      warn(chalk.yellow('Compiled with warnings.\n'));
-      console.log(messages.warnings.join('\n\n'));
-    }
+    printAppInfo();
   });
 
   return compiler;
