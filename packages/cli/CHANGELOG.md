@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/4Catalyzer/init/compare/@4c/cli@0.8.8...@4c/cli@0.9.0) (2019-08-28)
+
+
+### Features
+
+* add start to main cli ([2a06d0b](https://github.com/4Catalyzer/init/commit/2a06d0b))
+
+
+
+
+
 ## [0.8.8](https://github.com/4Catalyzer/init/compare/@4c/cli@0.8.7...@4c/cli@0.8.8) (2019-08-26)
 
 **Note:** Version bump only for package @4c/cli
