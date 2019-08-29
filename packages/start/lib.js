@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const resolve = require('resolve');
+const dotenv = require('dotenv');
 const WebpackDevServer = require('webpack-dev-server');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const clearConsole = require('react-dev-utils/clearConsole');
@@ -9,26 +10,30 @@ const {
   prepareUrls,
 } = require('react-dev-utils/WebpackDevServerUtils');
 
-const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
+const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const createCompiler = require('./createCompiler');
 
 let webpack;
 try {
-  // eslint-disable-next-line import/no-unresolved
-  // eslint-disable-next-line import/no-extraneous-dependencies
+  // eslint-disable-next-line import/no-unresolved, import/no-extraneous-dependencies
   webpack = require('webpack');
 } catch (err) {
   webpack = resolve.sync('webpack', { cwd: process.cwd() });
 }
 
-const isInteractive = process.stdout.isTTY;
-
-// Tools like Cloud9 rely on this.
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 module.exports = async options => {
   try {
+    if (options.env) {
+      const { parsed, error } = dotenv.load({ path });
+      if (error) throw error;
+      Object.entries(parsed).forEach(([key, value]) => {
+        process.env[key] = value;
+      });
+    }
+
     let config = require(path.resolve(options.config || 'webpack.config'));
 
     if (typeof config === 'function') {
@@ -37,6 +42,7 @@ module.exports = async options => {
     if (!config.mode) {
       config.mode = 'development';
     }
+
     const devServerConfig = config.devServer || {};
     // We attempt to use the default port but if it is busy, we offer the user to
     // run on a different port. `choosePort()` Promise resolves to the next free port.
@@ -70,9 +76,9 @@ module.exports = async options => {
       config,
       devSocket,
       urls,
-      useYarn: true,
       useTypeScript,
       webpack,
+      noProgress: !options.progress,
     });
 
     const { proxy } = config.devServer;
@@ -100,15 +106,13 @@ module.exports = async options => {
 
     devServer.listen(port, HOST, err => {
       if (err) {
-        error(err);
+        ConsoleUtilities.error(err);
         return;
       }
 
-      if (isInteractive) {
+      if (options.progress && ConsoleUtilities.isTTY) {
         clearConsole();
       }
-
-      console.log(chalk.cyan('Starting the development server…\n'));
     });
 
     const exit = () => {
@@ -119,7 +123,7 @@ module.exports = async options => {
     process.on('SIGINT', exit).on('SIGTERM', exit);
   } catch (err) {
     if (err && err.message) {
-      error(err.message);
+      ConsoleUtilities.error(err.message);
     }
     process.exit(1);
   }

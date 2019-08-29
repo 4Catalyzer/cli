@@ -28,6 +28,7 @@ module.exports = function createCompiler({
   urls,
   useTypeScript,
   webpack,
+  progress: showProgress,
 }) {
   // "Compiler" is a low-level interface to Webpack.
   // It lets us listen to some events and provide our own custom messages.
@@ -70,7 +71,11 @@ module.exports = function createCompiler({
     console.log();
   }
 
-  const progress = new WebpackBar({ name: appName || 'App' });
+  const progress = new WebpackBar({
+    name: appName || 'App',
+    reporters: [showProgress ? 'fancy' : 'basic'],
+  });
+
   const notifier = new WebpackNotifierPlugin({
     title: appName,
     excludeWarnings: true,

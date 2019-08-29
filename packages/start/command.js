@@ -8,9 +8,19 @@ exports.builder = _ =>
   _.option('config', {
     type: 'path',
     default: 'webpack.config.js',
-  }).option('port', {
-    type: 'number',
-    alias: 'p',
-  });
+  })
+    .option('port', {
+      type: 'number',
+      alias: 'p',
+    })
+    .option('progress', {
+      type: 'boolean',
+      default: true,
+      describe: 'Disable the progress bar',
+    })
+    .option('env-file', {
+      type: 'path',
+      describe: 'Provide a set of env variables via an env file',
+    });
 
 exports.handler = handler;
