@@ -26,9 +26,8 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 module.exports = async options => {
   try {
-    if (options.env) {
-      const { parsed, error } = dotenv.load({ path });
-      if (error) throw error;
+    if (options.envFile) {
+      const parsed = dotenv.parse(fs.readFileSync(options.envFile));
       Object.entries(parsed).forEach(([key, value]) => {
         process.env[key] = value;
       });
