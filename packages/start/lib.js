@@ -78,7 +78,7 @@ module.exports = async options => {
       urls,
       useTypeScript,
       webpack,
-      noProgress: !options.progress,
+      progress: options.progress,
     });
 
     const { proxy } = config.devServer;
