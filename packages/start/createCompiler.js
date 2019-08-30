@@ -64,9 +64,10 @@ module.exports = function createCompiler({
   }
 
   function printAppInfo() {
+    console.log();
     console.log(
       `${colors.formatTitle('info', 'I')} ` +
-        `Your application is running here: ${urls.lanUrlForTerminal}`,
+        `Your application is running here: ${urls.localUrlForTerminal}`,
     );
     console.log();
   }
