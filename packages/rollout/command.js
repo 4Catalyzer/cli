@@ -122,7 +122,7 @@ async function npmPublish(
     await runLifecycle('prepublishOnly', pkgJson);
 
     // do this after lifecycle scripts in case they clean the publishDir
-    await createAltPublishDir({ outDir: publishDir });
+    await createAltPublishDir({ publishDir });
   }
   if (otp) {
     args.push('--otp', otp);
