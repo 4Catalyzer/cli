@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/4Catalyzer/cli/compare/@4c/start@1.2.2...@4c/start@1.2.3) (2019-08-30)
+
+
+### Bug Fixes
+
+* clean up start code ([1534f3d](https://github.com/4Catalyzer/cli/commit/1534f3d))
+
+
+
+
+
 ## [1.2.2](https://github.com/4Catalyzer/cli/compare/@4c/start@1.2.1...@4c/start@1.2.2) (2019-08-29)
 
 
