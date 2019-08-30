@@ -109,6 +109,7 @@ module.exports = function createCompiler({
       forkTsCheckerWebpackPlugin.apply(compiler);
     }
 
+    forkTsCheckerWebpackPlugin.silent = true;
     forkTsCheckerWebpackPlugin.formatter = passthroughTSFormatter;
 
     isTsAsync = !!forkTsCheckerWebpackPlugin.options.async;
@@ -169,10 +170,8 @@ module.exports = function createCompiler({
 
       if (messages.errors.length > 0) {
         devSocket.errors(messages.errors);
-        messages.errors.forEach(m => console.log(m));
       } else if (messages.warnings.length > 0) {
         devSocket.warnings(messages.warnings);
-        messages.warning.forEach(m => console.log(m));
       }
     }
 

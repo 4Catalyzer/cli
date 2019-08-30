@@ -38,6 +38,11 @@ module.exports = async options => {
     if (typeof config === 'function') {
       config = config({}, { ...options, mode: 'development' });
     }
+    // TODO: allow specifying the name/index
+    if (Array.isArray(config)) {
+      config = config[0];
+    }
+
     if (!config.mode) {
       config.mode = 'development';
     }
@@ -89,7 +94,7 @@ module.exports = async options => {
       watchContentBase: true,
       hot: true,
       quiet: true,
-      publicPath: config.output.publicPath,
+      publicPath: (config.output && config.output.publicPath) || '/',
       before(app) {
         // This service worker file is effectively a 'no-op' that will reset any
         // previous service worker registered for the same host:port combination.

@@ -32,7 +32,7 @@ function formatError(
     frame = codeFrameColumns(
       source,
       { start: { line, column } },
-      { color: true },
+      { highlightCode: true },
     );
   }
 
