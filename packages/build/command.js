@@ -124,7 +124,7 @@ exports.handler = async ({
     outDir = pkg.main && path.dirname(pkg.main);
   }
 
-  const isSameEntry = pkg.module === pkg.main;
+  const isSameEntry = pkg.module && pkg.main && pkg.module === pkg.main;
 
   let esmRoot;
   let esmRootInOutDir = false;
@@ -165,7 +165,7 @@ exports.handler = async ({
     [
       outDir &&
         !isSameEntry && {
-          title: 'Building CommonJS',
+          title: `Building ${isSameEntry ? 'Files' : 'CommonJS'}`,
           task: () =>
             new Listr([
               {
@@ -197,7 +197,7 @@ exports.handler = async ({
             ]),
         },
       esmRoot && {
-        title: 'Building ES Module files…',
+        title: 'Building ES Module files',
         task: () =>
           new Listr([
             {
