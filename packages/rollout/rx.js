@@ -34,23 +34,28 @@ function fromAsyncIterator(iterable) {
 
 const split = seperator => stream =>
   new Observable(observer => {
-    let line;
+    let line = '';
 
     return stream.subscribe(x => {
       const parts = x.split(seperator);
-      observer.next(line + parts.shift());
+      if (parts.length === 1) {
+        line += parts[0];
+        return;
+      }
+
+      observer.next(line + String(parts.shift()));
       line = parts.pop();
       parts.forEach(observer.next);
     });
   });
 
 const exec = (cmd, args) => {
-  // Use `Observable` support if merged https://github.com/sindresorhus/execa/pull/26
-  const cp = execa(cmd, args);
+  const cp = execa(cmd, args, { env: { FORCE_COLOR: true } });
 
   return merge(
     fromAsyncIterator(cp.stdout),
     fromAsyncIterator(cp.stderr),
+    cp, // include the promise, so that the stream errors when it fails
   ).pipe(filter(Boolean));
 };
 

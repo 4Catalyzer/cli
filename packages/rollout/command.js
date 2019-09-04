@@ -2,8 +2,10 @@ const path = require('path');
 const fs = require('fs-extra');
 const chalk = require('chalk');
 const execa = require('execa');
-const exitHook = require('async-exit-hook');
 const semver = require('semver');
+const rimraf = require('rimraf');
+const hasYarn = require('has-yarn');
+const { promisify } = require('util');
 
 const Listr = require('listr');
 const { from } = require('rxjs');
@@ -25,12 +27,14 @@ async function runLifecycle(script, pkg) {
   await execa('npm', ['run', script]);
 }
 
+let rolledBack = false;
 async function maybeRollbackGit(tag, skipGit, skipVersion) {
-  if (skipGit) return;
+  if (skipGit || rolledBack) return;
   const confirmed = await PromptUtilities.confirm(
     'There was a problem publishing, do you want to rollback the git operations?',
   );
 
+  rolledBack = true;
   if (!confirmed) return;
 
   await GitUtilities.removeTag(tag);
@@ -136,12 +140,14 @@ async function npmPublish(pkgJson, options) {
     args.push('--access', isPublic ? 'public' : 'restricted');
   }
 
-  await execa('npm', args, { stdio: [0, 1, 'pipe'] });
+  const child = await execa('npm', args, { stdio: [0, 1, 'pipe'] });
 
   if (publishDir) {
     await runLifecycle('publish', pkgJson);
     await runLifecycle('postpublish', pkgJson);
   }
+
+  return child;
 }
 
 function runTasks(tasks) {
@@ -206,7 +212,7 @@ exports.builder = _ =>
       default: undefined,
     });
 
-exports.handler = async argv => {
+const handler = async argv => {
   const cwd = process.cwd();
   const changelogPath = path.join(cwd, 'CHANGELOG.md');
   const { path: pkgPath, package: pkg } = await readPackageJson({ cwd });
@@ -225,6 +231,10 @@ exports.handler = async argv => {
   } = { ...pkg.release, ...argv };
 
   let { publishDir, nextVersion: version } = argv;
+  const useYarn = hasYarn(cwd);
+  const hasLockFile = fs.existsSync(
+    path.resolve(useYarn ? './yarn.lock' : './package-lock.json'),
+  );
 
   // lerna
   if (!publishDir && pkg.publishConfig)
@@ -263,10 +273,34 @@ exports.handler = async argv => {
                 );
             },
           },
+          {
+            title: 'Cleaning existing node_modules',
+            task: () => promisify(rimraf)('node_modules'),
+          },
+          useYarn
+            ? {
+                title: 'Installing dependencies using Yarn',
+                task: () =>
+                  exec('yarn', [
+                    'install',
+                    '--frozen-lockfile',
+                    '--production=false',
+                  ]),
+              }
+            : {
+                title: 'Installing dependencies using npm',
+                task: () =>
+                  exec(
+                    'npm',
+                    hasLockFile
+                      ? ['ci']
+                      : ['install', '--no-package-lock', '--no-production'],
+                  ),
+              },
         ]),
     },
     {
-      title: 'running tests',
+      title: 'Running tests',
       task: () => exec('npm', ['test']),
     },
   ]);
@@ -292,17 +326,6 @@ exports.handler = async argv => {
 
   if (!confirmed) return;
   const gitTag = `v${nextVersion}`;
-
-  let hasPublished = false;
-
-  exitHook(callback => {
-    if (!hasPublished) {
-      (async () => {
-        await maybeRollbackGit(gitTag, skipGit, skipVersion);
-        callback();
-      })();
-    }
-  });
 
   try {
     await runTasks([
@@ -348,14 +371,11 @@ exports.handler = async argv => {
       },
       {
         title: 'Publishing to npm',
+        skip: () => skipNpm,
         task: (context, task) => {
           const input = { otp, publishDir, isPublic, tag };
 
-          return from(
-            npmPublish(pkg, input).then(() => {
-              hasPublished = true;
-            }),
-          ).pipe(
+          return from(npmPublish(pkg, input)).pipe(
             catchError(error =>
               handleNpmError(error, task, nextOtp => {
                 // eslint-disable-next-line no-param-reassign
@@ -373,14 +393,21 @@ exports.handler = async argv => {
     ]);
   } catch (err) {
     await maybeRollbackGit(gitTag, skipGit, skipVersion);
-    /* ignore */
+
+    throw err;
   }
 
   console.log(
-    `🎉  Published v${nextVersion}@${tag}:  ${chalk.blue(
+    `\n\n🎉  Published v${nextVersion}@${tag}:  ${chalk.blue(
       skipNpm
         ? await GitUtilities.getRemoteUrl()
         : `https://npm.im/${pkg.name}`,
     )} \n`,
   );
 };
+
+exports.handler = argv =>
+  handler(argv).catch(err => {
+    console.error(`\n${ConsoleUtilities.symbols.error} ${err.message}`);
+    process.exit(1);
+  });

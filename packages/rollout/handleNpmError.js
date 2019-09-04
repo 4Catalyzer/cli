@@ -6,8 +6,9 @@ const { catchError } = require('rxjs/operators');
 
 const handleNpmError = (error, task, executor, prompt) => {
   if (
-    error.stderr.includes('OTP') ||
-    error.stderr.includes('one-time pass') ||
+    (error.stderr &&
+      (error.stderr.includes('OTP') ||
+        error.stderr.includes('one-time pass'))) ||
     error.message.includes('user TTY')
   ) {
     const { title } = task;
