@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/4Catalyzer/cli/compare/@4c/rollout@1.3.10...@4c/rollout@1.4.0) (2019-09-05)
+
+
+### Features
+
+* rewrite all of the rollout output ([#45](https://github.com/4Catalyzer/cli/issues/45)) ([186fca0](https://github.com/4Catalyzer/cli/commit/186fca0))
+
+
+
+
+
 ## [1.3.10](https://github.com/4Catalyzer/cli/compare/@4c/rollout@1.3.9...@4c/rollout@1.3.10) (2019-08-30)
 
 

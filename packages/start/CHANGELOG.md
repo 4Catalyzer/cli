@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/4Catalyzer/cli/compare/@4c/start@1.3.0...@4c/start@1.4.0) (2019-09-05)
+
+
+### Features
+
+* better casing TS error ([#46](https://github.com/4Catalyzer/cli/issues/46)) ([11dbd10](https://github.com/4Catalyzer/cli/commit/11dbd10))
+
+
+
+
+
 # [1.3.0](https://github.com/4Catalyzer/cli/compare/@4c/start@1.2.3...@4c/start@1.3.0) (2019-08-30)
 
 

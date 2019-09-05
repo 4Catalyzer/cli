@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/4Catalyzer/cli/compare/pedantic@2.2.4...pedantic@2.3.0) (2019-09-05)
+
+
+### Features
+
+* better casing TS error ([#46](https://github.com/4Catalyzer/cli/issues/46)) ([11dbd10](https://github.com/4Catalyzer/cli/commit/11dbd10))
+
+
+
+
+
 ## [2.2.4](https://github.com/4Catalyzer/cli/compare/pedantic@2.2.3...pedantic@2.2.4) (2019-08-26)
 
 **Note:** Version bump only for package pedantic
