@@ -28,6 +28,11 @@
     "conventional-recommended-bump": "^4.0.4",
     "execa": "^1.0.0",
     "fs-extra": "^7.0.1",
+    "has-yarn": "^2.1.0",
+    "listr": "^0.14.3",
+    "listr-input": "^0.1.3",
+    "rimraf": "^3.0.0",
+    "rxjs": "^6.5.2",
     "semver": "^5.6.0"
   },
   "devDependencies": {
