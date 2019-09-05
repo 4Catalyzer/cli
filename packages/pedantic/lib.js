@@ -109,15 +109,11 @@ module.exports = async (
   if (noUnfixedChanges || !check) {
     if (numDifferent === 0) {
       progress.succeed(
-        `All ${
-          filePaths.length
-        } of matched files are properly formatted and linted`,
+        `All ${filePaths.length} of matched files are properly formatted and linted`,
       );
     } else if (fix) {
       progress.succeed(
-        `Code format and lint issues fixed in ${numDifferent} of ${
-          filePaths.length
-        } files checked.`,
+        `Code format and lint issues fixed in ${numDifferent} of ${filePaths.length} files checked.`,
       );
     }
     return;
