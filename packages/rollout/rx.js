@@ -32,12 +32,12 @@ function fromAsyncIterator(iterable) {
   });
 }
 
-const split = seperator => stream =>
+const split = separator => stream =>
   new Observable(observer => {
     let line = '';
 
     return stream.subscribe(x => {
-      const parts = x.split(seperator);
+      const parts = x.split(separator);
       if (parts.length === 1) {
         line += parts[0];
         return;
