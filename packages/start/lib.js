@@ -5,20 +5,18 @@ const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMi
 const clearConsole = require('react-dev-utils/clearConsole');
 
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
-const createCompiler = require('./createCompiler');
 
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 module.exports = async options => {
   // lazy load to use local webpack
-  // eslint-disable-next-line import/no-extraneous-dependencies
-  const webpack = require('webpack');
   const WebpackDevServer = require('webpack-dev-server');
   const {
     choosePort,
     prepareUrls,
   } = require('react-dev-utils/WebpackDevServerUtils');
+  const createCompiler = require('./createCompiler');
 
   try {
     if (options.envFile) {
@@ -76,7 +74,6 @@ module.exports = async options => {
       devSocket,
       urls,
       useTypeScript,
-      webpack,
       progress: options.progress,
     });
 
