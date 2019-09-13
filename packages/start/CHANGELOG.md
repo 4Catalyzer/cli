@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/4Catalyzer/cli/compare/@4c/start@1.4.0...@4c/start@1.4.1) (2019-09-13)
+
+
+### Bug Fixes
+
+* fails to find webpack ([76d2b6b](https://github.com/4Catalyzer/cli/commit/76d2b6b))
+
+
+
+
+
 # [1.4.0](https://github.com/4Catalyzer/cli/compare/@4c/start@1.3.0...@4c/start@1.4.0) (2019-09-05)
 
 
