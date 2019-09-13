@@ -1,9 +1,5 @@
 const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
 
-const WebpackBar = require('webpackbar');
-const WebpackNotifierPlugin = require('webpack-notifier');
-
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
 const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
 const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
@@ -30,6 +26,11 @@ module.exports = function createCompiler({
   webpack,
   progress: showProgress,
 }) {
+  // lazy load b/c these require webpack
+  const WebpackBar = require('webpackbar');
+  const WebpackNotifierPlugin = require('webpack-notifier');
+  const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
   // "Compiler" is a low-level interface to Webpack.
   // It lets us listen to some events and provide our own custom messages.
   let compiler;

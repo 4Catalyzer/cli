@@ -1,34 +1,25 @@
 const fs = require('fs');
 const path = require('path');
-const resolve = require('resolve');
 const dotenv = require('dotenv');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const clearConsole = require('react-dev-utils/clearConsole');
-const {
-  choosePort,
-  prepareUrls,
-} = require('react-dev-utils/WebpackDevServerUtils');
 
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const createCompiler = require('./createCompiler');
-
-const cwd = process.cwd();
-
-let webpack, WebpackDevServer;
-try {
-  // eslint-disable-next-line import/no-unresolved, import/no-extraneous-dependencies
-  webpack = require('webpack');
-  // this also loads webpack
-  WebpackDevServer = require('webpack-dev-server');
-} catch (err) {
-  webpack = resolve.sync('webpack', { cwd });
-  WebpackDevServer = resolve.sync('webpack-dev-server', { cwd });
-}
 
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 module.exports = async options => {
+  // lazy load to use local webpack
+  // eslint-disable-next-line import/no-extraneous-dependencies
+  const webpack = require('webpack');
+  const WebpackDevServer = require('webpack-dev-server');
+  const {
+    choosePort,
+    prepareUrls,
+  } = require('react-dev-utils/WebpackDevServerUtils');
+
   try {
     if (options.envFile) {
       const parsed = dotenv.parse(fs.readFileSync(options.envFile));
