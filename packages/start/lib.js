@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const resolve = require('resolve');
 const dotenv = require('dotenv');
-const WebpackDevServer = require('webpack-dev-server');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const clearConsole = require('react-dev-utils/clearConsole');
 const {
@@ -13,12 +12,17 @@ const {
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const createCompiler = require('./createCompiler');
 
-let webpack;
+const cwd = process.cwd();
+
+let webpack, WebpackDevServer;
 try {
   // eslint-disable-next-line import/no-unresolved, import/no-extraneous-dependencies
   webpack = require('webpack');
+  // this also loads webpack
+  WebpackDevServer = require('webpack-dev-server');
 } catch (err) {
-  webpack = resolve.sync('webpack', { cwd: process.cwd() });
+  webpack = resolve.sync('webpack', { cwd });
+  WebpackDevServer = resolve.sync('webpack-dev-server', { cwd });
 }
 
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
