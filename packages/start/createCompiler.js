@@ -1,11 +1,5 @@
 const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
 
-const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
-const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
-const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
-const getFormatters = require('./formatters');
-const getTransformers = require('./transformers');
-
 const passthroughTSFormatter = msg => msg;
 
 function getMaxSeverityErrors(errors) {
@@ -30,9 +24,13 @@ module.exports = function createCompiler({
   const WebpackBar = require('webpackbar');
   const WebpackNotifierPlugin = require('webpack-notifier');
   const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+  const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
+  const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
+  const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
 
-  // "Compiler" is a low-level interface to Webpack.
-  // It lets us listen to some events and provide our own custom messages.
+  const getFormatters = require('./formatters');
+  const getTransformers = require('./transformers');
+
   let compiler;
   try {
     compiler = webpack(config);
