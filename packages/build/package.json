@@ -31,9 +31,9 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.3",
     "cpy": "^7.2.0",
-    "execa": "^1.0.0",
-    "find-up": "^3.0.0",
-    "fs-extra": "^7.0.1",
+    "execa": "^2.0.4",
+    "find-up": "^4.1.0",
+    "fs-extra": "^8.1.0",
     "listr": "^0.14.3",
     "typescript": "^3.5.3"
   }
