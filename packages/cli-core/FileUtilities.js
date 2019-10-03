@@ -6,7 +6,7 @@ const getPackageConfig = async (key, { cwd } = {}) => {
   const result = await readPackageJson({ cwd });
 
   if (!result) return null;
-  return result.package[key] || null;
+  return result.packageJson[key] || null;
 };
 
 module.exports = { readPackageJson, getPackageConfig };
