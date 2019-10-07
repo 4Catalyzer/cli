@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/4Catalyzer/cli/compare/@4c/start@1.4.3...@4c/start@2.0.0) (2019-10-07)
+
+
+### Bug Fixes
+
+* better version for needing webpack ([ea45210](https://github.com/4Catalyzer/cli/commit/ea45210))
+
+
+### chore
+
+* bump ([#47](https://github.com/4Catalyzer/cli/issues/47)) ([85b9bf1](https://github.com/4Catalyzer/cli/commit/85b9bf1))
+
+
+### BREAKING CHANGES
+
+* probably, there is a lot of stuff here
+
+* fix key
+
+
+
+
+
 ## [1.4.3](https://github.com/4Catalyzer/cli/compare/@4c/start@1.4.2...@4c/start@1.4.3) (2019-09-13)
 
 

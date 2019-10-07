@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/4Catalyzer/cli/compare/pedantic@2.3.0...pedantic@3.0.0) (2019-10-07)
+
+
+### chore
+
+* bump ([#47](https://github.com/4Catalyzer/cli/issues/47)) ([85b9bf1](https://github.com/4Catalyzer/cli/commit/85b9bf1))
+
+
+### BREAKING CHANGES
+
+* probably, there is a lot of stuff here
+
+* fix key
+
+
+
+
+
 # [2.3.0](https://github.com/4Catalyzer/cli/compare/pedantic@2.2.4...pedantic@2.3.0) (2019-09-05)
 
 

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@3.0.1...@4c/file-butler@4.0.0) (2019-10-07)
+
+
+### chore
+
+* bump ([#47](https://github.com/4Catalyzer/file-butler/issues/47)) ([85b9bf1](https://github.com/4Catalyzer/file-butler/commit/85b9bf1))
+
+
+### BREAKING CHANGES
+
+* probably, there is a lot of stuff here
+
+* fix key
+
+
+
+
+
 ## [3.0.1](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@3.0.0...@4c/file-butler@3.0.1) (2019-08-26)
 
 

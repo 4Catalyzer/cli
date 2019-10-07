@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/4Catalyzer/cli/compare/@4c/init@1.6.7...@4c/init@2.0.0) (2019-10-07)
+
+
+### chore
+
+* bump ([#47](https://github.com/4Catalyzer/cli/issues/47)) ([85b9bf1](https://github.com/4Catalyzer/cli/commit/85b9bf1))
+
+
+### BREAKING CHANGES
+
+* probably, there is a lot of stuff here
+
+* fix key
+
+
+
+
+
 ## [1.6.7](https://github.com/4Catalyzer/cli/compare/@4c/init@1.6.6...@4c/init@1.6.7) (2019-08-26)
 
 **Note:** Version bump only for package @4c/init
