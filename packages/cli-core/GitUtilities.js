@@ -3,17 +3,20 @@ const path = require('path');
 const slash = require('slash');
 
 function hasTag(tag) {
-  return execa
-    .stdout('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`])
-    .then(() => true, () => false);
+  return execa('git', [
+    'rev-parse',
+    '-q',
+    '--verify',
+    `refs/tags/${tag}`,
+  ]).then(() => true, () => false);
 }
 const repoName = name => name.replace(/^@.+\//, '');
 
 exports.repoName = repoName;
 
 exports.getRemoteUrl = cwd =>
-  execa
-    .stdout('git', ['config', 'remote.origin.url'], { cwd })
+  execa('git', ['config', 'remote.origin.url'], { cwd })
+    .then(r => r.stdout)
     .catch(() => '');
 
 exports.remoteUrl = (name, org = '4Catalyzer') =>
@@ -44,21 +47,25 @@ exports.commit = message =>
 exports.removeLastCommit = () => execa('git', ['reset', 'HEAD~1', '--hard']);
 
 exports.assertClean = async () => {
-  if ((await execa.stdout('git', ['status', '--porcelain'])) !== '')
+  const result = await execa('git', ['status', '--porcelain']).then(
+    d => d.stdout,
+  );
+
+  if (result !== '')
     throw new Error(
       'Git working tree is not clean, please commit or stash any unstaged changes',
     );
 };
 
 exports.assertMatchesRemote = async () => {
-  if (
-    (await execa.stdout('git', [
-      'rev-list',
-      '--count',
-      '--left-only',
-      '@{u}...HEAD',
-    ])) !== '0'
-  )
+  const result = await execa('git', [
+    'rev-list',
+    '--count',
+    '--left-only',
+    '@{u}...HEAD',
+  ]).then(d => d.stdout);
+
+  if (result !== '0')
     throw new Error('The remote differs from the local working tree');
 };
 
@@ -78,6 +85,8 @@ exports.addTag = async tag => {
 
 exports.removeTag = tag => execa('git', ['tag', '-d', tag]);
 exports.getCurrentBranch = opts =>
-  execa.stdout('git', ['rev-parse', '--abbrev-ref', 'HEAD'], opts);
+  execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'], opts).then(
+    r => r.stdout,
+  );
 
 exports.pushWithTags = () => execa('git', ['push', '--follow-tags']);

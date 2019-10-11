@@ -215,7 +215,7 @@ exports.builder = _ =>
 const handler = async argv => {
   const cwd = process.cwd();
   const changelogPath = path.join(cwd, 'CHANGELOG.md');
-  const { path: pkgPath, package: pkg } = await readPackageJson({ cwd });
+  const { path: pkgPath, packageJson } = await readPackageJson({ cwd });
 
   const {
     otp,
@@ -228,7 +228,7 @@ const handler = async argv => {
     conventionalCommits,
     public: isPublic,
     allowBranch = ['master'],
-  } = { ...pkg.release, ...argv };
+  } = { ...packageJson.release, ...argv };
 
   let { publishDir, nextVersion: version } = argv;
   const useYarn = hasYarn(cwd);
@@ -237,11 +237,11 @@ const handler = async argv => {
   );
 
   // lerna
-  if (!publishDir && pkg.publishConfig)
-    publishDir = pkg.publishConfig.directory;
+  if (!publishDir && packageJson.publishConfig)
+    publishDir = packageJson.publishConfig.directory;
   // older rollout
-  if (!publishDir && pkg.release) {
-    publishDir = pkg.release.publishDir;
+  if (!publishDir && packageJson.release) {
+    publishDir = packageJson.release.publishDir;
     if (publishDir)
       ConsoleUtilities.warn(
         'publishDir in package.json `release` field is deprecated. Use the `publishConfig.directory` field instead.',
@@ -305,23 +305,25 @@ const handler = async argv => {
     },
   ]);
 
-  let nextVersion = pkg.version;
+  let nextVersion = packageJson.version;
 
   if (!skipVersion) {
     if (conventionalCommits) {
-      version = (await recommendedBump(pkg.version)) || version; // eslint-disable-line no-param-reassign
+      version = (await recommendedBump(packageJson.version)) || version; // eslint-disable-line no-param-reassign
     }
 
-    nextVersion = await getNextVersion(version, pkg.version, preid);
+    nextVersion = await getNextVersion(version, packageJson.version, preid);
   }
 
-  const isSameVersion = nextVersion === pkg.version;
+  const isSameVersion = nextVersion === packageJson.version;
 
   const isPrerelease = !!semver.prerelease(nextVersion);
   const tag = npmTag || isPrerelease ? 'next' : 'latest';
 
   const confirmed = await PromptUtilities.confirm(
-    `Are you sure you want to publish version: ${nextVersion}@${tag}?`,
+    `Are you sure you want to publish version ${chalk.bold(
+      `${nextVersion}@${tag}`,
+    )}${publishDir ? ` from sub-directory ${chalk.bold(publishDir)}` : ''}`,
   );
 
   if (!confirmed) return;
@@ -333,12 +335,12 @@ const handler = async argv => {
         title: isSameVersion
           ? 'Bumping package version'
           : `Bumping version to: ${chalk.bold(nextVersion)}  (${chalk.dim(
-              `was ${pkg.version}`,
+              `was ${packageJson.version}`,
             )})`,
         skip: () => skipVersion || (isSameVersion && 'Version is unchanged'),
         task: () =>
           writeJson(path.join(cwd, 'package.json'), {
-            ...pkg,
+            ...packageJson,
             version: nextVersion,
           }),
       },
@@ -375,12 +377,12 @@ const handler = async argv => {
         task: (context, task) => {
           const input = { otp, publishDir, isPublic, tag };
 
-          return from(npmPublish(pkg, input)).pipe(
+          return from(npmPublish(packageJson, input)).pipe(
             catchError(error =>
               handleNpmError(error, task, nextOtp => {
                 // eslint-disable-next-line no-param-reassign
                 context.otp = nextOtp;
-                return npmPublish(pkg, { ...input, otp: nextOtp });
+                return npmPublish(packageJson, { ...input, otp: nextOtp });
               }),
             ),
           );
@@ -401,7 +403,7 @@ const handler = async argv => {
     `\n\n🎉  Published v${nextVersion}@${tag}:  ${chalk.blue(
       skipNpm
         ? await GitUtilities.getRemoteUrl()
-        : `https://npm.im/${pkg.name}`,
+        : `https://npm.im/${packageJson.name}`,
     )} \n`,
   );
 };
