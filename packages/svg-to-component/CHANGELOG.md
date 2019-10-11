@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.8](https://github.com/4Catalyzer/cli/compare/svg2c@1.4.7...svg2c@1.4.8) (2019-10-11)
+
+**Note:** Version bump only for package svg2c
+
+
+
+
+
 ## [1.4.7](https://github.com/4Catalyzer/cli/compare/svg2c@1.4.6...svg2c@1.4.7) (2019-10-07)
 
 **Note:** Version bump only for package svg2c

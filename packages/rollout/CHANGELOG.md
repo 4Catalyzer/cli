@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.0.0...@4c/rollout@2.0.1) (2019-10-11)
+
+
+### Bug Fixes
+
+* rollout and execa usage ([72f4623](https://github.com/4Catalyzer/cli/commit/72f4623))
+
+
+
+
+
 # [2.0.0](https://github.com/4Catalyzer/cli/compare/@4c/rollout@1.4.0...@4c/rollout@2.0.0) (2019-10-07)
 
 
