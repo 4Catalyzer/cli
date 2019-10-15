@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@4c/cli-core": "^2.0.1",
-    "execa": "^2.0.4",
+    "execa": "^3.1.0",
     "find-yarn-workspace-root": "^1.2.1",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.3",
