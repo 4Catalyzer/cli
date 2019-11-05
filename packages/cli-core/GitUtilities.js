@@ -8,7 +8,10 @@ function hasTag(tag) {
     '-q',
     '--verify',
     `refs/tags/${tag}`,
-  ]).then(() => true, () => false);
+  ]).then(
+    () => true,
+    () => false,
+  );
 }
 const repoName = name => name.replace(/^@.+\//, '');
 
