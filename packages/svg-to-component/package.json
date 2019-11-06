@@ -1,6 +1,6 @@
 {
   "name": "svg2c",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "main": "lib.js",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.0.1",
+    "@4c/cli-core": "^2.0.2",
     "@babel/core": "^7.7.0",
     "@babel/preset-react": "^7.7.0",
     "js-yaml": "^3.13.1",

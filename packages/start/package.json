@@ -1,6 +1,6 @@
 {
   "name": "@4c/start",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "main": "lib.js",
   "repository": {
     "type": "git",
@@ -31,7 +31,7 @@
     "webpack": "^4.39.2"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.0.1",
+    "@4c/cli-core": "^2.0.2",
     "@babel/code-frame": "^7.5.5",
     "dotenv": "^8.1.0",
     "exists-case": "^0.1.0",
