@@ -3,7 +3,7 @@ const { debuglog } = require('util');
 const fs = require('fs-extra');
 const execa = require('execa');
 const Listr = require('listr');
-const { chalk, symbols } = require('@4c/cli-core/ConsoleUtilities');
+const { chalk, symbols, info } = require('@4c/cli-core/ConsoleUtilities');
 
 const { copy, copyRest } = require('./copy');
 
@@ -48,6 +48,10 @@ exports.builder = _ =>
       type: 'boolean',
       default: true,
       describe: 'Remove out directory before building',
+    })
+    .option('tsconfig', {
+      type: 'path',
+      describe: 'The tsconfig.json location to use for type defs',
     })
     .option('only-types', {
       type: 'boolean',
@@ -102,6 +106,12 @@ const safeToDelete = (dir, cwd = process.cwd()) => {
   return resolvedDir.startsWith(cwd) && resolvedDir !== cwd;
 };
 
+const getTsconfig = () => {
+  if (fs.existsSync('./tsconfig.build.json')) return './tsconfig.build.json';
+  if (fs.existsSync('./tsconfig.json')) return './tsconfig.json';
+  return null;
+};
+
 exports.handler = async ({
   patterns,
   esm,
@@ -113,12 +123,19 @@ exports.handler = async ({
   extensions,
   copyFiles,
   '--': passthrough,
+  ...options
 }) => {
   const pkg = await fs.readJson('package.json');
+  const tsconfig = types && (options.tsconfig || getTsconfig());
 
-  const buildTypes = types && !!fs.existsSync(`tsconfig.json`);
+  const buildTypes = tsconfig && !!fs.existsSync(tsconfig);
   const tscCmd = buildTypes && getCli('typescript', 'tsc');
 
+  if (tsconfig && !options.tsconfig) {
+    info(
+      `Using "${tsconfig}" to compile types. Pass --tsconfig to override this default\n`,
+    );
+  }
   if (!outDir) {
     // eslint-disable-next-line no-param-reassign
     outDir = pkg.main && path.dirname(pkg.main);
@@ -151,7 +168,13 @@ exports.handler = async ({
   function getTypeTask(out) {
     return async (_, task) => {
       if (buildTypes) {
-        await run(tscCmd, ['--emitDeclarationOnly', '--outDir', out]);
+        await run(tscCmd, [
+          '-p',
+          tsconfig,
+          '--emitDeclarationOnly',
+          '--outDir',
+          out,
+        ]);
       }
       if (typeDir) {
         // eslint-disable-next-line no-param-reassign
