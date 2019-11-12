@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli-core",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "license": "MIT",
   "publishConfig": {
     "access": "public"

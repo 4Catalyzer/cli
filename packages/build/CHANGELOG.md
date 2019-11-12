@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/4Catalyzer/build/compare/@4c/build@2.0.2...@4c/build@2.1.0) (2019-11-12)
+
+
+### Features
+
+* use tsconfig.build and all setting via option ([#109](https://github.com/4Catalyzer/build/issues/109)) ([fa58672](https://github.com/4Catalyzer/build/commit/fa5867232fd51d063f4e39fe4cc1a0c5034ac4d5))
+
+
+
+
+
 ## [2.0.2](https://github.com/4Catalyzer/build/compare/@4c/build@2.0.1...@4c/build@2.0.2) (2019-11-06)
 
 **Note:** Version bump only for package @4c/build

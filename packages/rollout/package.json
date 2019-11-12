@@ -1,6 +1,6 @@
 {
   "name": "@4c/rollout",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "main": "command.js",
   "author": "4catalyzer",
   "license": "MIT",
@@ -19,8 +19,8 @@
     "transform": {}
   },
   "dependencies": {
-    "@4c/cli-core": "^2.0.2",
-    "@4c/file-butler": "^4.0.2",
+    "@4c/cli-core": "^2.0.3",
+    "@4c/file-butler": "^4.0.3",
     "chalk": "^3.0.0",
     "common-tags": "^1.8.0",
     "conventional-changelog": "^3.0.6",
