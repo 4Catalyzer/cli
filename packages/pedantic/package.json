@@ -35,6 +35,6 @@
     "import-sort-config": "^6.0.0",
     "import-sort-parser-babylon": "^6.0.0",
     "prettier": "prettier/prettier",
-    "yargs": "^14.0.0"
+    "yargs": "^15.0.1"
   }
 }
