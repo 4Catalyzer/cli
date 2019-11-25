@@ -1,4 +1,5 @@
 const readPkgUp = require('read-pkg-up');
+const findUp = require('find-up');
 const { readFileSync } = require('fs');
 const commentJson = require('comment-json');
 const getWorkspaces = require('get-workspaces').default;
@@ -25,11 +26,30 @@ const getTSConfig = (dir = process.cwd()) => {
   return safeRequire(`${dir}/tsconfig.json`);
 };
 
-const getLernaConfig = dir => {
+const getLernaConfig = (dir = process.cwd()) => {
   return safeRequire(`${dir}/lerna.json`);
 };
 
+const findLernaConfig = async cwd => {
+  const result = await findUp('lerna.json', { cwd });
+  return result;
+};
+
+const detectMonoRepo = async cwd => {
+  const [lerna, root] = await Promise.all([
+    findLernaConfig(cwd),
+    findWorkspacesRoot(cwd),
+  ]);
+
+  return {
+    root,
+    lernaConfig: safeRequire(lerna),
+    packageJson: root ? require(`${root}/package.json`) : null,
+  };
+};
+
 module.exports = {
+  detectMonoRepo,
   readPackageJson,
   commentJson,
   getTSConfig,
@@ -37,4 +57,5 @@ module.exports = {
   getPackageConfig,
   getWorkspaces,
   findWorkspacesRoot,
+  findLernaConfig,
 };
