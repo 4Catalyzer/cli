@@ -2,7 +2,7 @@
 
 const yargs = require('yargs');
 const { success } = require('@4c/cli-core/ConsoleUtilities');
-const { readPackageJson } = require('@4c/cli-core/FileUtilities');
+const { readPackageJson } = require('@4c/cli-core/ConfigUtilities');
 
 const {
   createAltPublishDir,

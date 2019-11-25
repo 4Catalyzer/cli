@@ -3,8 +3,8 @@ const { debuglog } = require('util');
 const fs = require('fs-extra');
 const execa = require('execa');
 const Listr = require('listr');
+const { detectMonoRepo } = require('@4c/cli-core/ConfigUtilities');
 const { chalk, symbols, info } = require('@4c/cli-core/ConsoleUtilities');
-
 const { copy, copyRest } = require('./copy');
 
 const debug = debuglog('@4c/build');
@@ -87,19 +87,6 @@ function run(...args) {
 
 let babelCmd;
 
-function runBabel(args, passthrough) {
-  babelCmd = babelCmd || getCli('@babel/cli', 'babel');
-
-  const builtArgs = args
-    .filter(Boolean)
-    .concat(['--ignore', '**/__tests__/**,**/__mocks__/**,**/*.d.ts']);
-
-  if (passthrough) builtArgs.push(...passthrough);
-
-  debug(babelCmd, ...builtArgs);
-  return run(babelCmd, builtArgs);
-}
-
 const safeToDelete = (dir, cwd = process.cwd()) => {
   const resolvedDir = path.isAbsolute(dir) ? dir : path.resolve(cwd, dir);
 
@@ -125,6 +112,7 @@ exports.handler = async ({
   '--': passthrough,
   ...options
 }) => {
+  const monoRepo = await detectMonoRepo();
   const pkg = await fs.readJson('package.json');
   const tsconfig = types && (options.tsconfig || getTsconfig());
 
@@ -165,6 +153,21 @@ exports.handler = async ({
     );
   }
 
+  function runBabel(args) {
+    babelCmd = babelCmd || getCli('@babel/cli', 'babel');
+
+    const builtArgs = args
+      .filter(Boolean)
+      .concat(['--ignore', '**/__tests__/**,**/__mocks__/**,**/*.d.ts']);
+
+    // try and be accepting of possible root config for monorepos
+    if (monoRepo) builtArgs.push('--root-mode', 'upward-optional');
+    if (passthrough) builtArgs.push(...passthrough);
+
+    debug(babelCmd, ...builtArgs);
+    return run(babelCmd, builtArgs);
+  }
+
   function getTypeTask(out) {
     return async (_, task) => {
       if (buildTypes) {
@@ -195,17 +198,14 @@ exports.handler = async ({
                 title: 'Compiling with Babel',
                 skip: () => !!onlyTypes,
                 task: () =>
-                  runBabel(
-                    [
-                      ...patterns,
-                      '--out-dir',
-                      outDir,
-                      clean && safeToDelete(outDir) && '--delete-dir-on-start',
-                      '-x',
-                      extensions.join(','),
-                    ],
-                    passthrough,
-                  ),
+                  runBabel([
+                    ...patterns,
+                    '--out-dir',
+                    outDir,
+                    clean && safeToDelete(outDir) && '--delete-dir-on-start',
+                    '-x',
+                    extensions.join(','),
+                  ]),
               },
               {
                 title: 'Copying files',
@@ -227,22 +227,19 @@ exports.handler = async ({
               title: 'Compiling with Babel',
               skip: () => !!onlyTypes,
               task: () =>
-                runBabel(
-                  [
-                    ...patterns,
-                    '--out-dir',
-                    esmRoot,
-                    clean &&
-                      !esmRootInOutDir &&
-                      safeToDelete(esmRoot) &&
-                      '--delete-dir-on-start',
-                    '--env-name',
-                    'esm',
-                    '-x',
-                    extensions.join(','),
-                  ],
-                  passthrough,
-                ),
+                runBabel([
+                  ...patterns,
+                  '--out-dir',
+                  esmRoot,
+                  clean &&
+                    !esmRootInOutDir &&
+                    safeToDelete(esmRoot) &&
+                    '--delete-dir-on-start',
+                  '--env-name',
+                  'esm',
+                  '-x',
+                  extensions.join(','),
+                ]),
             },
             {
               title: 'Copying files',
