@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/4Catalyzer/build/compare/@4c/build@2.1.0...@4c/build@2.2.0) (2019-11-25)
+
+
+### Features
+
+* add monorepo utils and detection to build ([#131](https://github.com/4Catalyzer/build/issues/131)) ([5d51860](https://github.com/4Catalyzer/build/commit/5d51860d3b2a5dd5ba27714e9fe84159243e0019))
+
+
+
+
+
 # [2.1.0](https://github.com/4Catalyzer/build/compare/@4c/build@2.0.2...@4c/build@2.1.0) (2019-11-12)
 
 

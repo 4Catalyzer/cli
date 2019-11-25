@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/4Catalyzer/cli/compare/pedantic@3.0.3...pedantic@3.0.4) (2019-11-25)
+
+**Note:** Version bump only for package pedantic
+
+
+
+
+
 ## [3.0.3](https://github.com/4Catalyzer/cli/compare/pedantic@3.0.2...pedantic@3.0.3) (2019-11-12)
 
 **Note:** Version bump only for package pedantic
