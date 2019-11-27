@@ -1,6 +1,6 @@
 {
   "name": "svg2c",
-  "version": "1.4.11",
+  "version": "1.4.12",
   "main": "lib.js",
   "repository": {
     "type": "git",
