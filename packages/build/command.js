@@ -39,6 +39,10 @@ exports.builder = _ =>
       default: undefined,
       describe: 'Builds an esm build',
     })
+    .option('watch', {
+      type: 'boolean',
+      describe: 'Run build in watch mode',
+    })
     .option('extensions', {
       alias: 'x',
       default: ['.js', '.ts', '.tsx'],
@@ -74,15 +78,23 @@ exports.builder = _ =>
     });
 
 function run(...args) {
-  return execa(...args, {
+  const result = execa(...args, {
     env: { FORCE_COLOR: true },
-  }).catch(err => {
-    throw new Error(
-      `\n${symbols.error} ${chalk.redBright(
-        'There was a problem running the build command:',
-      )}\n${err.stdout}\n${err.stderr}`,
-    );
   });
+
+  return Object.assign(
+    result.catch(err => {
+      throw new Error(
+        `\n${symbols.error} ${chalk.redBright(
+          'There was a problem running the build command:',
+        )}\n${err.stdout}\n${err.stderr}`,
+      );
+    }),
+    {
+      stdout: result.stdout,
+      stderr: result.stderr,
+    },
+  );
 }
 
 let babelCmd;
@@ -108,6 +120,7 @@ exports.handler = async ({
   typeDir,
   onlyTypes,
   extensions,
+  watch,
   copyFiles,
   '--': passthrough,
   ...options
@@ -187,6 +200,61 @@ exports.handler = async ({
     };
   }
 
+  const buildCjs = watching =>
+    runBabel(
+      [
+        ...patterns,
+        '--out-dir',
+        outDir,
+        clean && safeToDelete(outDir) && '--delete-dir-on-start',
+        '-x',
+        extensions.join(','),
+        watching && '--watch',
+      ],
+      passthrough,
+    );
+  const buildEsm = watching =>
+    runBabel(
+      [
+        ...patterns,
+        '--out-dir',
+        esmRoot,
+        clean &&
+          !esmRootInOutDir &&
+          safeToDelete(esmRoot) &&
+          '--delete-dir-on-start',
+        '--env-name',
+        'esm',
+        '-x',
+        extensions.join(','),
+        watching && '--watch',
+      ],
+      passthrough,
+    );
+
+  if (watch) {
+    try {
+      let cjsProcess, esmProcess;
+
+      // TODO nicer output
+      if (outDir && !isSameEntry) {
+        cjsProcess = buildCjs(true);
+        cjsProcess.stdout.pipe(process.stdout);
+      }
+      if (esmRoot) {
+        esmProcess = buildEsm(true);
+        esmProcess.stdout.pipe(process.stdout);
+      }
+
+      await Promise.all([cjsProcess, esmProcess]);
+    } catch (err) {
+      console.error(err.message);
+      process.exitCode = 1;
+    }
+
+    return;
+  }
+
   const tasks = new Listr(
     [
       outDir &&
@@ -197,15 +265,7 @@ exports.handler = async ({
               {
                 title: 'Compiling with Babel',
                 skip: () => !!onlyTypes,
-                task: () =>
-                  runBabel([
-                    ...patterns,
-                    '--out-dir',
-                    outDir,
-                    clean && safeToDelete(outDir) && '--delete-dir-on-start',
-                    '-x',
-                    extensions.join(','),
-                  ]),
+                task: () => buildCjs(false),
               },
               {
                 title: 'Copying files',
@@ -226,20 +286,7 @@ exports.handler = async ({
             {
               title: 'Compiling with Babel',
               skip: () => !!onlyTypes,
-              task: () =>
-                runBabel([
-                  ...patterns,
-                  '--out-dir',
-                  esmRoot,
-                  clean &&
-                    !esmRootInOutDir &&
-                    safeToDelete(esmRoot) &&
-                    '--delete-dir-on-start',
-                  '--env-name',
-                  'esm',
-                  '-x',
-                  extensions.join(','),
-                ]),
+              task: () => buildEsm(false),
             },
             {
               title: 'Copying files',
