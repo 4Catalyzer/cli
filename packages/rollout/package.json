@@ -33,7 +33,7 @@
     "listr-input": "^0.2.0",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.2",
-    "semver": "^6.3.0"
+    "semver": "^7.0.0"
   },
   "devDependencies": {
     "jest": "^24.1.0",
