@@ -28,7 +28,7 @@
     "@4c/jest-preset": "^1.4.3",
     "@4c/prettier-config": "^1.1.0",
     "jest": "^24.9.0",
-    "webpack": "^4.41.2"
+    "webpack": "^4.41.4"
   },
   "dependencies": {
     "@4c/cli-core": "^2.1.0",
