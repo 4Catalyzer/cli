@@ -22,14 +22,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "yarn cli lint --fix",
-      "git add"
-    ],
-    "*.{json,css,md}": [
-      "yarn cli lint --fix",
-      "git add"
-    ]
+    "*.js": "yarn cli lint --fix",
+    "*.{json,css,md}": "yarn cli lint --fix"
   },
   "workspaces": [
     "packages/*"
