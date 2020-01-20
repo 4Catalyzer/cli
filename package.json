@@ -22,14 +22,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "yarn cli lint --fix",
-      "git add"
-    ],
-    "*.{json,css,md}": [
-      "yarn cli lint --fix",
-      "git add"
-    ]
+    "*.js": "yarn cli lint --fix",
+    "*.{json,css,md}": "yarn cli lint --fix"
   },
   "workspaces": [
     "packages/*"
@@ -46,7 +40,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.0.7",
     "lerna": "^3.20.2",
-    "lint-staged": "^9.5.0",
+    "lint-staged": "^10.0.0",
     "prettier": "^1.19.1"
   }
 }
