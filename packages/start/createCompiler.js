@@ -96,9 +96,7 @@ module.exports = function createCompiler({
 
     if (!forkTsCheckerWebpackPlugin) {
       forkTsCheckerWebpackPlugin = new ForkTsCheckerWebpackPlugin({
-        async: true,
         silent: true,
-        tslint: false,
         compilerOptions: {
           noUnusedLocals: false,
           noUnusedParameters: false,
