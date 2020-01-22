@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.4.3",
-    "jest": "^24.9.0"
+    "jest": "^25.1.0"
   },
   "dependencies": {
     "@4c/cli-core": "^2.1.0",
