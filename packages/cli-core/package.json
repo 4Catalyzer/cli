@@ -12,7 +12,7 @@
     "find-up": "^4.1.0",
     "find-workspaces-root": "^0.1.0",
     "fs-extra": "^8.1.0",
-    "get-workspaces": "^0.5.2",
+    "get-workspaces": "^0.6.0",
     "globby": "^11.0.0",
     "inquirer": "^7.0.0",
     "is-ci": "^2.0.0",

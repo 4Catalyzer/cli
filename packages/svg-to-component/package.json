@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@4c/import-sort": "^4.3.6",
-    "@4c/jest-preset": "^1.4.3",
+    "@4c/jest-preset": "^1.4.4",
     "@4c/prettier-config": "^1.1.0",
     "jest": "^25.1.0"
   }
