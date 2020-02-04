@@ -7,6 +7,8 @@ const rollout = require('@4c/rollout/command');
 const yargs = require('yargs');
 const intl = require('@4c/intl/command');
 const format = require('pedantic/format');
+const downloadMessages = require('@4c/download-messages/command');
+const uploadMessages = require('@4c/upload-messages/command');
 const lint = require('pedantic/lint');
 const svg2c = require('svg2c/command');
 
@@ -29,6 +31,8 @@ yargs
   .command(setCmdName('init', init))
   .command(setCmdName('release', rollout))
   .command(setCmdName('intl', intl))
+  .command(setCmdName('download-messages', downloadMessages))
+  .command(setCmdName('upload-messages', uploadMessages))
   .command(setCmdName('icons', svg2c))
   .command(format)
   .command(lint)

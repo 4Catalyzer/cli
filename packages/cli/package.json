@@ -14,6 +14,8 @@
   "dependencies": {
     "@4c/build": "^2.2.0",
     "@4c/cli-core": "^2.1.0",
+    "@4c/download-messages": "file:../upload-messages",
+    "@4c/upload-messages": "file:../download-messages",
     "@4c/file-butler": "^4.1.0",
     "@4c/init": "^2.0.5",
     "@4c/intl": "^1.2.10",
