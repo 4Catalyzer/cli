@@ -24,8 +24,7 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@4c/import-sort": "^4.3.6",
-    "@4c/jest-preset": "^1.4.4",
+    "@4c/jest-preset": "^1.4.5",
     "@4c/prettier-config": "^1.1.0",
     "jest": "^25.1.0",
     "webpack": "^4.41.5"
