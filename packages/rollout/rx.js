@@ -1,6 +1,6 @@
+const execa = require('execa');
 const { merge, Observable } = require('rxjs');
 const { filter } = require('rxjs/operators');
-const execa = require('execa');
 
 function fromAsyncIterator(iterable) {
   return new Observable(subscriber => {

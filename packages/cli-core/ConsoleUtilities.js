@@ -1,9 +1,10 @@
-const ora = require('ora');
-const isCI = require('is-ci');
-const chalk = require('chalk');
 const { debuglog } = require('util');
-const stripAnsi = require('strip-ansi');
+
+const chalk = require('chalk');
+const isCI = require('is-ci');
 const symbols = require('log-symbols');
+const ora = require('ora');
+const stripAnsi = require('strip-ansi');
 const table = require('text-table');
 
 exports.symbols = symbols;

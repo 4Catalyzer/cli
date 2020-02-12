@@ -1,4 +1,5 @@
 const path = require('path');
+
 const pedantic = require('../lib');
 
 describe('pedantic', () => {

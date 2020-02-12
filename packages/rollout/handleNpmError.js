@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-const listrInput = require('listr-input');
 const chalk = require('chalk');
+const listrInput = require('listr-input');
 const { throwError } = require('rxjs');
 const { catchError } = require('rxjs/operators');
 

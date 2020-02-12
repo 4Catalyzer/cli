@@ -1,9 +1,10 @@
-const readPkgUp = require('read-pkg-up');
-const findUp = require('find-up');
 const { readFileSync } = require('fs');
+
 const commentJson = require('comment-json');
-const getWorkspaces = require('get-workspaces').default;
+const findUp = require('find-up');
 const findWorkspacesRoot = require('find-workspaces-root').default;
+const getWorkspaces = require('get-workspaces').default;
+const readPkgUp = require('read-pkg-up');
 
 const safeRequire = m => {
   try {

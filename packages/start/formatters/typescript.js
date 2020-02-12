@@ -1,13 +1,12 @@
 const { chalk } = require('@4c/cli-core/ConsoleUtilities');
+const { codeFrameColumns } = require('@babel/code-frame');
 const exists = require('exists-case');
-
 const {
   NormalizedMessage,
 } = require('fork-ts-checker-webpack-plugin/lib/NormalizedMessage');
 const {
   formatTitle,
 } = require('friendly-errors-webpack-plugin/src/utils/colors');
-const { codeFrameColumns } = require('@babel/code-frame');
 
 function formatCaseError({ content, severity, code }) {
   const rFiles = /(?:'|")(.+?)(?:'|")/gm;

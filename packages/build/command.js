@@ -1,10 +1,12 @@
 const path = require('path');
 const { debuglog } = require('util');
-const fs = require('fs-extra');
-const execa = require('execa');
-const Listr = require('listr');
+
 const { detectMonoRepo } = require('@4c/cli-core/ConfigUtilities');
 const { chalk, symbols, info } = require('@4c/cli-core/ConsoleUtilities');
+const execa = require('execa');
+const fs = require('fs-extra');
+const Listr = require('listr');
+
 const { copy, copyRest } = require('./copy');
 
 const debug = debuglog('@4c/build');

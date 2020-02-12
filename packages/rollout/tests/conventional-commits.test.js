@@ -1,6 +1,6 @@
-const tmp = require('tmp');
 const fs = require('fs-extra');
 const shell = require('shelljs');
+const tmp = require('tmp');
 
 const {
   updateChangelog,
