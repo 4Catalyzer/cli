@@ -8,11 +8,11 @@
     {{/if}}
   {{/if}}
   "repository": {
+    {{#if workspaceLocation}}
+      "directory": "{{workspaceLocation}}",
+    {{/if}}
     "type": "git",
     "url": "{{gitRepo}}",
-    {{#if workspaceLocation}}
-      "directory": "{{workspaceLocation}}"
-    {{/if}}
   },
   "author": "4Catalyzer",
   "license": "MIT",
@@ -22,12 +22,16 @@
       "prepublishOnly": "yarn run build",
     {{/if}}
 
+    {{#if typescript}}
+      "typecheck": "tsc --noEmit",
+    {{/if}}
+
     "tdd": "jest --watch",
 
     {{#if workspaceRoot}}
       "test": "jest",
     {{else}}
-      "test": "yarn lint && jest",
+      "test": "yarn lint && jest{{#if typescript}} && yarn typecheck{{/if}}",
       "testonly": "jest",
     {{/if}}
 
