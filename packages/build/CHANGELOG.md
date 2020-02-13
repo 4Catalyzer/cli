@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.2](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.1...@4c/build@2.2.2) (2020-02-13)
+
+
+### Bug Fixes
+
+* Downgrade to working version of cpy ([#169](https://github.com/4Catalyzer/build/issues/169)) ([fd66886](https://github.com/4Catalyzer/build/commit/fd66886e3eb5fb8fbbd84513a7d6c73694cb05a8))
+
+
+
+
+
 ## [2.2.1](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.0...@4c/build@2.2.1) (2020-02-13)
 
 **Note:** Version bump only for package @4c/build

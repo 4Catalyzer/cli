@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.1...@4c/file-butler@4.1.2) (2020-02-13)
+
+
+### Bug Fixes
+
+* Downgrade to working version of cpy ([#169](https://github.com/4Catalyzer/file-butler/issues/169)) ([fd66886](https://github.com/4Catalyzer/file-butler/commit/fd66886e3eb5fb8fbbd84513a7d6c73694cb05a8))
+
+
+
+
+
 ## [4.1.1](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.0...@4c/file-butler@4.1.1) (2020-02-13)
 
 **Note:** Version bump only for package @4c/file-butler

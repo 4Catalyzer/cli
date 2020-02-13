@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.0...@4c/init@3.0.1) (2020-02-13)
+
+
+### Bug Fixes
+
+* Downgrade to working version of cpy ([#169](https://github.com/4Catalyzer/cli/issues/169)) ([fd66886](https://github.com/4Catalyzer/cli/commit/fd66886e3eb5fb8fbbd84513a7d6c73694cb05a8))
+
+
+
+
+
 # [3.0.0](https://github.com/4Catalyzer/cli/compare/@4c/init@2.0.5...@4c/init@3.0.0) (2020-02-13)
 
 
