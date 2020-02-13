@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/4Catalyzer/init/compare/@4c/cli@1.0.5...@4c/cli@2.0.0) (2020-02-13)
+
+
+* feat!: Drop import-sort ([a20c58b](https://github.com/4Catalyzer/init/commit/a20c58bd929ef911737eab407357c5954c68c503))
+
+
+### BREAKING CHANGES
+
+* Drop import-sort
+
+
+
+
+
 ## [1.0.5](https://github.com/4Catalyzer/init/compare/@4c/cli@1.0.4...@4c/cli@1.0.5) (2019-11-27)
 
 **Note:** Version bump only for package @4c/cli

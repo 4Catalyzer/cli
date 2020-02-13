@@ -1,6 +1,6 @@
 {
   "name": "@4c/build",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "main": "command.js",
   "bin": {
     "build": "cli.js"
@@ -27,7 +27,7 @@
     "jest": "^25.1.0"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.1.0",
+    "@4c/cli-core": "^2.1.1",
     "@babel/cli": "^7.7.0",
     "@babel/core": "^7.7.0",
     "cpy": "^8.0.0",
