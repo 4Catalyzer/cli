@@ -1,7 +1,8 @@
-const path = require('path');
 const fs = require('fs');
-const prettier = require('prettier');
+const path = require('path');
+
 const glob = require('glob');
+const prettier = require('prettier');
 
 const templatePath = path.resolve(__dirname, './templates');
 

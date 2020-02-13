@@ -2,7 +2,7 @@ const format = require('./lib');
 
 exports.command = 'lint <patterns..>';
 
-exports.describe = 'Lint files use ESLint, Prettier and import-sort';
+exports.describe = 'Lint files use ESLint and prettier';
 
 exports.builder = _ =>
   _.option('fix', {
