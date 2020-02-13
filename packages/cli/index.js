@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 const build = require('@4c/build/command');
-const start = require('@4c/start/command');
 const init = require('@4c/init/command');
-const rollout = require('@4c/rollout/command');
-const yargs = require('yargs');
 const intl = require('@4c/intl/command');
+const rollout = require('@4c/rollout/command');
+const start = require('@4c/start/command');
 const format = require('pedantic/format');
 const lint = require('pedantic/lint');
 const svg2c = require('svg2c/command');
+const yargs = require('yargs');
 
 const setCmdName = (name, cmd) => ({
   ...cmd,

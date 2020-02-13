@@ -1,14 +1,14 @@
-const path = require('path');
 const { promises: fs } = require('fs');
+const path = require('path');
 const { debuglog } = require('util');
 
+const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 const {
   spinner,
   chalk,
   stripAnsi,
   table,
 } = require('@4c/cli-core/ConsoleUtilities');
-const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 
 const FileFormatter = require('./FileFormatter');
 const Linter = require('./Linter');

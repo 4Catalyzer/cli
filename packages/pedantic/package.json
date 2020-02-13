@@ -23,17 +23,13 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@4c/jest-preset": "^1.4.4",
+    "@4c/jest-preset": "^1.4.5",
     "jest": "^25.1.0"
   },
   "dependencies": {
     "@4c/cli-core": "^2.1.0",
-    "@4c/import-sort": "^4.3.1",
     "chalk": "^3.0.0",
     "eslint": "^6.5.1",
-    "import-sort": "^6.0.0",
-    "import-sort-config": "^6.0.0",
-    "import-sort-parser-babylon": "^6.0.0",
     "prettier": "^1.19.1",
     "yargs": "^15.0.1"
   }

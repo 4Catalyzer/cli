@@ -1,23 +1,23 @@
 const path = require('path');
-const fs = require('fs-extra');
-const chalk = require('chalk');
-const execa = require('execa');
-const semver = require('semver');
-const rimraf = require('rimraf');
-const hasYarn = require('has-yarn');
 const { promisify } = require('util');
 
+const { readPackageJson } = require('@4c/cli-core/ConfigUtilities');
+const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
+const GitUtilities = require('@4c/cli-core/GitUtilities');
+const PromptUtilities = require('@4c/cli-core/PromptUtilities');
+const { createAltPublishDir } = require('@4c/file-butler');
+const chalk = require('chalk');
+const execa = require('execa');
+const fs = require('fs-extra');
+const hasYarn = require('has-yarn');
 const Listr = require('listr');
+const rimraf = require('rimraf');
 const { from } = require('rxjs');
 const { catchError } = require('rxjs/operators');
-const { createAltPublishDir } = require('@4c/file-butler');
+const semver = require('semver');
 
-const GitUtilities = require('@4c/cli-core/GitUtilities');
-const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
-const PromptUtilities = require('@4c/cli-core/PromptUtilities');
-const { readPackageJson } = require('@4c/cli-core/ConfigUtilities');
-const handleNpmError = require('./handleNpmError');
 const { updateChangelog, recommendedBump } = require('./conventional-commits');
+const handleNpmError = require('./handleNpmError');
 const { exec } = require('./rx');
 
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });

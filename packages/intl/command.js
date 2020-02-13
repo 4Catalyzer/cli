@@ -1,7 +1,8 @@
+const { writeFileSync, statSync } = require('fs');
+const path = require('path');
+
 const { red, green, yellow, blue } = require('chalk');
 const glob = require('glob');
-const path = require('path');
-const { writeFileSync, statSync } = require('fs');
 
 function toPatterns(files) {
   return files.map(file => {

@@ -1,7 +1,7 @@
 const path = require('path');
 
-const findWorkspaceRoot = require('find-yarn-workspace-root');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
+const findWorkspaceRoot = require('find-yarn-workspace-root');
 
 const addHelpers = require('./addHelpers');
 const {

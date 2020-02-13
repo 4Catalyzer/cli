@@ -1,5 +1,4 @@
 const { chalk } = require('@4c/cli-core/ConsoleUtilities');
-
 const {
   formatTitle,
 } = require('friendly-errors-webpack-plugin/src/utils/colors');

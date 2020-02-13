@@ -1,7 +1,7 @@
+const defaultError = require('./defaultError');
 const moduleNotFound = require('./moduleNotFound');
 const typescript = require('./typescript');
 const unusedFiles = require('./unusedFiles');
-const defaultError = require('./defaultError');
 
 module.exports = compiler => [
   unusedFiles,
