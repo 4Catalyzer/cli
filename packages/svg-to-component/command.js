@@ -1,10 +1,12 @@
 /* eslint-disable no-param-reassign */
 const { promises: fs } = require('fs');
 const path = require('path');
-const camelCase = require('lodash/camelCase');
-const upperFirst = require('lodash/upperFirst');
+
 const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
+const camelCase = require('lodash/camelCase');
+const upperFirst = require('lodash/upperFirst');
+
 const svg2c = require('./lib');
 const typeDef = require('./typeDef');
 

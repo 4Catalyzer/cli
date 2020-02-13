@@ -23,7 +23,7 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@4c/jest-preset": "^1.4.4",
+    "@4c/jest-preset": "^1.4.5",
     "jest": "^25.1.0"
   },
   "dependencies": {

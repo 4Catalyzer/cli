@@ -1,6 +1,7 @@
 const path = require('path');
-const fs = require('fs-extra');
+
 const cpy = require('cpy');
+const fs = require('fs-extra');
 
 const relativeOut = (src, outDir) =>
   path.relative(path.resolve(src), path.resolve(outDir));

@@ -1,12 +1,12 @@
+const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
+const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
+const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack');
-const WebpackBar = require('webpackbar');
 const WebpackNotifierPlugin = require('webpack-notifier');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
-const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
-const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
-const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
+const WebpackBar = require('webpackbar');
 
 const getFormatters = require('./formatters');
 const getTransformers = require('./transformers');

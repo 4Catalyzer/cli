@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs');
-const { success } = require('@4c/cli-core/ConsoleUtilities');
 const { readPackageJson } = require('@4c/cli-core/ConfigUtilities');
+const { success } = require('@4c/cli-core/ConsoleUtilities');
+const yargs = require('yargs');
 
 const {
   createAltPublishDir,

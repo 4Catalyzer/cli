@@ -1,12 +1,14 @@
 /* eslint-disable no-param-reassign */
 const { promises: fs } = require('fs');
 const path = require('path');
-const yaml = require('js-yaml');
+
+const { chalk } = require('@4c/cli-core/ConsoleUtilities');
 const { transformAsync } = require('@babel/core');
+const yaml = require('js-yaml');
 const camelCase = require('lodash/camelCase');
 const upperFirst = require('lodash/upperFirst');
 const Svgo = require('svgo');
-const { chalk } = require('@4c/cli-core/ConsoleUtilities');
+
 const defaultConfig = require('./svgo.config.js');
 
 // https://github.com/svg/svgo/blob/fe0ecaf31eb87a913638a62f842044e425683623/lib/svgo/coa.js

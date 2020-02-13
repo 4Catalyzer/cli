@@ -1,7 +1,8 @@
 const path = require('path');
+
+const cpy = require('cpy');
 const fs = require('fs-extra');
 const globby = require('globby');
-const cpy = require('cpy');
 
 const strReg = /\[\s*(\w+)\s*\]/g;
 const interpolate = pattern => filename => {

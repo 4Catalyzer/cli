@@ -1,5 +1,5 @@
-const unusedFiles = require('./unusedFiles');
 const typescript = require('./typescript');
+const unusedFiles = require('./unusedFiles');
 
 module.exports = () => [
   unusedFiles,
