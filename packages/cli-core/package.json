@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "chalk": "^3.0.0",
-    "comment-json": "^2.2.0",
+    "comment-json": "^3.0.0",
     "execa": "^4.0.0",
     "find-up": "^4.1.0",
     "find-workspaces-root": "^0.1.0",

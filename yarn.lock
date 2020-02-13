@@ -2884,10 +2884,10 @@ commander@^4.0.1:
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.0.1.tgz#b67622721785993182e807f4883633e6401ba53c"
   integrity sha512-IPF4ouhCP+qdlcmCedhxX4xiGBPyigb8v5NeUp+0LyhwLgxMqyp3S0vl7TAPfS/hiP7FC3caI/PB9lTmP8r1NA==
 
-comment-json@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/comment-json/-/comment-json-2.2.0.tgz#ab3013f95ec141ae8ae0af62847690aebf02dad4"
-  integrity sha512-C8Xm1HF5d4/Hg1MYM8xvae9qtFFpOn1Q3dTCzmFbFaj8VCtcSliu7oYtfYcmOnbxqU+vvxj7MN5Srwpr6qCmvw==
+comment-json@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/comment-json/-/comment-json-3.0.2.tgz#a5652a491910e338080bcbf98fc9a37cbd7f3733"
+  integrity sha512-ysJasbJ671+8mPEmwLOfLFqxoGtSmjyoep+lKRVH4J1/hsGu79fwetMDQWk8de8mVgqDZ43D7JuJAlACqjI1pg==
   dependencies:
     core-util-is "^1.0.2"
     esprima "^4.0.1"
