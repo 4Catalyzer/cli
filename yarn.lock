@@ -1327,13 +1327,6 @@
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
   integrity sha512-EaObqwIvayI5a8dCzhFrjKzVwKLxjoG9T6Ppd5CEo07LRKfQ8Yokw54r5+Wq7FaBQ+yXRvQAYPrHwya1/UFt9g==
 
-"@types/fs-extra@^8.0.0":
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-8.0.1.tgz#a2378d6e7e8afea1564e44aafa2e207dadf77686"
-  integrity sha512-J00cVDALmi/hJOYsunyT52Hva5TnJeKP5yd1r+mH/ZU0mbYZflR0Z5kw5kITtKTRYMhm1JMClOFYdHnQszEvqw==
-  dependencies:
-    "@types/node" "*"
-
 "@types/glob@^7.1.1":
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.1.1.tgz#aa59a1c6e3fbc421e07ccd31a944c30eba521575"
@@ -3918,10 +3911,10 @@ escodegen@^1.11.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-4catalyzer@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer/-/eslint-config-4catalyzer-1.1.0.tgz#4db44fb42b6f2f18af5ad62256575cdadd27d445"
-  integrity sha512-ruLHTvJYtEEYKnQqSuUtUIxGndxSVcLcIO5Xd5CX5+r5NtgnsOtY4GCZyKXGgA02VaP2N/2yjbTbrikhd22nSQ==
+eslint-config-4catalyzer@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer/-/eslint-config-4catalyzer-1.1.1.tgz#8504e6c653def5cba35c0a793ba26989f987bab2"
+  integrity sha512-Edl1Hl+RfLKrhWYsTwNUdIVNaLXxfrpaDI4sQZgRcw1qHjdS6Z2PpYT52xT9FzicP/YQyZEnihvXY4Z/Yg2zWg==
   dependencies:
     babel-eslint "^10.0.3"
     eslint-config-airbnb-base "^14.0.0"
@@ -4490,16 +4483,15 @@ find-versions@^3.2.0:
   dependencies:
     semver-regex "^2.0.0"
 
-find-workspaces-root@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/find-workspaces-root/-/find-workspaces-root-0.1.0.tgz#0afc33920eca22ad58f87e1e9a49ac97d176c25f"
-  integrity sha512-NIVJ0SB4+BMwN0MXAPYPj5SWgcyYh2bCP2ZJTVW74uSuQ3oWp6hVPfW1HHBYqPuzWbzKbDbwk6kUKXw6Jr+Qsg==
+find-workspaces-root@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/find-workspaces-root/-/find-workspaces-root-0.2.0.tgz#46e487deed4faa02b3e30007d3ce6d13f8deb69e"
+  integrity sha512-VvMqY2reYnYztgO0CBbxSFw/Cey2W0RrZnx6/4gl4m1okp0efnP0wxNQMtfj6aYMqmo0QQFl5Z+27WV0TVWgow==
   dependencies:
     "@babel/runtime" "^7.5.5"
-    "@types/fs-extra" "^8.0.0"
     "@types/node" "^12.7.1"
     find-up "^4.1.0"
-    fs-extra "^8.1.0"
+    get-workspaces "^0.6.0"
 
 find-yarn-workspace-root@^1.2.1:
   version "1.2.1"
@@ -5249,10 +5241,10 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
-husky@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-4.2.1.tgz#b09f1bd9129e6c323cc515dc17081d0615e2d7c1"
-  integrity sha512-Qa0lRreeIf4Tl92sSs42ER6qc3hzoyQPPorzOrFWfPEVbdi6LuvJEqWKPk905fOWIR76iBpp7ECZNIwk+a8xuQ==
+husky@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-4.2.3.tgz#3b18d2ee5febe99e27f2983500202daffbc3151e"
+  integrity sha512-VxTsSTRwYveKXN4SaH1/FefRJYCtx+wx04sSVcOpD7N2zjoHxa+cEJ07Qg5NmV3HAK+IRKOyNVpi2YBIVccIfQ==
   dependencies:
     chalk "^3.0.0"
     ci-info "^2.0.0"
@@ -10340,7 +10332,7 @@ webpack-sources@^1.4.0, webpack-sources@^1.4.1:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@^4.41.5:
+webpack@^4.41.6:
   version "4.41.6"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.41.6.tgz#12f2f804bf6542ef166755050d4afbc8f66ba7e1"
   integrity sha512-yxXfV0Zv9WMGRD+QexkZzmGIh54bsvEs+9aRWxnN8erLWEOehAKUTeNBoUbA6HPEZPlRo7KDi2ZcNveoZgK9MA==
