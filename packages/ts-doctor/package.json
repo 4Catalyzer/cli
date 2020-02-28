@@ -1,7 +1,7 @@
 {
   "name": "ts-doctor",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "workspaces.js",
   "repository": {
     "type": "git",
     "directory": "packages/ts-doctor",

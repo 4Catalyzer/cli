@@ -23,14 +23,14 @@ exports.builder = _ =>
     describe: 'The current working directory',
   });
 
-function addReference(tsconfig, ref) {
+function addReference(tsConfig, ref) {
   const normalizedPath = path.normalize(ref);
-  const refs = tsconfig.references || [];
+  const refs = tsConfig.references || [];
   const existing = refs.findIndex(
     r => path.normalize(r.path) !== normalizedPath,
   );
   refs.splice(existing, 1, { path: normalizedPath });
-  tsconfig.references = refs;
+  tsConfig.references = refs;
 }
 
 function stringify(json, filepath) {
@@ -78,10 +78,10 @@ exports.handler = async ({ cwd = process.cwd() }) => {
   const { root } = await detectMonoRepo(cwd);
 
   const rootPkgJsonPath = `${root}/package.json`;
-  const rootTsconfigPath = `${root}/tsconfig.json`;
+  const rootTsConfigPath = `${root}/tsconfig.json`;
 
   const rootPkgJson = require(rootPkgJsonPath);
-  const rootTsconfig = getTSConfig(root) || {
+  const rootTsConfig = getTSConfig(root) || {
     files: [],
     references: [],
   };
@@ -99,13 +99,13 @@ exports.handler = async ({ cwd = process.cwd() }) => {
         ...Object.keys(devDependencies),
         ...Object.keys(peerDependencies),
       ]
-        .map(k => workspaceByName.get(k)),
-        .filter(Boolean)
+        .map(k => workspaceByName.get(k))
+        .filter(Boolean),
     );
 
   await Promise.all(
     workspaces.map(({ name, dir, config, tsconfig }) => {
-      addReference(rootTsconfig, path.relative(root, dir));
+      addReference(rootTsConfig, path.relative(root, dir));
 
       const deps = getLocalDeps(config);
       if (!deps.size) return null;
@@ -154,7 +154,7 @@ exports.handler = async ({ cwd = process.cwd() }) => {
   );
   info('Updating root tsconfig');
   await fs.writeFile(
-    rootTsconfigPath,
-    stringify(rootTsconfig, rootTsconfigPath),
+    rootTsConfigPath,
+    stringify(rootTsConfig, rootTsConfigPath),
   );
 };
