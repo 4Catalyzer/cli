@@ -6,7 +6,7 @@ yargs
   .help()
   .alias('h', 'help')
   .version()
-  .alias(`v`, `version`)
+  .alias('v', 'version')
   .wrap(yargs.terminalWidth())
   .strict()
   .command(require('./workspaces'))

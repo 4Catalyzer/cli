@@ -1,3 +1,3 @@
 # `ts-doctor`
 
-A cli of TypeScript related scripts for managing and updating typescript repos
+A CLI of TypeScript related scripts for managing and updating TypeScript repos

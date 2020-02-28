@@ -50,7 +50,6 @@ function buildWorkspaceSources(baseDir, workspaces) {
       publishDir || (ws.config.main ? path.dirname(ws.config.main) : ws.dir),
     );
 
-    console.log('H', baseDir, ws);
     const relPath = path.relative(baseDir, ws.dir);
 
     const key = publishDir ? `${ws.name}/*` : path.join(ws.name, outDir, '/*');
@@ -100,8 +99,8 @@ exports.handler = async ({ cwd = process.cwd() }) => {
         ...Object.keys(devDependencies),
         ...Object.keys(peerDependencies),
       ]
-        .filter(k => workspaceByName.has(k))
         .map(k => workspaceByName.get(k)),
+        .filter(Boolean)
     );
 
   await Promise.all(
