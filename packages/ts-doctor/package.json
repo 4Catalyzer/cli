@@ -1,0 +1,34 @@
+{
+  "name": "ts-doctor",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "directory": "packages/ts-doctor",
+    "url": "https://github.com/4Catalyzer/cli.git"
+  },
+  "author": "4Catalyzer",
+  "license": "MIT",
+  "scripts": {
+    "tdd": "jest --watch",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest": {
+    "preset": "@4c/jest-preset",
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "@4c/cli-core": "^2.1.1",
+    "lodash": "^4.17.15",
+    "prettier": "^1.19.1",
+    "yargs": "^15.1.0"
+  },
+  "devDependencies": {
+    "@4c/cli": "^2.0.1",
+    "@4c/jest-preset": "^1.4.5",
+    "jest": "^25.1.0"
+  }
+}

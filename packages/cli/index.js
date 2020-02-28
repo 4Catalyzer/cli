@@ -8,6 +8,7 @@ const start = require('@4c/start/command');
 const format = require('pedantic/format');
 const lint = require('pedantic/lint');
 const svg2c = require('svg2c/command');
+const workspaces = require('ts-doctor/workspaces');
 const yargs = require('yargs');
 
 const setCmdName = (name, cmd) => ({
@@ -30,6 +31,7 @@ yargs
   .command(setCmdName('release', rollout))
   .command(setCmdName('intl', intl))
   .command(setCmdName('icons', svg2c))
+  .command(setCmdName('fixup-workspaces', workspaces))
   .command(format)
   .command(lint)
   .parse(process.argv.slice(2));
