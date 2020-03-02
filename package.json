@@ -29,17 +29,17 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "babel-eslint": "^10.0.3",
+    "@babel/core": "^7.8.6",
+    "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-4catalyzer": "^1.1.1",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-jest": "^23.8.0",
+    "eslint-plugin-jest": "^23.8.1",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
     "lerna": "^3.20.2",
-    "lint-staged": "^10.0.7",
+    "lint-staged": "^10.0.8",
     "prettier": "^1.19.1"
   }
 }
