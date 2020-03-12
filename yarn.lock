@@ -250,6 +250,11 @@
   resolved "https://registry.yarnpkg.com/@changesets/types/-/types-0.4.0.tgz#3413badb2c3904357a36268cb9f8c7e0afc3a804"
   integrity sha512-TclHHKDVYQ8rJGZgVeWiF7c91yWzTTWdPagltgutelGu/Psup5PQlUq6svx7S8suj+jXcaE34yEEsfIvzXXB2Q==
 
+"@changesets/types@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@changesets/types/-/types-1.0.0.tgz#ea6ac9b9c8e8cd2d2058ea465781bfa9539a4770"
+  integrity sha512-pcgg3uoQG2036Sq0HW4LQIsqdV+am1ysQsuy7JdjvXT2BoJSduPISwSGxKS5gdikwXbizPw8NjDJAeNp1I8tPA==
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.3.tgz#099139eaec7ebf07a27c1786a3ff64f39464d2ef"
@@ -4767,6 +4772,16 @@ get-workspaces@^0.6.0:
   integrity sha512-EWfuENHoxNGk4xoel0jJdm/nhm8oMGQYRsTWJDqrHaj7jyebSckZI0TwQaeWX1rzqpMLULYFrdxhYJPI1l2j3w==
   dependencies:
     "@changesets/types" "^0.4.0"
+    fs-extra "^7.0.1"
+    globby "^9.2.0"
+    read-yaml-file "^1.1.0"
+
+get-workspaces@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/get-workspaces/-/get-workspaces-1.0.0.tgz#4b61f36d0a00531f2b3f40d1aae9f2e90e002c25"
+  integrity sha512-nHTgFFRA37bHi8Qp8BW949JsdwikJN7l3uNk3XkvLtYVRjCxTK21OGs8DB2c/T4yNPhVlzAJtOF6Cpntalw5nw==
+  dependencies:
+    "@changesets/types" "^1.0.0"
     fs-extra "^7.0.1"
     globby "^9.2.0"
     read-yaml-file "^1.1.0"
