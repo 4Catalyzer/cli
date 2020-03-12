@@ -1,6 +1,6 @@
 const format = require('./lib');
 
-exports.command = 'lint <patterns..>';
+exports.command = '$0 <patterns..>';
 
 exports.describe = 'Lint files use ESLint and prettier';
 

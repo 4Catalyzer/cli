@@ -3,25 +3,32 @@
 const { promises: fs } = require('fs');
 const path = require('path');
 
-const {
-  detectMonoRepo,
-  getWorkspaces,
-  getTSConfig,
-  commentJson,
-} = require('@4c/cli-core/ConfigUtilities');
 const { info, error } = require('@4c/cli-core/ConsoleUtilities');
+const { getPackages } = require('@manypkg/get-packages');
+const commentJson = require('comment-json');
 const get = require('lodash/get');
 const prettier = require('prettier');
 
-exports.command = 'workspaces';
+exports.command = '$0';
 
-exports.describe = 'Configure TypeScript project references for a mono repo';
+exports.describe = 'Configure TypeScript project references for a monorepo';
 
 exports.builder = _ =>
   _.option('cwd', {
     type: 'path',
     describe: 'The current working directory',
   });
+
+async function getTsConfig(dir) {
+  let tsConfigStr;
+  try {
+    tsConfigStr = await fs.readFile(`${dir}/tsconfig.json`, 'utf-8');
+  } catch {
+    return null;
+  }
+
+  return commentJson.parse(tsConfigStr);
+}
 
 function addReference(tsConfig, ref) {
   const normalizedPath = path.normalize(ref);
@@ -37,22 +44,24 @@ function stringify(json, filepath) {
   return prettier.format(commentJson.stringify(json, null, 2), { filepath });
 }
 
-function buildWorkspaceSources(baseDir, workspaces) {
+function buildWorkspaceSources(baseDir, tsPackages) {
   const sources = {};
 
-  workspaces.forEach(ws => {
-    const publishDir = get(ws, 'config.publishConfig.directory');
+  tsPackages.forEach(({ dir, packageJson, tsConfig }) => {
+    const publishDir = get(packageJson, 'publishConfig.directory');
 
-    const srcDir = get(ws, 'tsconfig.compilerOptions.rootDir');
+    const srcDir = get(tsConfig, 'compilerOptions.rootDir');
     const outDir = get(
-      ws,
-      'tsconfig.compilerOptions.outDir',
-      publishDir || (ws.config.main ? path.dirname(ws.config.main) : ws.dir),
+      tsConfig,
+      'compilerOptions.outDir',
+      publishDir || (packageJson.main ? path.dirname(packageJson.main) : dir),
     );
 
-    const relPath = path.relative(baseDir, ws.dir);
+    const relPath = path.relative(baseDir, dir);
 
-    const key = publishDir ? `${ws.name}/*` : path.join(ws.name, outDir, '/*');
+    const key = publishDir
+      ? `${packageJson.name}/*`
+      : path.join(packageJson.name, outDir, '/*');
 
     sources[key] = [path.join(relPath, srcDir, '/*')];
   });
@@ -61,32 +70,35 @@ function buildWorkspaceSources(baseDir, workspaces) {
 }
 
 exports.handler = async ({ cwd = process.cwd() }) => {
-  const allWorkspaces = await getWorkspaces({ cwd, tools: 'yarn' });
-  if (!allWorkspaces) {
-    error(`Workspace not detected in ${cwd}`);
+  const { tool, root, packages } = await getPackages(cwd);
+  if (tool === 'root') {
+    error(`Monorepo not detected in ${cwd}`);
     return;
   }
 
-  const workspaces = allWorkspaces
-    .map(workspace => ({
-      ...workspace,
-      tsconfig: getTSConfig(workspace.dir),
-    }))
-    .filter(workspace => workspace.tsconfig);
-  if (!workspaces.length) return;
+  const packagesWithTsConfig = await Promise.all(
+    packages.map(async packageInfo => ({
+      ...packageInfo,
+      tsConfig: await getTsConfig(packageInfo.dir),
+    })),
+  );
 
-  const { root } = await detectMonoRepo(cwd);
+  const tsPackages = packagesWithTsConfig.filter(({ tsConfig }) => tsConfig);
+  if (!tsPackages.length) {
+    return;
+  }
 
-  const rootPkgJsonPath = `${root}/package.json`;
-  const rootTsConfigPath = `${root}/tsconfig.json`;
+  const rootPackageJsonPath = `${root.dir}/package.json`;
+  const rootTsConfigPath = `${root.dir}/tsconfig.json`;
 
-  const rootPkgJson = require(rootPkgJsonPath);
-  const rootTsConfig = getTSConfig(root) || {
+  const rootTsConfig = (await getTsConfig(root.dir)) || {
     files: [],
     references: [],
   };
 
-  const workspaceByName = new Map(workspaces.map(ws => [ws.name, ws]));
+  const tsPackagesByName = new Map(
+    tsPackages.map(tsPackage => [tsPackage.packageJson.name, tsPackage]),
+  );
 
   const getLocalDeps = ({
     dependencies = {},
@@ -99,57 +111,58 @@ exports.handler = async ({ cwd = process.cwd() }) => {
         ...Object.keys(devDependencies),
         ...Object.keys(peerDependencies),
       ]
-        .map(k => workspaceByName.get(k))
+        .map(name => tsPackagesByName.get(name))
         .filter(Boolean),
     );
 
   await Promise.all(
-    workspaces.map(({ name, dir, config, tsconfig }) => {
-      addReference(rootTsConfig, path.relative(root, dir));
+    tsPackages.map(({ dir, packageJson, tsConfig }) => {
+      addReference(rootTsConfig, path.relative(root.dir, dir));
 
-      const deps = getLocalDeps(config);
+      const deps = getLocalDeps(packageJson);
       if (!deps.size) return null;
 
       for (const dep of deps) {
         const publishDir =
-          dep.config.publishConfig && dep.config.publishConfig.directory;
+          dep.packageJson.publishConfig &&
+          dep.packageJson.publishConfig.directory;
 
-        addReference(tsconfig, path.relative(dir, dep.dir));
+        addReference(tsConfig, path.relative(dir, dep.dir));
 
-        // When the dependency publishes a differenct directory than it's root
-        // we also need to configure a `paths` for any cherry-picked imports
+        // When the dependency publishes a differenct directory than its root,
+        //  we also need to configure `paths` for any cherry-picked imports.
         if (publishDir) {
-          tsconfig.compilerOptions = tsconfig.compilerOptions || {};
-          tsconfig.compilerOptions.baseUrl =
-            tsconfig.compilerOptions.baseUrl || '.';
+          tsConfig.compilerOptions = tsConfig.compilerOptions || {};
+          tsConfig.compilerOptions.baseUrl =
+            tsConfig.compilerOptions.baseUrl || '.';
 
-          const basePath = path.resolve(dir, tsconfig.compilerOptions.baseUrl);
+          const basePath = path.resolve(dir, tsConfig.compilerOptions.baseUrl);
           const relPath = path.relative(basePath, dep.dir);
 
-          tsconfig.compilerOptions.paths =
-            tsconfig.compilerOptions.paths || {};
-          tsconfig.compilerOptions.paths[`${dep.name}/*`] = [
+          tsConfig.compilerOptions.paths =
+            tsConfig.compilerOptions.paths || {};
+          tsConfig.compilerOptions.paths[`${dep.packageJson.name}/*`] = [
             `${relPath}/${publishDir}/*`,
           ];
         }
       }
 
-      info(`${name}: updating tsconfig.json`);
+      info(`${packageJson.name}: updating tsconfig.json`);
 
-      const tsconfigPath = `${dir}/tsconfig.json`;
-      return fs.writeFile(tsconfigPath, stringify(tsconfig, tsconfigPath));
+      const tsConfigPath = `${dir}/tsconfig.json`;
+      return fs.writeFile(tsConfigPath, stringify(tsConfig, tsConfigPath));
     }),
   );
 
-  const sources = buildWorkspaceSources(root, workspaces);
+  const sources = buildWorkspaceSources(root.dir, tsPackages);
 
   info('Adding workspace-sources key in root package.json');
 
   await fs.writeFile(
-    rootPkgJsonPath,
+    rootPackageJsonPath,
     stringify(
-      { ...rootPkgJson, 'workspace-sources': sources },
-      rootPkgJsonPath,
+      { ...root.packageJson, 'workspace-sources': sources },
+      rootPackageJsonPath,
     ),
   );
   info('Updating root tsconfig');

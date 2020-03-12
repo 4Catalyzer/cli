@@ -11,10 +11,12 @@ const svg2c = require('svg2c/command');
 const workspaces = require('ts-doctor/workspaces');
 const yargs = require('yargs');
 
-const setCmdName = (name, cmd) => ({
-  ...cmd,
-  command: cmd.command.replace(/^\$0/, name),
-});
+function setCmdName(name, cmd) {
+  return {
+    ...cmd,
+    command: cmd.command.replace(/^\$0/, name),
+  };
+}
 
 yargs
   .help()
@@ -32,6 +34,6 @@ yargs
   .command(setCmdName('intl', intl))
   .command(setCmdName('icons', svg2c))
   .command(setCmdName('fixup-workspaces', workspaces))
-  .command(format)
-  .command(lint)
+  .command(setCmdName('format', format))
+  .command(setCmdName('lint', lint))
   .parse(process.argv.slice(2));

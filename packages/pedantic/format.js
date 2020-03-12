@@ -1,6 +1,6 @@
 const format = require('./lib');
 
-exports.command = 'format <patterns..>';
+exports.command = '$0 <patterns..>';
 
 exports.describe = 'Format files';
 

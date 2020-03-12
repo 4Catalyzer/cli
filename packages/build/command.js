@@ -1,8 +1,8 @@
 const path = require('path');
 const { debuglog } = require('util');
 
-const { detectMonoRepo } = require('@4c/cli-core/ConfigUtilities');
 const { chalk, symbols, info } = require('@4c/cli-core/ConsoleUtilities');
+const { getPackages } = require('@manypkg/get-packages');
 const execa = require('execa');
 const fs = require('fs-extra');
 const Listr = require('listr');
@@ -114,7 +114,9 @@ exports.handler = async ({
   '--': passthrough,
   ...options
 }) => {
-  const monoRepo = await detectMonoRepo();
+  const { tool } = await getPackages();
+  const monorepo = tool !== 'root';
+
   const pkg = await fs.readJson('package.json');
   const tsconfig = types && (options.tsconfig || getTsconfig());
 
@@ -162,8 +164,8 @@ exports.handler = async ({
       .filter(Boolean)
       .concat(['--ignore', '**/__tests__/**,**/__mocks__/**,**/*.d.ts']);
 
-    // try and be accepting of possible root config for monorepos
-    if (monoRepo) builtArgs.push('--root-mode', 'upward-optional');
+    // Try to be accepting of possible root config for monorepos.
+    if (monorepo) builtArgs.push('--root-mode', 'upward-optional');
     if (passthrough) builtArgs.push(...passthrough);
 
     debug(babelCmd, ...builtArgs);
