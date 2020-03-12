@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/4Catalyzer/cli/compare/pedantic@4.0.0...pedantic@4.0.1) (2020-03-12)
+
+
+### Bug Fixes
+
+* Fix config handling ([#180](https://github.com/4Catalyzer/cli/issues/180)) ([a400d6c](https://github.com/4Catalyzer/cli/commit/a400d6ca0b3ee133a8d2d33e5c0224cb10b0c19c))
+
+
+
+
+
 # [4.0.0](https://github.com/4Catalyzer/cli/compare/pedantic@3.0.5...pedantic@4.0.0) (2020-02-13)
 
 
