@@ -31,6 +31,7 @@
     "has-yarn": "^2.1.0",
     "listr": "^0.14.3",
     "listr-input": "^0.2.0",
+    "read-pkg-up": "^7.0.1",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.2",
     "semver": "^7.0.0"

@@ -1,7 +1,6 @@
 const path = require('path');
 const { promisify } = require('util');
 
-const { readPackageJson } = require('@4c/cli-core/ConfigUtilities');
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
 const PromptUtilities = require('@4c/cli-core/PromptUtilities');
@@ -11,6 +10,7 @@ const execa = require('execa');
 const fs = require('fs-extra');
 const hasYarn = require('has-yarn');
 const Listr = require('listr');
+const readPkgUp = require('read-pkg-up');
 const rimraf = require('rimraf');
 const { from } = require('rxjs');
 const { catchError } = require('rxjs/operators');
@@ -215,7 +215,7 @@ exports.builder = _ =>
 const handler = async argv => {
   const cwd = process.cwd();
   const changelogPath = path.join(cwd, 'CHANGELOG.md');
-  const { path: pkgPath, packageJson } = await readPackageJson({ cwd });
+  const { path: pkgPath, packageJson } = await readPkgUp({ cwd });
 
   const {
     otp,

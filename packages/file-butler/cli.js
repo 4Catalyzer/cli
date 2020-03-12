@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const { readPackageJson } = require('@4c/cli-core/ConfigUtilities');
 const { success } = require('@4c/cli-core/ConsoleUtilities');
+const readPkgUp = require('read-pkg-up');
 const yargs = require('yargs');
 
 const {
@@ -57,7 +57,7 @@ yargs
     async options => {
       let { publishDir } = options;
       if (!publishDir) {
-        const result = await readPackageJson({ cwd: process.cwd });
+        const result = await readPkgUp({ cwd: process.cwd });
 
         if (result) {
           const { release, publishConfig } = result.package;
