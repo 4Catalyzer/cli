@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/4Catalyzer/cli/compare/ts-doctor@1.1.0...ts-doctor@1.1.1) (2020-03-13)
+
+
+### Bug Fixes
+
+* add bin ([3126ab7](https://github.com/4Catalyzer/cli/commit/3126ab71fead1ca2b32deaa17ab0d56dc6c9dc2e))
+
+
+
+
+
 # 1.1.0 (2020-03-12)
 
 
