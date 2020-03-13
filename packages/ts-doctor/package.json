@@ -9,6 +9,10 @@
   },
   "author": "4Catalyzer",
   "license": "MIT",
+  "bin": {
+    "ts-doc": "cli.js",
+    "ts-doctor": "cli.js"
+  },
   "scripts": {
     "tdd": "jest --watch",
     "test": "jest"
