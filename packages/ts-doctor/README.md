@@ -17,7 +17,7 @@ the vast majority of it!
 There are two prequisites for running the command.
 
 1. Your workspaces need to be defined defined. Follow the instructions for your tool of choice, we'll use yarn workspaces in the example.
-2. Each package in your monorepo that should have it's own `tsconfig.json`. This is how the command knows which
+2. Each package in your monorepo that should have its own `tsconfig.json`. This is how the command knows which
    packages are relevant typescript packages.
 
 **package.json**
