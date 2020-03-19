@@ -39,14 +39,12 @@ async function getTsConfig(dir, configFile = 'tsconfig.json') {
   try {
     tsConfigStr = await fs.readFile(file, 'utf-8');
   } catch {
-    console.log(file, 'HI');
     return null;
   }
 
   try {
     return commentJson.parse(tsConfigStr);
   } catch (err) {
-    console.log(tsConfigStr);
     err.message = `in ${file}\n\n${err.message}`;
     throw err;
   }
@@ -107,6 +105,7 @@ function buildWorkspaceSources(baseDir, tsPackages) {
 
   return sources;
 }
+
 async function resolveTsConfig(dir, configFile = 'tsconfig.json') {
   const tsConfig = await getTsConfig(dir, configFile);
   // seems to mutate the input...

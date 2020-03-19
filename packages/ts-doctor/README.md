@@ -4,7 +4,7 @@ A CLI of TypeScript related scripts for managing and updating TypeScript repos
 
 ## `ts-doctor workspaces`
 
-Configures typescript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) for a yarn, bolt, or pnpm monorepo.
+Configures TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) for a yarn, bolt, or pnpm monorepo.
 
 Monorepo setups can be...complex, with TypeScript. Ideally you want all the locally
 interdependent packages to act as if they were part of one TS project, otherwise you have
@@ -16,7 +16,7 @@ the vast majority of it!
 
 There are two prequisites for running the command.
 
-1. Your workspaces need to be defined defined. Follow the instructions for your tool of choice, we'll use yarn workspaces in the example.
+1. Your workspaces need to be defined. Follow the instructions for your tool of choice, we'll use yarn workspaces in the example.
 2. Each package in your monorepo that should have its own `tsconfig.json`. This is how the command knows which
    packages are relevant typescript packages.
 
