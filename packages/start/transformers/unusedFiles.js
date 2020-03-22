@@ -1,4 +1,4 @@
-module.exports = error => {
+module.exports = (error) => {
   if (
     typeof error.message === 'string' &&
     error.message.startsWith('\nUnusedFilesWebpackPlugin')

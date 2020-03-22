@@ -20,7 +20,7 @@ function copy(patterns, base, outDir) {
 
 function copyRest(sources, outDir, extensions) {
   return Promise.all(
-    sources.map(base => {
+    sources.map((base) => {
       // babel allows this, tho we don't usually specify file names in
       if (!fs.statSync(base).isDirectory()) {
         return cpy([base, '!**/__tests__/**', '!**/__mocks__/**'], outDir);
@@ -29,7 +29,7 @@ function copyRest(sources, outDir, extensions) {
       return copy(
         [
           '**/*',
-          ...extensions.map(ext => `!**/*${ext}`),
+          ...extensions.map((ext) => `!**/*${ext}`),
           // need to re-include .d.ts files b/c they should be copied
           '**/*.d.ts',
         ],

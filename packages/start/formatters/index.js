@@ -3,7 +3,7 @@ const moduleNotFound = require('./moduleNotFound');
 const typescript = require('./typescript');
 const unusedFiles = require('./unusedFiles');
 
-module.exports = compiler => [
+module.exports = (compiler) => [
   unusedFiles,
   typescript(compiler),
   moduleNotFound,

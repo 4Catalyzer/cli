@@ -29,7 +29,7 @@
     "@manypkg/get-packages": "^1.0.0",
     "comment-json": "^3.0.2",
     "lodash": "^4.17.15",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.0",
     "yargs": "^15.1.0"
   },
   "devDependencies": {

@@ -13,7 +13,7 @@ function formatFileList(files) {
 }
 
 function formatGroup(group) {
-  const files = group.errors.map(e => e.file).filter(Boolean);
+  const files = group.errors.map((e) => e.file).filter(Boolean);
   return `* ${group.module}${formatFileList(files)}`;
 }
 
@@ -42,7 +42,7 @@ function relativeModulesNotFound(modules) {
 }
 
 function formatModuleNotFound(allErrors) {
-  const errors = allErrors.filter(e => e.type === 'module-not-found');
+  const errors = allErrors.filter((e) => e.type === 'module-not-found');
 
   if (errors.length === 0) {
     return [];
@@ -50,21 +50,21 @@ function formatModuleNotFound(allErrors) {
 
   const missingModule = new Map();
 
-  errors.forEach(error => {
+  errors.forEach((error) => {
     if (!missingModule.has(error.module)) {
       missingModule.set(error.module, []);
     }
     missingModule.get(error.module).push(error);
   });
 
-  const groups = Array.from(missingModule.keys()).map(module => ({
+  const groups = Array.from(missingModule.keys()).map((module) => ({
     module,
     relative: isRelative(module),
     errors: missingModule.get(module),
   }));
 
-  const dependencies = groups.filter(group => !group.relative);
-  const relativeModules = groups.filter(group => group.relative);
+  const dependencies = groups.filter((group) => !group.relative);
+  const relativeModules = groups.filter((group) => group.relative);
 
   const errs = [
     ...dependenciesNotFound(dependencies),

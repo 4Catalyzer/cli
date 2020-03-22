@@ -1,4 +1,4 @@
-const typescriptTransformer = webpackError => {
+const typescriptTransformer = (webpackError) => {
   const { message } = webpackError;
 
   return message && message.type

@@ -18,5 +18,5 @@ module.exports = function svg2cLoader(content) {
     return code;
   };
 
-  run().then(result => cb(null, result), cb);
+  run().then((result) => cb(null, result), cb);
 };

@@ -81,7 +81,7 @@ async function getNextVersion(version, currentVersion, preid) {
     case 'CUSTOM': {
       return PromptUtilities.input('Enter a custom version', {
         filter: semver.valid,
-        validate: v => v !== null || 'Must be a valid semver version',
+        validate: (v) => v !== null || 'Must be a valid semver version',
       });
     }
 
@@ -158,7 +158,7 @@ exports.command = '$0 [nextVersion]';
 
 exports.describe = 'Publish a new version';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.positional('nextVersion', {
     type: 'string',
     describe: 'The next version',
@@ -212,7 +212,7 @@ exports.builder = _ =>
       default: undefined,
     });
 
-const handler = async argv => {
+const handler = async (argv) => {
   const cwd = process.cwd();
   const changelogPath = path.join(cwd, 'CHANGELOG.md');
   const { path: pkgPath, packageJson } = await readPkgUp({ cwd });
@@ -378,8 +378,8 @@ const handler = async argv => {
           const input = { otp, publishDir, isPublic, tag };
 
           return from(npmPublish(packageJson, input)).pipe(
-            catchError(error =>
-              handleNpmError(error, task, nextOtp => {
+            catchError((error) =>
+              handleNpmError(error, task, (nextOtp) => {
                 // eslint-disable-next-line no-param-reassign
                 context.otp = nextOtp;
                 return npmPublish(packageJson, { ...input, otp: nextOtp });
@@ -408,8 +408,8 @@ const handler = async argv => {
   );
 };
 
-exports.handler = argv =>
-  handler(argv).catch(err => {
+exports.handler = (argv) =>
+  handler(argv).catch((err) => {
     console.error(`\n${ConsoleUtilities.symbols.error} ${err.message}`);
     process.exit(1);
   });

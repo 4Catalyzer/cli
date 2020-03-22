@@ -9,7 +9,7 @@ const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMi
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
-module.exports = async options => {
+module.exports = async (options) => {
   // lazy load to use local webpack
   const WebpackDevServer = require('webpack-dev-server');
   const {
@@ -59,10 +59,10 @@ module.exports = async options => {
     const urls = prepareUrls(protocol, HOST, port);
 
     const devSocket = {
-      warnings: warnings =>
+      warnings: (warnings) =>
         // eslint-disable-next-line no-use-before-define
         devServer.sockWrite(devServer.sockets, 'warnings', warnings),
-      errors: errors =>
+      errors: (errors) =>
         // eslint-disable-next-line no-use-before-define
         devServer.sockWrite(devServer.sockets, 'errors', errors),
     };
@@ -100,7 +100,7 @@ module.exports = async options => {
 
     const devServer = new WebpackDevServer(compiler, serverConfig);
 
-    devServer.listen(port, HOST, err => {
+    devServer.listen(port, HOST, (err) => {
       if (err) {
         ConsoleUtilities.error(err);
         return;

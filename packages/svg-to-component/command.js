@@ -16,7 +16,7 @@ exports.command = '$0 <patterns..>';
 
 exports.describe = 'Publish a new version';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.positional('patterns', {
     type: 'array',
     describe: 'A directory or pattern resolving to svgs',
@@ -75,7 +75,7 @@ exports.handler = async ({
   let count = 0;
 
   await Promise.all(
-    files.map(async file => {
+    files.map(async (file) => {
       const extname = path.extname(file);
       if (!extensions.includes(extname)) return;
 

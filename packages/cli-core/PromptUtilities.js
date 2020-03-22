@@ -1,8 +1,8 @@
 const inquirer = require('inquirer');
 
-exports.prompt = questions => inquirer.prompt(questions);
+exports.prompt = (questions) => inquirer.prompt(questions);
 
-exports.confirm = message =>
+exports.confirm = (message) =>
   exports
     .prompt([
       {
@@ -16,7 +16,7 @@ exports.confirm = message =>
         ],
       },
     ])
-    .then(answers => answers.confirm);
+    .then((answers) => answers.confirm);
 exports.select = (message, { choices, filter, validate } = {}) =>
   exports
     .prompt([
@@ -30,7 +30,7 @@ exports.select = (message, { choices, filter, validate } = {}) =>
         validate,
       },
     ])
-    .then(answers => answers.prompt);
+    .then((answers) => answers.prompt);
 exports.input = (message, { filter, validate } = {}) =>
   exports
     .prompt([
@@ -42,4 +42,4 @@ exports.input = (message, { filter, validate } = {}) =>
         validate,
       },
     ])
-    .then(answers => answers.input);
+    .then((answers) => answers.input);

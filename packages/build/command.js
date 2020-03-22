@@ -25,7 +25,7 @@ exports.describe =
   'Compiles code via babel as well as Typescript type def files when appropriate.\n\n' +
   'Boolean flags can be negated by prefixing with --no-* (--foo, --no-foo)';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.positional('patterns', { default: ['src'] })
     .option('out-dir', {
       alias: 'd',
@@ -78,7 +78,7 @@ exports.builder = _ =>
 function run(...args) {
   return execa(...args, {
     env: { FORCE_COLOR: true },
-  }).catch(err => {
+  }).catch((err) => {
     throw new Error(
       `\n${symbols.error} ${chalk.redBright(
         'There was a problem running the build command:',

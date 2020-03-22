@@ -4,7 +4,7 @@ const SPECIAL_ATTRS = {
   class: 'className',
 };
 
-['rowSpan', 'colSpan', 'contentEditable', 'spellCheck'].forEach(name => {
+['rowSpan', 'colSpan', 'contentEditable', 'spellCheck'].forEach((name) => {
   SPECIAL_ATTRS[name.toLowerCase()] = name;
 });
 
@@ -14,7 +14,7 @@ const camelCaseAttributes = {
   fn(item) {
     if (!item.isElem()) return;
 
-    item.eachAttr(attr => {
+    item.eachAttr((attr) => {
       if (attr.name.match(/(aria|data)-.+/gi)) return;
 
       let name =

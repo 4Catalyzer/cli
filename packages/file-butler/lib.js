@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 const globby = require('globby');
 
 const strReg = /\[\s*(\w+)\s*\]/g;
-const interpolate = pattern => filename => {
+const interpolate = (pattern) => (filename) => {
   const extname = path.extname(filename);
   const params = {
     extname,
@@ -24,7 +24,7 @@ async function findReadme() {
     absolute: true,
     deep: false,
     case: false,
-    transform: fp => path.normalize(fp),
+    transform: (fp) => path.normalize(fp),
   });
   return readmePath;
 }
@@ -34,7 +34,7 @@ async function findLicense() {
     absolute: true,
     deep: false,
     case: false,
-    transform: fp => path.normalize(fp),
+    transform: (fp) => path.normalize(fp),
   });
   return licensePath;
 }

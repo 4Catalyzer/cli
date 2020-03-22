@@ -16,7 +16,7 @@ exports.isCI = () => isCI;
 
 exports.isTTY = () => process.stdout.isTTY && !isCI;
 
-exports.spinner = text => ora(text).start();
+exports.spinner = (text) => ora(text).start();
 
 exports.step = async (text, fn, skip) => {
   const spinner = exports.spinner(text);
@@ -38,19 +38,19 @@ exports.step = async (text, fn, skip) => {
 Object.assign(exports, {
   debug: debuglog,
 
-  info: msg => {
+  info: (msg) => {
     console.log(chalk.blue(`${symbols.info}  ${msg}`));
   },
 
-  warn: msg => {
+  warn: (msg) => {
     console.log(chalk.yellow(`${symbols.warning}  ${msg}`));
   },
 
-  error: msg => {
+  error: (msg) => {
     console.log(chalk.red(`${symbols.error}  ${msg}`));
   },
 
-  success: msg => {
+  success: (msg) => {
     console.log(chalk.green(`${symbols.success}  ${msg}`));
   },
 });
