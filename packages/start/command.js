@@ -4,7 +4,7 @@ exports.command = '$0';
 
 exports.describe = 'Start a webpack app in development mode';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.option('config', {
     type: 'path',
     default: 'webpack.config.js',

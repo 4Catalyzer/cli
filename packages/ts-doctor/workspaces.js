@@ -13,7 +13,7 @@ exports.command = '$0';
 
 exports.describe = 'Configure TypeScript project references for a monorepo';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.option('cwd', {
     type: 'path',
     describe: 'The current working directory',
@@ -34,7 +34,7 @@ function addReference(tsConfig, ref) {
   const normalizedPath = path.normalize(ref);
   const refs = tsConfig.references || [];
   const existing = refs.findIndex(
-    r => path.normalize(r.path) !== normalizedPath,
+    (r) => path.normalize(r.path) !== normalizedPath,
   );
   refs.splice(existing, 1, { path: normalizedPath });
   tsConfig.references = refs;
@@ -77,7 +77,7 @@ exports.handler = async ({ cwd = process.cwd() }) => {
   }
 
   const packagesWithTsConfig = await Promise.all(
-    packages.map(async packageInfo => ({
+    packages.map(async (packageInfo) => ({
       ...packageInfo,
       tsConfig: await getTsConfig(packageInfo.dir),
     })),
@@ -97,7 +97,7 @@ exports.handler = async ({ cwd = process.cwd() }) => {
   };
 
   const tsPackagesByName = new Map(
-    tsPackages.map(tsPackage => [tsPackage.packageJson.name, tsPackage]),
+    tsPackages.map((tsPackage) => [tsPackage.packageJson.name, tsPackage]),
   );
 
   const getLocalDeps = ({
@@ -111,7 +111,7 @@ exports.handler = async ({ cwd = process.cwd() }) => {
         ...Object.keys(devDependencies),
         ...Object.keys(peerDependencies),
       ]
-        .map(name => tsPackagesByName.get(name))
+        .map((name) => tsPackagesByName.get(name))
         .filter(Boolean),
     );
 

@@ -12,7 +12,7 @@ const commit = (...msgs) =>
     `git commit -m "${msgs.join('" -m "')}" --allow-empty --no-gpg-sign`,
   );
 
-const bump = async version => {
+const bump = async (version) => {
   await fs.writeJson(
     './package.json',
     Object.assign(fs.readJsonSync('./package.json'), {

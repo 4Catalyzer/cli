@@ -16,7 +16,7 @@ yargs
     'cp [src]',
 
     true,
-    _ =>
+    (_) =>
       _.positional('src', {
         type: 'string',
         default: 'src',
@@ -30,7 +30,7 @@ yargs
   .command(
     'flow [src]',
     true,
-    _ =>
+    (_) =>
       _.positional('src', {
         type: 'string',
         default: 'src',
@@ -40,7 +40,7 @@ yargs
   .command(
     'mjs [src]',
     false,
-    _ =>
+    (_) =>
       _.positional('src', {
         type: 'string',
         default: 'src',
@@ -50,11 +50,11 @@ yargs
   .command(
     'prepare-publish-dir [publish-dir]',
     true,
-    _ =>
+    (_) =>
       _.positional('publish-dir', {
         type: 'string',
       }),
-    async options => {
+    async (options) => {
       let { publishDir } = options;
       if (!publishDir) {
         const result = await readPkgUp({ cwd: process.cwd });

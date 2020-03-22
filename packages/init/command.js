@@ -6,7 +6,7 @@ exports.command = '$0 [location]';
 
 exports.describe = 'create a new package';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.positional('location', {
     type: 'string',
     default: process.cwd(),
@@ -22,7 +22,7 @@ exports.handler = async ({ location }) => {
   const result = await newPkg.runActions(answers);
   if (result.failures) {
     result.failures.forEach(
-      f =>
+      (f) =>
         f.error &&
         !f.error.startsWith('Aborted due to previous') &&
         console.error(f.error),

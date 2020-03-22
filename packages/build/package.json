@@ -11,10 +11,6 @@
   },
   "author": "4Catalyzer",
   "license": "MIT",
-  "scripts": {
-    "tdd": "jest --watch",
-    "test": "jest"
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -22,19 +18,12 @@
     "preset": "@4c/jest-preset",
     "testEnvironment": "node"
   },
-  "devDependencies": {
-    "@4c/jest-preset": "^1.5.0",
-    "jest": "^25.1.0"
-  },
   "dependencies": {
     "@4c/cli-core": "^2.1.2",
-    "@babel/cli": "^7.7.0",
-    "@babel/core": "^7.7.0",
     "@manypkg/get-packages": "^1.0.0",
     "cpy": "^7.3.0",
     "execa": "^4.0.0",
     "fs-extra": "^9.0.0",
-    "listr": "^0.14.3",
-    "typescript": "^3.7.2"
+    "listr": "^0.14.3"
   }
 }

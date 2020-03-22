@@ -17,13 +17,13 @@ const getPackageNameFromPath = (scope, outDir) => {
 
 const sortJsonPath = (jsonFile, paths) => {
   const obj = require(jsonFile);
-  paths.forEach(p => {
+  paths.forEach((p) => {
     if (!obj[p]) return;
 
     const result = {};
     Object.keys(obj[p])
       .sort()
-      .forEach(k => {
+      .forEach((k) => {
         result[k] = obj[p][k];
       });
 
@@ -36,7 +36,7 @@ const sortJsonPath = (jsonFile, paths) => {
 const runPrettier = (pattern, cwd) =>
   glob
     .sync(pattern, { cwd, absolute: true, dot: true })
-    .map(filepath =>
+    .map((filepath) =>
       fs.writeFileSync(
         filepath,
         prettier.format(fs.readFileSync(filepath, 'utf8'), { filepath }),

@@ -22,15 +22,14 @@
     "preset": "@4c/jest-preset",
     "testEnvironment": "node"
   },
+  "dependencies": {
+    "@4c/cli-core": "^2.1.2",
+    "eslint": "^6.5.1",
+    "prettier": "^2.0.0",
+    "yargs": "^15.0.1"
+  },
   "devDependencies": {
     "@4c/jest-preset": "^1.5.0",
     "jest": "^25.1.0"
-  },
-  "dependencies": {
-    "@4c/cli-core": "^2.1.2",
-    "chalk": "^3.0.0",
-    "eslint": "^6.5.1",
-    "prettier": "^1.19.1",
-    "yargs": "^15.0.1"
   }
 }

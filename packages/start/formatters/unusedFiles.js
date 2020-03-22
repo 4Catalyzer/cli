@@ -16,7 +16,7 @@ function formatFiles(files) {
 }
 
 module.exports = (allErrors, severity) => {
-  const errors = allErrors.filter(e => e.type === 'unused-files');
+  const errors = allErrors.filter((e) => e.type === 'unused-files');
 
   if (errors.length === 0) {
     return [];
