@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.4](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.3...@4c/build@2.2.4) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/build/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+
+
+
 ## [2.2.3](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.2...@4c/build@2.2.3) (2020-03-12)
 
 

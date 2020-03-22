@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/4Catalyzer/cli/compare/pedantic@4.0.1...pedantic@5.0.0) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/cli/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+* feat! Use Prettier v2.x ([5baf549](https://github.com/4Catalyzer/cli/commit/5baf54987a9ca10d0ce68a5ef204f0f139760b93))
+
+
+### BREAKING CHANGES
+
+* Prettier v2.x changes formatting
+
+
+
+
+
 ## [4.0.1](https://github.com/4Catalyzer/cli/compare/pedantic@4.0.0...pedantic@4.0.1) (2020-03-12)
 
 
