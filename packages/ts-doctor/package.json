@@ -13,10 +13,6 @@
     "ts-doc": "cli.js",
     "ts-doctor": "cli.js"
   },
-  "scripts": {
-    "tdd": "jest --watch",
-    "test": "jest"
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -31,10 +27,5 @@
     "lodash": "^4.17.15",
     "prettier": "^2.0.0",
     "yargs": "^15.1.0"
-  },
-  "devDependencies": {
-    "@4c/cli": "^2.1.1",
-    "@4c/jest-preset": "^1.5.0",
-    "jest": "^25.1.0"
   }
 }

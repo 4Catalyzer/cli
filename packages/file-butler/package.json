@@ -15,9 +15,6 @@
     "lib.js",
     "cli.js"
   ],
-  "engines": {
-    "node": ">= v8.17.0"
-  },
   "publishConfig": {
     "access": "public"
   },
