@@ -55,7 +55,7 @@ module.exports = async (
 
   try {
     await Promise.all(
-      filePaths.map(async filePath => {
+      filePaths.map(async (filePath) => {
         let content;
         let code;
 
@@ -132,13 +132,13 @@ module.exports = async (
   if (!fix && needsFormatting.length) {
     let output = '\n';
     output += `${table(
-      needsFormatting.map(filePath => [
+      needsFormatting.map((filePath) => [
         '',
         path.relative(cwd, filePath).trim(),
       ]),
       {
         align: ['', 'l'],
-        stringLength: str => stripAnsi(str).length,
+        stringLength: (str) => stripAnsi(str).length,
       },
     )}
 
