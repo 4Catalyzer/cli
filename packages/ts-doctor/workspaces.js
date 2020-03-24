@@ -8,6 +8,7 @@ const { getPackages } = require('@manypkg/get-packages');
 const commentJson = require('comment-json');
 const get = require('lodash/get');
 const prettier = require('prettier');
+const { parseJsonConfigFileContent, sys } = require('typescript');
 
 exports.command = '$0';
 
@@ -17,17 +18,54 @@ exports.builder = (_) =>
   _.option('cwd', {
     type: 'path',
     describe: 'The current working directory',
-  });
+  })
+    .option('with-build-configs', {
+      type: 'boolean',
+      describe:
+        'Creates a tsconfig.build.json file in each package configured for buildind .d.ts files per package. ' +
+        'Useful for Babel based workflows, where `tsc` is only used to build type defs, not compile source. ' +
+        'This is unfortunately necessary because of how compiler flags interact badly with composite projects, making ' +
+        'it impossible to build _just_ type definitions from the root.',
+    })
+    .option('with-sources-metadata', {
+      type: 'boolean',
+      describe:
+        'Adds a workspace-sources key to the root package.json with metadata about how imports made to source files',
+    });
 
-async function getTsConfig(dir) {
+async function getTsConfig(dir, configFile = 'tsconfig.json') {
+  const file = `${dir}/${configFile}`;
   let tsConfigStr;
   try {
-    tsConfigStr = await fs.readFile(`${dir}/tsconfig.json`, 'utf-8');
+    tsConfigStr = await fs.readFile(file, 'utf-8');
   } catch {
     return null;
   }
 
-  return commentJson.parse(tsConfigStr);
+  try {
+    return commentJson.parse(tsConfigStr);
+  } catch (err) {
+    err.message = `in ${file}\n\n${err.message}`;
+    throw err;
+  }
+}
+
+function addProjectCompilerOptions(tsConfig, compilerOptions) {
+  let dirty = false;
+
+  const nextOptions = tsConfig.compilerOptions || {};
+
+  if (!compilerOptions.composite) {
+    dirty = true;
+    nextOptions.composite = true;
+  }
+  if (!compilerOptions.declarationMap) {
+    dirty = true;
+    nextOptions.declarationMap = true;
+  }
+  if (!dirty) return false;
+  tsConfig.compilerOptions = nextOptions;
+  return true;
 }
 
 function addReference(tsConfig, ref) {
@@ -47,15 +85,14 @@ function stringify(json, filepath) {
 function buildWorkspaceSources(baseDir, tsPackages) {
   const sources = {};
 
-  tsPackages.forEach(({ dir, packageJson, tsConfig }) => {
+  tsPackages.forEach(({ dir, packageJson, compilerOptions }) => {
     const publishDir = get(packageJson, 'publishConfig.directory');
 
-    const srcDir = get(tsConfig, 'compilerOptions.rootDir');
-    const outDir = get(
-      tsConfig,
-      'compilerOptions.outDir',
-      publishDir || (packageJson.main ? path.dirname(packageJson.main) : dir),
-    );
+    const srcDir = path.relative(baseDir, compilerOptions.rootDir);
+    const outDir = compilerOptions.outDir
+      ? path.relative(baseDir, compilerOptions.outDir)
+      : publishDir ||
+        (packageJson.main ? path.dirname(packageJson.main) : '.');
 
     const relPath = path.relative(baseDir, dir);
 
@@ -69,7 +106,41 @@ function buildWorkspaceSources(baseDir, tsPackages) {
   return sources;
 }
 
-exports.handler = async ({ cwd = process.cwd() }) => {
+async function resolveTsConfig(dir, configFile = 'tsconfig.json') {
+  const tsConfig = await getTsConfig(dir, configFile);
+  // seems to mutate the input...
+  const compilerOptions = parseJsonConfigFileContent(
+    { ...(tsConfig || {}) },
+    sys,
+    dir,
+  ).options;
+
+  return { tsConfig, compilerOptions };
+}
+
+async function writeBuildConfig(dir) {
+  const configFile = 'tsconfig.build.json';
+
+  const config = await resolveTsConfig(dir, configFile);
+
+  const tsConfig = config.tsConfig || { extend: '.' };
+
+  tsConfig.compilerOptions = tsConfig.compilerOptions || {};
+  tsConfig.compilerOptions.composite = false;
+
+  const tsBuildConfigPath = `${dir}/${configFile}`;
+
+  await fs.writeFile(
+    tsBuildConfigPath,
+    stringify(tsConfig, tsBuildConfigPath),
+  );
+}
+
+exports.handler = async ({
+  cwd = process.cwd(),
+  withBuildConfigs,
+  withSourcesMetadata,
+}) => {
   const { tool, root, packages } = await getPackages(cwd);
   if (tool === 'root') {
     error(`Monorepo not detected in ${cwd}`);
@@ -79,7 +150,7 @@ exports.handler = async ({ cwd = process.cwd() }) => {
   const packagesWithTsConfig = await Promise.all(
     packages.map(async (packageInfo) => ({
       ...packageInfo,
-      tsConfig: await getTsConfig(packageInfo.dir),
+      ...(await resolveTsConfig(packageInfo.dir)),
     })),
   );
 
@@ -116,18 +187,22 @@ exports.handler = async ({ cwd = process.cwd() }) => {
     );
 
   await Promise.all(
-    tsPackages.map(({ dir, packageJson, tsConfig }) => {
+    tsPackages.map(({ dir, packageJson, tsConfig, compilerOptions }) => {
       addReference(rootTsConfig, path.relative(root.dir, dir));
 
       const deps = getLocalDeps(packageJson);
-      if (!deps.size) return null;
+      const dirty = addProjectCompilerOptions(tsConfig, compilerOptions);
+
+      if (!dirty && !deps.size) {
+        return null;
+      }
 
       for (const dep of deps) {
         const publishDir =
           dep.packageJson.publishConfig &&
           dep.packageJson.publishConfig.directory;
 
-        addReference(tsConfig, path.relative(dir, dep.dir));
+        addReference(tsConfig, path.relative(dir, dep.dir), compilerOptions);
 
         // When the dependency publishes a differenct directory than its root,
         //  we also need to configure `paths` for any cherry-picked imports.
@@ -150,20 +225,27 @@ exports.handler = async ({ cwd = process.cwd() }) => {
       info(`${packageJson.name}: updating tsconfig.json`);
 
       const tsConfigPath = `${dir}/tsconfig.json`;
-      return fs.writeFile(tsConfigPath, stringify(tsConfig, tsConfigPath));
+
+      return Promise.all([
+        fs.writeFile(tsConfigPath, stringify(tsConfig, tsConfigPath)),
+        withBuildConfigs && writeBuildConfig(dir),
+      ]);
     }),
   );
 
-  const sources = buildWorkspaceSources(root.dir, tsPackages);
+  const nextRoot = { ...root.packageJson };
+  if (withSourcesMetadata) {
+    info('Adding workspace-sources key in root package.json');
 
-  info('Adding workspace-sources key in root package.json');
+    nextRoot['workspace-sources'] = buildWorkspaceSources(
+      root.dir,
+      tsPackages,
+    );
+  }
 
   await fs.writeFile(
     rootPackageJsonPath,
-    stringify(
-      { ...root.packageJson, 'workspace-sources': sources },
-      rootPackageJsonPath,
-    ),
+    stringify(nextRoot, rootPackageJsonPath),
   );
   info('Updating root tsconfig');
   await fs.writeFile(
