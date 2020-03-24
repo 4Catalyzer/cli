@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "main": "index.js",
   "repository": "https://github.com/4Catalyzer/init.git",
   "author": "4Catalyzer",
@@ -16,7 +16,7 @@
     "@4c/init": "^3.0.3",
     "@4c/intl": "^1.2.13",
     "@4c/rollout": "^2.1.4",
-    "@4c/start": "^2.0.7",
+    "@4c/start": "^2.0.8",
     "pedantic": "^5.0.0",
     "svg2c": "^1.4.15",
     "ts-doctor": "^1.1.2",

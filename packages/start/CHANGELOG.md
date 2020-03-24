@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.8](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.7...@4c/start@2.0.8) (2020-03-24)
+
+
+### Bug Fixes
+
+* broken from upstream bump ([#185](https://github.com/4Catalyzer/cli/issues/185)) ([268b8ab](https://github.com/4Catalyzer/cli/commit/268b8ab14baaf097b09eba8d6c569d7011070c69))
+
+
+
+
+
 ## [2.0.7](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.6...@4c/start@2.0.7) (2020-03-22)
 
 
