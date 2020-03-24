@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.5](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.4...@4c/build@2.2.5) (2020-03-24)
+
+
+### Bug Fixes
+
+* Add back useful deps ([#186](https://github.com/4Catalyzer/build/issues/186)) ([594032e](https://github.com/4Catalyzer/build/commit/594032ef2766900ae7beaacc5032cf454f6452b6))
+
+
+
+
+
 ## [2.2.4](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.3...@4c/build@2.2.4) (2020-03-22)
 
 
