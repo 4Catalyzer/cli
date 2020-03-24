@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/4Catalyzer/cli/compare/ts-doctor@1.1.2...ts-doctor@1.2.0) (2020-03-24)
+
+
+### Features
+
+* smarter workspace config ([#181](https://github.com/4Catalyzer/cli/issues/181)) ([baae1da](https://github.com/4Catalyzer/cli/commit/baae1da5aefc4dff42b2b24b02237b23b419842b))
+
+
+
+
+
 ## [1.1.2](https://github.com/4Catalyzer/cli/compare/ts-doctor@1.1.1...ts-doctor@1.1.2) (2020-03-22)
 
 
