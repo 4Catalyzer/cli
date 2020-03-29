@@ -57,7 +57,7 @@ yargs
     async (options) => {
       let { publishDir } = options;
       if (!publishDir) {
-        const result = await readPkgUp({ cwd: process.cwd });
+        const result = await readPkgUp({ cwd: process.cwd, normalize: false });
 
         if (result) {
           const { release, publishConfig } = result.package;

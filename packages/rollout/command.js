@@ -215,7 +215,10 @@ exports.builder = (_) =>
 const handler = async (argv) => {
   const cwd = process.cwd();
   const changelogPath = path.join(cwd, 'CHANGELOG.md');
-  const { path: pkgPath, packageJson } = await readPkgUp({ cwd });
+  const { path: pkgPath, packageJson } = await readPkgUp({
+    cwd,
+    normalize: false,
+  });
 
   const {
     otp,
