@@ -214,7 +214,10 @@ exports.builder = (_) =>
 
 const handler = async (argv) => {
   const cwd = process.cwd();
-  const { path: pkgPath, packageJson } = await readPkgUp({ cwd });
+  const { path: pkgPath, packageJson } = await readPkgUp({
+    cwd,
+    normalize: false,
+  });
 
   const {
     otp,
