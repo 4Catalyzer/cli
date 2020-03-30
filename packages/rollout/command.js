@@ -214,7 +214,6 @@ exports.builder = (_) =>
 
 const handler = async (argv) => {
   const cwd = process.cwd();
-  const changelogPath = path.join(cwd, 'CHANGELOG.md');
   const { path: pkgPath, packageJson } = await readPkgUp({
     cwd,
     normalize: false,
@@ -359,13 +358,11 @@ const handler = async (argv) => {
             {
               title: 'Commiting changes',
               task: async () => {
-                try {
-                  await GitUtilities.addFile(changelogPath);
-                  await GitUtilities.addFile(pkgPath);
-                  await GitUtilities.commit(`Publish ${gitTag}`);
-                } catch (err) {
-                  /* ignore */
+                if (conventionalCommits) {
+                  await GitUtilities.addFile(path.join(cwd, 'CHANGELOG.md'));
                 }
+                await GitUtilities.addFile(pkgPath);
+                await GitUtilities.commit(`Publish ${gitTag}`);
               },
             },
             {
