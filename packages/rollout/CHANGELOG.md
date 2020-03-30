@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.5](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.1.4...@4c/rollout@2.1.5) (2020-03-30)
+
+
+### Bug Fixes
+
+* Don't normalize package.json ([#187](https://github.com/4Catalyzer/cli/issues/187)) ([63bdd20](https://github.com/4Catalyzer/cli/commit/63bdd2002f59b1014dfd2f8db522298160bb1bfb))
+* Fail on not making commit ([#188](https://github.com/4Catalyzer/cli/issues/188)) ([e97d9c3](https://github.com/4Catalyzer/cli/commit/e97d9c37a497b8641be7a888ffb416a13f09824b))
+
+
+
+
+
 ## [2.1.4](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.1.3...@4c/rollout@2.1.4) (2020-03-22)
 
 

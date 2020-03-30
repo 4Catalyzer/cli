@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.5](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.4...@4c/file-butler@4.1.5) (2020-03-30)
+
+
+### Bug Fixes
+
+* Don't normalize package.json ([#187](https://github.com/4Catalyzer/file-butler/issues/187)) ([63bdd20](https://github.com/4Catalyzer/file-butler/commit/63bdd2002f59b1014dfd2f8db522298160bb1bfb))
+
+
+
+
+
 ## [4.1.4](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.3...@4c/file-butler@4.1.4) (2020-03-22)
 
 
