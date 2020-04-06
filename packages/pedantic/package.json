@@ -1,22 +1,23 @@
 {
   "name": "pedantic",
   "version": "5.0.1",
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
+  "license": "MIT",
+  "author": "4Catalyzer",
   "main": "lib.js",
+  "bin": {
+    "pedantic": "cli.js"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/4Catalyzer/cli",
+    "url": "https://github.com/4Catalyzer/cli.git",
     "directory": "packages/pedantic"
   },
   "scripts": {
     "test": "jest"
-  },
-  "author": "4Catalyzer",
-  "license": "MIT",
-  "bin": {
-    "pedantic": "cli.js"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "jest": {
     "preset": "@4c/jest-preset",
@@ -31,5 +32,8 @@
   "devDependencies": {
     "@4c/jest-preset": "^1.5.0",
     "jest": "^25.2.7"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

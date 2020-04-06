@@ -1,18 +1,24 @@
 {
   "name": "@4c/rollout",
   "version": "2.1.5",
-  "main": "command.js",
-  "author": "4catalyzer",
-  "license": "MIT",
-  "scripts": {
-    "test": "jest --runInBand",
-    "tdd": "jest --watch --runInBand"
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
   },
+  "license": "MIT",
+  "author": "4Catalyzer",
+  "main": "command.js",
   "bin": {
     "rollout": "cli.js"
   },
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git",
+    "directory": "packages/rollout"
+  },
+  "scripts": {
+    "test": "jest --runInBand",
+    "tdd": "jest --watch --runInBand"
   },
   "jest": {
     "preset": "@4c/jest-preset",
@@ -39,5 +45,8 @@
     "jest": "^25.2.7",
     "shelljs": "^0.8.3",
     "tmp": "^0.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

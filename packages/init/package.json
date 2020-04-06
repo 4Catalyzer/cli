@@ -1,14 +1,20 @@
 {
   "name": "@4c/init",
   "version": "3.0.3",
-  "main": "command.js",
-  "author": "4catalyzer",
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/init",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
   "license": "MIT",
+  "author": "4Catalyzer",
+  "main": "command.js",
   "bin": {
     "init": "cli.js"
   },
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git",
+    "directory": "packages/init"
   },
   "dependencies": {
     "@4c/cli-core": "^2.1.3",
@@ -17,5 +23,8 @@
     "node-plop": "^0.25.0",
     "prettier": "^2.0.0",
     "yargs": "^15.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

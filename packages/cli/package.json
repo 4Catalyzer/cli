@@ -1,15 +1,20 @@
 {
   "name": "@4c/cli",
   "version": "2.1.6",
-  "main": "index.js",
-  "repository": "https://github.com/4Catalyzer/init.git",
-  "author": "4Catalyzer",
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/cli",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
   "license": "MIT",
+  "author": "4Catalyzer",
+  "main": "index.js",
   "bin": {
     "4c": "index.js"
   },
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git",
+    "directory": "packages/cli"
   },
   "dependencies": {
     "@4c/build": "^2.2.5",
@@ -24,5 +29,8 @@
   },
   "devDependencies": {
     "webpack": "^4.42.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
