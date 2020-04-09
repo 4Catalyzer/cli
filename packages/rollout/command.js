@@ -42,12 +42,11 @@ async function maybeRollbackGit(tag, skipGit, skipVersion) {
 }
 
 async function getNextVersion(version, currentVersion, preid) {
+  const [currentPreId] = semver.prerelease(currentVersion) || [];
+
   const patch = semver.inc(currentVersion, 'patch');
   const minor = semver.inc(currentVersion, 'minor');
   const major = semver.inc(currentVersion, 'major');
-  const prepatch = semver.inc(currentVersion, 'prepatch');
-  const preminor = semver.inc(currentVersion, 'preminor');
-  const premajor = semver.inc(currentVersion, 'premajor');
 
   if (semver.valid(version)) {
     return version;
@@ -64,15 +63,24 @@ async function getNextVersion(version, currentVersion, preid) {
 
   const message = `Select a new version (currently ${currentVersion})`;
 
+  const prepatch = semver.inc(currentVersion, 'prepatch', preid || '?');
+  const preminor = semver.inc(currentVersion, 'preminor', preid || '?');
+  const premajor = semver.inc(currentVersion, 'premajor', preid || '?');
+  const prerelease = semver.inc(
+    currentVersion,
+    'prerelease',
+    preid || currentPreId || '?',
+  );
+
   const choice = await PromptUtilities.select(message, {
     choices: [
       { value: patch, name: `Patch (${patch})` },
       { value: minor, name: `Minor (${minor})` },
       { value: major, name: `Major (${major})` },
-      { value: prepatch, name: `Prepatch (${prepatch})` },
-      { value: preminor, name: `Preminor (${preminor})` },
-      { value: premajor, name: `Premajor (${premajor})` },
-      { value: 'PRERELEASE', name: 'Prerelease' },
+      { value: 'prepatch', name: `Prepatch (${prepatch})` },
+      { value: 'preminor', name: `Preminor (${preminor})` },
+      { value: 'premajor', name: `Premajor (${premajor})` },
+      { value: 'prerelease', name: `Prerelease (${prerelease})` },
       { value: 'CUSTOM', name: 'Custom' },
     ],
   });
@@ -84,26 +92,20 @@ async function getNextVersion(version, currentVersion, preid) {
         validate: (v) => v !== null || 'Must be a valid semver version',
       });
     }
+    case 'prepatch':
+    case 'preminor':
+    case 'premajor':
+    case 'prerelease': {
+      let nextPreId = preid;
+      if (choice === 'prerelease' && currentPreId && !nextPreId) {
+        nextPreId = currentPreId;
+      }
 
-    case 'PRERELEASE': {
-      const [existingId] = semver.prerelease(currentVersion) || [];
-      const defaultVersion = semver.inc(
-        currentVersion,
-        'prerelease',
-        existingId,
-      );
-      const prompt = `(default: ${
-        existingId ? `"${existingId}"` : 'none'
-      }, yielding ${defaultVersion})`;
+      nextPreId =
+        nextPreId ||
+        (await PromptUtilities.input(`Enter a prerelease identifier`));
 
-      const nextPreId =
-        preid !== 'latest'
-          ? preid
-          : await PromptUtilities.input(
-              `Enter a prerelease identifier ${prompt}`,
-            );
-
-      return semver.inc(currentVersion, 'prerelease', nextPreId);
+      return semver.inc(currentVersion, choice, nextPreId);
     }
 
     default: {
