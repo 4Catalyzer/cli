@@ -42,8 +42,6 @@ async function maybeRollbackGit(tag, skipGit, skipVersion) {
 }
 
 async function getNextVersion(version, currentVersion, preid) {
-  const [currentPreId] = semver.prerelease(currentVersion) || [];
-
   const patch = semver.inc(currentVersion, 'patch');
   const minor = semver.inc(currentVersion, 'minor');
   const major = semver.inc(currentVersion, 'major');
@@ -62,6 +60,8 @@ async function getNextVersion(version, currentVersion, preid) {
   }
 
   const message = `Select a new version (currently ${currentVersion})`;
+
+  const [currentPreId] = semver.prerelease(currentVersion) || [];
 
   const prepatch = semver.inc(currentVersion, 'prepatch', preid || '?');
   const preminor = semver.inc(currentVersion, 'preminor', preid || '?');
@@ -103,7 +103,7 @@ async function getNextVersion(version, currentVersion, preid) {
 
       nextPreId =
         nextPreId ||
-        (await PromptUtilities.input(`Enter a prerelease identifier`));
+        (await PromptUtilities.input('Enter a prerelease identifier'));
 
       return semver.inc(currentVersion, choice, nextPreId);
     }
