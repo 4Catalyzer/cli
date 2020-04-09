@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.6](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.1.5...@4c/rollout@2.1.6) (2020-04-09)
+
+
+### Bug Fixes
+
+* preid behavior ([#194](https://github.com/4Catalyzer/cli/issues/194)) ([766bb15](https://github.com/4Catalyzer/cli/commit/766bb15509af514e117c5af5915cee2cb25ecfc6))
+
+
+
+
+
 ## [2.1.5](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.1.4...@4c/rollout@2.1.5) (2020-03-30)
 
 

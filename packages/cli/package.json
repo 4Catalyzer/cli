@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "main": "index.js",
   "repository": "https://github.com/4Catalyzer/init.git",
   "author": "4Catalyzer",
@@ -12,14 +12,14 @@
     "access": "public"
   },
   "dependencies": {
-    "@4c/build": "^2.2.5",
-    "@4c/init": "^3.0.3",
-    "@4c/intl": "^1.2.14",
-    "@4c/rollout": "^2.1.5",
-    "@4c/start": "^2.0.9",
-    "pedantic": "^5.0.1",
-    "svg2c": "^1.4.15",
-    "ts-doctor": "^1.2.0",
+    "@4c/build": "^2.2.6",
+    "@4c/init": "^3.0.4",
+    "@4c/intl": "^1.2.15",
+    "@4c/rollout": "^2.1.6",
+    "@4c/start": "^2.0.10",
+    "pedantic": "^5.0.2",
+    "svg2c": "^1.4.16",
+    "ts-doctor": "^1.2.1",
     "yargs": "^15.0.1"
   },
   "devDependencies": {
