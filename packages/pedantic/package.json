@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.5.0",
-    "jest": "^25.2.7"
+    "jest": "^25.3.0"
   }
 }

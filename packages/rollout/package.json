@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.5.0",
-    "jest": "^25.2.7",
+    "jest": "^25.3.0",
     "shelljs": "^0.8.3",
     "tmp": "^0.1.0"
   }
