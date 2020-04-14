@@ -1,17 +1,23 @@
 {
   "name": "4c-cli-root",
-  "version": "0.3.1",
-  "repository": "https://github.com/4Catalyzer/cli.git",
-  "author": "4Catalyzer",
-  "license": "MIT",
   "private": true,
+  "version": "0.3.1",
+  "homepage": "https://github.com/4Catalyzer/cli",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
+  "license": "MIT",
+  "author": "4Catalyzer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git"
+  },
   "scripts": {
     "test": "npm run lint && lerna run test",
     "lint": "yarn cli lint .",
     "cli": "node packages/cli",
     "format": "yarn cli format ."
   },
-  "prettier": "@4c/prettier-config",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -21,6 +27,7 @@
     "*.js": "yarn cli lint --fix",
     "*.{json,css,md}": "yarn cli lint --fix"
   },
+  "prettier": "@4c/prettier-config",
   "workspaces": [
     "packages/*"
   ],

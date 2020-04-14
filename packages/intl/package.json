@@ -1,17 +1,23 @@
 {
   "name": "@4c/intl",
   "version": "1.2.15",
-  "main": "command.js",
-  "author": "4catalyzer",
-  "license": "MIT",
-  "scripts": {
-    "tdd": "jest --watch --runInBand"
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/intl",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
   },
+  "license": "MIT",
+  "author": "4Catalyzer",
+  "main": "command.js",
   "bin": {
     "intl": "cli.js"
   },
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git",
+    "directory": "packages/intl"
+  },
+  "scripts": {
+    "tdd": "jest --watch --runInBand"
   },
   "jest": {
     "testEnvironment": "node",
@@ -24,5 +30,8 @@
   },
   "devDependencies": {
     "jest": "^25.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

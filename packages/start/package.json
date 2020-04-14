@@ -1,19 +1,20 @@
 {
   "name": "@4c/start",
   "version": "2.0.10",
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/start",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
+  "license": "MIT",
+  "author": "4Catalyzer",
   "main": "lib.js",
+  "bin": {
+    "start": "cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/4Catalyzer/cli.git",
     "directory": "packages/start"
-  },
-  "bin": {
-    "start": "cli.js"
-  },
-  "author": "4Catalyzer",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
   },
   "dependencies": {
     "@4c/cli-core": "^2.1.4",
@@ -27,10 +28,13 @@
     "webpack-notifier": "^1.8.0",
     "webpackbar": "^4.0.0"
   },
+  "devDependencies": {
+    "webpack": "^4.42.1"
+  },
   "peerDependencies": {
     "webpack": "^4.0.0"
   },
-  "devDependencies": {
-    "webpack": "^4.42.1"
+  "publishConfig": {
+    "access": "public"
   }
 }
