@@ -1,6 +1,6 @@
 {
   "name": "pedantic",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -24,14 +24,14 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.1.3",
+    "@4c/cli-core": "^2.1.4",
     "eslint": "^6.5.1",
     "prettier": "^2.0.0",
     "yargs": "^15.0.1"
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.5.0",
-    "jest": "^25.2.7"
+    "jest": "^25.3.0"
   },
   "publishConfig": {
     "access": "public"
