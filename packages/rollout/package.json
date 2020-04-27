@@ -43,8 +43,8 @@
   "devDependencies": {
     "@4c/jest-preset": "^1.5.0",
     "jest": "^25.4.0",
-    "shelljs": "^0.8.3",
-    "tmp": "^0.1.0"
+    "shelljs": "^0.8.4",
+    "tmp": "^0.2.0"
   },
   "publishConfig": {
     "access": "public"
