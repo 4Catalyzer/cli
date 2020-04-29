@@ -1,4 +1,6 @@
-const nodePlop = require('node-plop');
+// Cherry pick to avoid pulling in all of core-js
+// see: https://github.com/plopjs/node-plop/pull/163
+const nodePlop = require('node-plop/lib/node-plop').default;
 
 // load an instance of plop from a plopfile
 
