@@ -1,6 +1,6 @@
 {
   "name": "ts-doctor",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/ts-doctor",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -22,7 +22,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.1.4",
+    "@4c/cli-core": "^2.1.5",
     "@manypkg/get-packages": "^1.0.0",
     "comment-json": "^3.0.2",
     "lodash": "^4.17.15",

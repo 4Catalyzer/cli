@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.4...@4c/init@3.0.5) (2020-04-29)
+
+
+### Bug Fixes
+
+* avoid node-pplop pul,ling in core-js ([#199](https://github.com/4Catalyzer/cli/issues/199)) ([cc43ee2](https://github.com/4Catalyzer/cli/commit/cc43ee28d790b99ea3f435df9cf515e0d930b789))
+
+
+
+
+
 ## [3.0.4](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.3...@4c/init@3.0.4) (2020-04-09)
 
 **Note:** Version bump only for package @4c/init

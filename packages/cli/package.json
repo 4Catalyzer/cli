@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/cli",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -17,14 +17,14 @@
     "directory": "packages/cli"
   },
   "dependencies": {
-    "@4c/build": "^2.2.6",
-    "@4c/init": "^3.0.4",
-    "@4c/intl": "^1.2.15",
-    "@4c/rollout": "^2.1.6",
-    "@4c/start": "^2.0.10",
-    "pedantic": "^5.0.2",
-    "svg2c": "^1.4.16",
-    "ts-doctor": "^1.2.1",
+    "@4c/build": "^2.2.7",
+    "@4c/init": "^3.0.5",
+    "@4c/intl": "^1.2.16",
+    "@4c/rollout": "^2.1.7",
+    "@4c/start": "^2.0.11",
+    "pedantic": "^5.0.3",
+    "svg2c": "^1.4.17",
+    "ts-doctor": "^1.2.2",
     "yargs": "^15.0.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@4c/build",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/build",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -21,7 +21,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.1.4",
+    "@4c/cli-core": "^2.1.5",
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@manypkg/get-packages": "^1.0.0",
