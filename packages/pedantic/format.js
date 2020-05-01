@@ -10,6 +10,11 @@ exports.builder = (_) =>
     default: true,
     describe: 'Write fixed files to disk',
   })
+    .option('check', {
+      type: 'boolean',
+      default: false,
+      describe: 'Check for lint errors and report them',
+    })
     .option('prettier-ignore', {
       type: 'string',
       default: '.prettierignore',
@@ -23,11 +28,11 @@ exports.builder = (_) =>
     });
 
 exports.handler = async (argv) => {
-  const { _, patterns, write, withNodeModules, ...options } = argv;
+  const { _, patterns, write, withNodeModules, check, ...options } = argv;
 
   await format(patterns, {
     fix: write,
-    check: false,
+    check,
     ignoreNodeModules: !withNodeModules,
     ...options,
   });
