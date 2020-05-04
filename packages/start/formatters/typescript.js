@@ -1,9 +1,7 @@
 const { chalk } = require('@4c/cli-core/ConsoleUtilities');
 const { codeFrameColumns } = require('@babel/code-frame');
 const exists = require('exists-case');
-const {
-  NormalizedMessage,
-} = require('fork-ts-checker-webpack-plugin/lib/NormalizedMessage');
+const { IssueOrigin } = require('fork-ts-checker-webpack-plugin/lib/issue');
 const {
   formatTitle,
 } = require('friendly-errors-webpack-plugin/src/utils/colors');
@@ -48,11 +46,12 @@ function formatCaseError({ content, severity, code }) {
 
 function formatError(err, fs) {
   const {
+    origin,
     code,
     severity,
-    file,
-    content,
+    message,
     stack,
+    file,
     line,
     character: column,
   } = err;
@@ -63,10 +62,10 @@ function formatError(err, fs) {
     return formatCaseError(err);
   }
 
-  if (code === NormalizedMessage.ERROR_CODE_INTERNAL) {
+  if (origin === IssueOrigin.INTERNAL) {
     return (
       `${formatTitle(severity, 'INTERNAL')} ${fileRef}\n` +
-      `${content}${stack ? `\nstack trace:\n${chalk.gray(stack)}` : ''}`
+      `${message}${stack ? `\nstack trace:\n${chalk.gray(stack)}` : ''}`
     );
   }
 
@@ -88,7 +87,7 @@ function formatError(err, fs) {
 
   return (
     `${formatTitle(severity, `TS${code}`)} ${fileRef}` +
-    `\n\n${content}${frame ? `\n\n${frame}` : ''}`
+    `\n\n${message}${frame ? `\n\n${frame}` : ''}`
   );
 }
 
@@ -104,9 +103,7 @@ module.exports = (compiler) => {
       return [];
     }
 
-    const formatted = errors.map((err) => formatError(err, fs));
-
-    return formatted;
+    return errors.map((err) => formatError(err, fs));
   }
 
   return formatErrors;
