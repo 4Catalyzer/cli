@@ -1,10 +1,11 @@
+const { writeFileSync, statSync } = require('fs');
+const path = require('path');
+
 const { red, green, yellow, blue } = require('chalk');
 const glob = require('glob');
-const path = require('path');
-const { writeFileSync, statSync } = require('fs');
 
 function toPatterns(files) {
-  return files.map(file => {
+  return files.map((file) => {
     let pattern = path.join(process.cwd(), file);
     const stat = statSync(pattern);
     if (!stat || stat.isDirectory()) {
@@ -19,7 +20,7 @@ exports.command = '$0 [paths..]';
 exports.describe =
   'Consolidate individual message.json files into a single locale';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.positional('paths', {
     type: 'string',
     describe: 'A glob selecting messages JSON files',
@@ -35,7 +36,7 @@ exports.handler = ({ paths, outDir }) => {
   let files = [];
   try {
     files = toPatterns([].concat(paths))
-      .map(pattern => glob.sync(pattern))
+      .map((pattern) => glob.sync(pattern))
       .reduce((arr, next) => [...arr, ...next], []);
   } catch (err) {
     /* ignore */
@@ -45,22 +46,22 @@ exports.handler = ({ paths, outDir }) => {
     console.log(
       yellow(
         'No messages found in: \n' +
-          `  ${paths.map(f => path.join(process.cwd(), f)).join('\n  ')}`,
+          `  ${paths.map((f) => path.join(process.cwd(), f)).join('\n  ')}`,
       ),
     );
 
     return;
   }
 
-  files.forEach(filepath => {
+  files.forEach((filepath) => {
     let json = require(filepath);
 
     // An preprocessed messages json.
     if (!Array.isArray(json)) {
-      json = Object.keys(json).map(k => json[k]);
+      json = Object.keys(json).map((k) => json[k]);
     }
 
-    json.forEach(descriptor => {
+    json.forEach((descriptor) => {
       const { id } = descriptor;
       // eslint-disable-next-line no-param-reassign
       descriptor.file = path.relative(process.cwd(), filepath);
@@ -84,7 +85,7 @@ exports.handler = ({ paths, outDir }) => {
       console.log(`
   Duplicate message id: ${blue(id)} in the following files: ${dups
         .map(
-          d => `
+          (d) => `
     - ${d.file}`,
         )
         .join('')}
@@ -96,7 +97,7 @@ exports.handler = ({ paths, outDir }) => {
     console.log(green('No duplicate message ids, writing out messages file…'));
   }
 
-  Object.keys(messages).forEach(id => {
+  Object.keys(messages).forEach((id) => {
     delete messages[id].file;
     delete messages[id].start;
     delete messages[id].end;

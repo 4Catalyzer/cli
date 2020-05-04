@@ -3,6 +3,69 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.5](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.4...@4c/init@3.0.5) (2020-04-29)
+
+
+### Bug Fixes
+
+* avoid node-pplop pul,ling in core-js ([#199](https://github.com/4Catalyzer/cli/issues/199)) ([cc43ee2](https://github.com/4Catalyzer/cli/commit/cc43ee28d790b99ea3f435df9cf515e0d930b789))
+
+
+
+
+
+## [3.0.4](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.3...@4c/init@3.0.4) (2020-04-09)
+
+**Note:** Version bump only for package @4c/init
+
+
+
+
+
+## [3.0.3](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.2...@4c/init@3.0.3) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/cli/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+
+
+
+## [3.0.2](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.1...@4c/init@3.0.2) (2020-03-12)
+
+**Note:** Version bump only for package @4c/init
+
+
+
+
+
+## [3.0.1](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.0...@4c/init@3.0.1) (2020-02-13)
+
+
+### Bug Fixes
+
+* Downgrade to working version of cpy ([#169](https://github.com/4Catalyzer/cli/issues/169)) ([fd66886](https://github.com/4Catalyzer/cli/commit/fd66886e3eb5fb8fbbd84513a7d6c73694cb05a8))
+
+
+
+
+
+# [3.0.0](https://github.com/4Catalyzer/cli/compare/@4c/init@2.0.5...@4c/init@3.0.0) (2020-02-13)
+
+
+* feat!: Drop import-sort ([a20c58b](https://github.com/4Catalyzer/cli/commit/a20c58bd929ef911737eab407357c5954c68c503))
+
+
+### BREAKING CHANGES
+
+* Drop import-sort
+
+
+
+
+
 ## [2.0.5](https://github.com/4Catalyzer/cli/compare/@4c/init@2.0.4...@4c/init@2.0.5) (2019-11-27)
 
 **Note:** Version bump only for package @4c/init

@@ -1,17 +1,17 @@
+const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
+const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
+const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require('webpack');
-const WebpackBar = require('webpackbar');
 const WebpackNotifierPlugin = require('webpack-notifier');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
-const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
-const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
-const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
+const WebpackBar = require('webpackbar');
 
 const getFormatters = require('./formatters');
 const getTransformers = require('./transformers');
 
-const passthroughTSFormatter = msg => msg;
+const passthroughTSFormatter = (msg) => msg;
 
 function getMaxSeverityErrors(errors) {
   const maxSeverity = errors.reduce(
@@ -19,7 +19,7 @@ function getMaxSeverityErrors(errors) {
     0,
   );
 
-  return errors.filter(e => e.severity === maxSeverity);
+  return errors.filter((e) => e.severity === maxSeverity);
 }
 
 module.exports = function createCompiler({
@@ -56,7 +56,7 @@ module.exports = function createCompiler({
 
     console.log(`${colors.formatText(severity, subtitle)}\n\n`);
 
-    formatErrors(topErrors, formatters, severity).forEach(err =>
+    formatErrors(topErrors, formatters, severity).forEach((err) =>
       console.log(err),
     );
   }
@@ -91,7 +91,7 @@ module.exports = function createCompiler({
   if (useTypeScript) {
     // doesn't rely on the plugins instances being deduped
     let forkTsCheckerWebpackPlugin = compiler.options.plugins.find(
-      p => p.constructor.name === 'ForkTsCheckerWebpackPlugin',
+      (p) => p.constructor.name === 'ForkTsCheckerWebpackPlugin',
     );
 
     if (!forkTsCheckerWebpackPlugin) {
@@ -114,8 +114,8 @@ module.exports = function createCompiler({
     // has already happened so we need wait and log them ourselves
     if (isTsAsync) {
       compiler.hooks.beforeCompile.tap('beforeCompile', () => {
-        tsMessagesPromise = new Promise(resolve => {
-          tsMessagesResolver = msgs => resolve(msgs);
+        tsMessagesPromise = new Promise((resolve) => {
+          tsMessagesResolver = (msgs) => resolve(msgs);
         });
       });
 
@@ -125,7 +125,7 @@ module.exports = function createCompiler({
           const allMsgs = [...diagnostics, ...lints];
 
           // this is the format these errors are inserted in when not async
-          const format = msg => ({
+          const format = (msg) => ({
             file: msg.file,
             message: msg,
             location: {
@@ -135,9 +135,9 @@ module.exports = function createCompiler({
           });
 
           tsMessagesResolver({
-            errors: allMsgs.filter(m => m.severity === 'error').map(format),
+            errors: allMsgs.filter((m) => m.severity === 'error').map(format),
             warnings: allMsgs
-              .filter(m => m.severity === 'warning')
+              .filter((m) => m.severity === 'warning')
               .map(format),
           });
         });
@@ -146,7 +146,7 @@ module.exports = function createCompiler({
 
   // "done" event fires when Webpack has finished recompiling the bundle.
   // Whether or not you have warnings or errors, you will get this event.
-  compiler.hooks.done.tap('done', async stats => {
+  compiler.hooks.done.tap('done', async (stats) => {
     const statsData = stats.toJson({
       all: false,
       warnings: true,

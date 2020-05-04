@@ -1,10 +1,10 @@
 const format = require('./lib');
 
-exports.command = 'lint <patterns..>';
+exports.command = '$0 <patterns..>';
 
-exports.describe = 'Lint files use ESLint, Prettier and import-sort';
+exports.describe = 'Lint files use ESLint and prettier';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.option('fix', {
     type: 'boolean',
     default: false,
@@ -27,7 +27,7 @@ exports.builder = _ =>
         'By default node_modules is ignored, to opt out of this behavior pass this flag',
     });
 
-exports.handler = async argv => {
+exports.handler = async (argv) => {
   const { _, patterns, fix, withWarnings, withNodeModules, ...options } = argv;
 
   await format(patterns, {

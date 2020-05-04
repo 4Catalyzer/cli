@@ -1,4 +1,4 @@
-module.exports = api => ({
+module.exports = {{#if (eq type 'web')}}api => ({{/if}}{
   presets: [
     [
       '@4c',
@@ -13,4 +13,4 @@ module.exports = api => ({
     '@babel/preset-typescript',
     {{~/if~}}
   ]
-});
+}{{#if (eq type 'web')}}){{/if}};

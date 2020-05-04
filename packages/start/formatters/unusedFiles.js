@@ -1,5 +1,4 @@
 const { chalk } = require('@4c/cli-core/ConsoleUtilities');
-
 const {
   formatTitle,
 } = require('friendly-errors-webpack-plugin/src/utils/colors');
@@ -17,7 +16,7 @@ function formatFiles(files) {
 }
 
 module.exports = (allErrors, severity) => {
-  const errors = allErrors.filter(e => e.type === 'unused-files');
+  const errors = allErrors.filter((e) => e.type === 'unused-files');
 
   if (errors.length === 0) {
     return [];

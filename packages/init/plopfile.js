@@ -1,7 +1,7 @@
 const path = require('path');
 
-const findWorkspaceRoot = require('find-yarn-workspace-root');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
+const findWorkspaceRoot = require('find-yarn-workspace-root');
 
 const addHelpers = require('./addHelpers');
 const {
@@ -12,7 +12,7 @@ const {
 } = require('./utils');
 
 let $workspaceRoot;
-const getRoot = location => {
+const getRoot = (location) => {
   if (!$workspaceRoot) $workspaceRoot = findWorkspaceRoot(location);
   return $workspaceRoot;
 };
@@ -22,7 +22,7 @@ const prompts = [
     name: 'location',
     type: 'input',
     message: 'package location',
-    filter: location =>
+    filter: (location) =>
       path.isAbsolute(location) ? location : path.resolve(location),
   },
   {
@@ -36,20 +36,20 @@ const prompts = [
     type: 'input',
     message: 'package scope',
     default: '@4c',
-    when: _ => !!_.scopePackage,
+    when: (_) => !!_.scopePackage,
   },
   {
     name: 'isPrivate',
     type: 'confirm',
     default: false,
     message: 'Is this a private package?',
-    when: _ => !getRoot(_.location) && !!_.scope,
+    when: (_) => !getRoot(_.location) && !!_.scope,
   },
   {
     name: 'name',
     type: 'input',
     message: 'name',
-    default: _ => getPackageNameFromPath(_.scope, _.location),
+    default: (_) => getPackageNameFromPath(_.scope, _.location),
   },
   {
     name: 'type',
@@ -69,18 +69,18 @@ const prompts = [
     type: 'confirm',
     default: false,
     message: 'Do you need babel (maybe not?)',
-    when: _ => _.type === 'node' && !_.typescript,
+    when: (_) => _.type === 'node' && !_.typescript,
   },
   {
     name: 'semanticRelease',
     type: 'confirm',
     default: false,
     message: 'Do you want to use semantic-release to handle releases?',
-    when: _ => !getRoot(_.location),
+    when: (_) => !getRoot(_.location),
   },
 ];
 
-module.exports = plop => {
+module.exports = (plop) => {
   addHelpers(plop);
 
   // controller generator
@@ -154,7 +154,7 @@ module.exports = plop => {
           skipIfExists: true,
           data,
         },
-        async _ => {
+        async (_) => {
           const isGitRepo = await GitUtilities.isGitRepo(location);
           if (!isGitRepo) return;
 

@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.7](https://github.com/4Catalyzer/cli/compare/@4c/file-butler@4.1.6...@4c/file-butler@4.1.7) (2020-04-29)
+
+**Note:** Version bump only for package @4c/file-butler
+
+
+
+
+
+## [4.1.6](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.5...@4c/file-butler@4.1.6) (2020-04-09)
+
+**Note:** Version bump only for package @4c/file-butler
+
+
+
+
+
+## [4.1.5](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.4...@4c/file-butler@4.1.5) (2020-03-30)
+
+
+### Bug Fixes
+
+* Don't normalize package.json ([#187](https://github.com/4Catalyzer/file-butler/issues/187)) ([63bdd20](https://github.com/4Catalyzer/file-butler/commit/63bdd2002f59b1014dfd2f8db522298160bb1bfb))
+
+
+
+
+
+## [4.1.4](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.3...@4c/file-butler@4.1.4) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/file-butler/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+
+
+
+## [4.1.3](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.2...@4c/file-butler@4.1.3) (2020-03-12)
+
+
+### Bug Fixes
+
+* Fix config handling ([#180](https://github.com/4Catalyzer/file-butler/issues/180)) ([a400d6c](https://github.com/4Catalyzer/file-butler/commit/a400d6ca0b3ee133a8d2d33e5c0224cb10b0c19c))
+
+
+
+
+
+## [4.1.2](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.1...@4c/file-butler@4.1.2) (2020-02-13)
+
+
+### Bug Fixes
+
+* Downgrade to working version of cpy ([#169](https://github.com/4Catalyzer/file-butler/issues/169)) ([fd66886](https://github.com/4Catalyzer/file-butler/commit/fd66886e3eb5fb8fbbd84513a7d6c73694cb05a8))
+
+
+
+
+
+## [4.1.1](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.1.0...@4c/file-butler@4.1.1) (2020-02-13)
+
+**Note:** Version bump only for package @4c/file-butler
+
+
+
+
+
 # [4.1.0](https://github.com/4Catalyzer/file-butler/compare/@4c/file-butler@4.0.3...@4c/file-butler@4.1.0) (2019-11-25)
 
 

@@ -1,23 +1,23 @@
 const path = require('path');
-const fs = require('fs-extra');
-const chalk = require('chalk');
-const execa = require('execa');
-const semver = require('semver');
-const rimraf = require('rimraf');
-const hasYarn = require('has-yarn');
 const { promisify } = require('util');
 
+const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
+const GitUtilities = require('@4c/cli-core/GitUtilities');
+const PromptUtilities = require('@4c/cli-core/PromptUtilities');
+const { createAltPublishDir } = require('@4c/file-butler');
+const chalk = require('chalk');
+const execa = require('execa');
+const fs = require('fs-extra');
+const hasYarn = require('has-yarn');
 const Listr = require('listr');
+const readPkgUp = require('read-pkg-up');
+const rimraf = require('rimraf');
 const { from } = require('rxjs');
 const { catchError } = require('rxjs/operators');
-const { createAltPublishDir } = require('@4c/file-butler');
+const semver = require('semver');
 
-const GitUtilities = require('@4c/cli-core/GitUtilities');
-const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
-const PromptUtilities = require('@4c/cli-core/PromptUtilities');
-const { readPackageJson } = require('@4c/cli-core/ConfigUtilities');
-const handleNpmError = require('./handleNpmError');
 const { updateChangelog, recommendedBump } = require('./conventional-commits');
+const handleNpmError = require('./handleNpmError');
 const { exec } = require('./rx');
 
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
@@ -45,9 +45,6 @@ async function getNextVersion(version, currentVersion, preid) {
   const patch = semver.inc(currentVersion, 'patch');
   const minor = semver.inc(currentVersion, 'minor');
   const major = semver.inc(currentVersion, 'major');
-  const prepatch = semver.inc(currentVersion, 'prepatch');
-  const preminor = semver.inc(currentVersion, 'preminor');
-  const premajor = semver.inc(currentVersion, 'premajor');
 
   if (semver.valid(version)) {
     return version;
@@ -64,15 +61,26 @@ async function getNextVersion(version, currentVersion, preid) {
 
   const message = `Select a new version (currently ${currentVersion})`;
 
+  const [currentPreId] = semver.prerelease(currentVersion) || [];
+
+  const prepatch = semver.inc(currentVersion, 'prepatch', preid || '?');
+  const preminor = semver.inc(currentVersion, 'preminor', preid || '?');
+  const premajor = semver.inc(currentVersion, 'premajor', preid || '?');
+  const prerelease = semver.inc(
+    currentVersion,
+    'prerelease',
+    preid || currentPreId || '?',
+  );
+
   const choice = await PromptUtilities.select(message, {
     choices: [
       { value: patch, name: `Patch (${patch})` },
       { value: minor, name: `Minor (${minor})` },
       { value: major, name: `Major (${major})` },
-      { value: prepatch, name: `Prepatch (${prepatch})` },
-      { value: preminor, name: `Preminor (${preminor})` },
-      { value: premajor, name: `Premajor (${premajor})` },
-      { value: 'PRERELEASE', name: 'Prerelease' },
+      { value: 'prepatch', name: `Prepatch (${prepatch})` },
+      { value: 'preminor', name: `Preminor (${preminor})` },
+      { value: 'premajor', name: `Premajor (${premajor})` },
+      { value: 'prerelease', name: `Prerelease (${prerelease})` },
       { value: 'CUSTOM', name: 'Custom' },
     ],
   });
@@ -81,29 +89,23 @@ async function getNextVersion(version, currentVersion, preid) {
     case 'CUSTOM': {
       return PromptUtilities.input('Enter a custom version', {
         filter: semver.valid,
-        validate: v => v !== null || 'Must be a valid semver version',
+        validate: (v) => v !== null || 'Must be a valid semver version',
       });
     }
+    case 'prepatch':
+    case 'preminor':
+    case 'premajor':
+    case 'prerelease': {
+      let nextPreId = preid;
+      if (choice === 'prerelease' && currentPreId && !nextPreId) {
+        nextPreId = currentPreId;
+      }
 
-    case 'PRERELEASE': {
-      const [existingId] = semver.prerelease(currentVersion) || [];
-      const defaultVersion = semver.inc(
-        currentVersion,
-        'prerelease',
-        existingId,
-      );
-      const prompt = `(default: ${
-        existingId ? `"${existingId}"` : 'none'
-      }, yielding ${defaultVersion})`;
+      nextPreId =
+        nextPreId ||
+        (await PromptUtilities.input('Enter a prerelease identifier'));
 
-      const nextPreId =
-        preid !== 'latest'
-          ? preid
-          : await PromptUtilities.input(
-              `Enter a prerelease identifier ${prompt}`,
-            );
-
-      return semver.inc(currentVersion, 'prerelease', nextPreId);
+      return semver.inc(currentVersion, choice, nextPreId);
     }
 
     default: {
@@ -158,7 +160,7 @@ exports.command = '$0 [nextVersion]';
 
 exports.describe = 'Publish a new version';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.positional('nextVersion', {
     type: 'string',
     describe: 'The next version',
@@ -212,10 +214,12 @@ exports.builder = _ =>
       default: undefined,
     });
 
-const handler = async argv => {
+const handler = async (argv) => {
   const cwd = process.cwd();
-  const changelogPath = path.join(cwd, 'CHANGELOG.md');
-  const { path: pkgPath, packageJson } = await readPackageJson({ cwd });
+  const { path: pkgPath, packageJson } = await readPkgUp({
+    cwd,
+    normalize: false,
+  });
 
   const {
     otp,
@@ -356,13 +360,11 @@ const handler = async argv => {
             {
               title: 'Commiting changes',
               task: async () => {
-                try {
-                  await GitUtilities.addFile(changelogPath);
-                  await GitUtilities.addFile(pkgPath);
-                  await GitUtilities.commit(`Publish ${gitTag}`);
-                } catch (err) {
-                  /* ignore */
+                if (conventionalCommits) {
+                  await GitUtilities.addFile(path.join(cwd, 'CHANGELOG.md'));
                 }
+                await GitUtilities.addFile(pkgPath);
+                await GitUtilities.commit(`Publish ${gitTag}`);
               },
             },
             {
@@ -378,8 +380,8 @@ const handler = async argv => {
           const input = { otp, publishDir, isPublic, tag };
 
           return from(npmPublish(packageJson, input)).pipe(
-            catchError(error =>
-              handleNpmError(error, task, nextOtp => {
+            catchError((error) =>
+              handleNpmError(error, task, (nextOtp) => {
                 // eslint-disable-next-line no-param-reassign
                 context.otp = nextOtp;
                 return npmPublish(packageJson, { ...input, otp: nextOtp });
@@ -408,8 +410,8 @@ const handler = async argv => {
   );
 };
 
-exports.handler = argv =>
-  handler(argv).catch(err => {
+exports.handler = (argv) =>
+  handler(argv).catch((err) => {
     console.error(`\n${ConsoleUtilities.symbols.error} ${err.message}`);
     process.exit(1);
   });

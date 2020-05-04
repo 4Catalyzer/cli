@@ -3,6 +3,74 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.7](https://github.com/4Catalyzer/cli/compare/@4c/build@2.2.6...@4c/build@2.2.7) (2020-04-29)
+
+**Note:** Version bump only for package @4c/build
+
+
+
+
+
+## [2.2.6](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.5...@4c/build@2.2.6) (2020-04-09)
+
+**Note:** Version bump only for package @4c/build
+
+
+
+
+
+## [2.2.5](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.4...@4c/build@2.2.5) (2020-03-24)
+
+
+### Bug Fixes
+
+* Add back useful deps ([#186](https://github.com/4Catalyzer/build/issues/186)) ([594032e](https://github.com/4Catalyzer/build/commit/594032ef2766900ae7beaacc5032cf454f6452b6))
+
+
+
+
+
+## [2.2.4](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.3...@4c/build@2.2.4) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/build/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+
+
+
+## [2.2.3](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.2...@4c/build@2.2.3) (2020-03-12)
+
+
+### Bug Fixes
+
+* Fix config handling ([#180](https://github.com/4Catalyzer/build/issues/180)) ([a400d6c](https://github.com/4Catalyzer/build/commit/a400d6ca0b3ee133a8d2d33e5c0224cb10b0c19c))
+
+
+
+
+
+## [2.2.2](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.1...@4c/build@2.2.2) (2020-02-13)
+
+
+### Bug Fixes
+
+* Downgrade to working version of cpy ([#169](https://github.com/4Catalyzer/build/issues/169)) ([fd66886](https://github.com/4Catalyzer/build/commit/fd66886e3eb5fb8fbbd84513a7d6c73694cb05a8))
+
+
+
+
+
+## [2.2.1](https://github.com/4Catalyzer/build/compare/@4c/build@2.2.0...@4c/build@2.2.1) (2020-02-13)
+
+**Note:** Version bump only for package @4c/build
+
+
+
+
+
 # [2.2.0](https://github.com/4Catalyzer/build/compare/@4c/build@2.1.0...@4c/build@2.2.0) (2019-11-25)
 
 

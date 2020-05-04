@@ -1,33 +1,36 @@
 {
   "name": "@4c/cli",
-  "version": "1.0.5",
-  "main": "index.js",
-  "repository": "https://github.com/4Catalyzer/init.git",
-  "author": "4Catalyzer",
+  "version": "2.1.9",
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/cli",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
   "license": "MIT",
+  "author": "4Catalyzer",
+  "main": "index.js",
   "bin": {
     "4c": "index.js"
   },
-  "publishConfig": {
-    "access": "public"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git",
+    "directory": "packages/cli"
   },
   "dependencies": {
-    "@4c/build": "^2.2.0",
-    "@4c/cli-core": "^2.1.0",
-    "@4c/file-butler": "^4.1.0",
-    "@4c/init": "^2.0.5",
-    "@4c/intl": "^1.2.10",
-    "@4c/rollout": "^2.1.0",
-    "@4c/start": "^2.0.4",
-    "chalk": "^3.0.0",
-    "execa": "^4.0.0",
-    "fs-extra": "^8.1.0",
-    "inquirer": "^7.0.0",
-    "ora": "^4.0.2",
-    "pedantic": "^3.0.5",
-    "semver": "^7.0.0",
-    "slash": "^3.0.0",
-    "svg2c": "^1.4.12",
+    "@4c/build": "^2.2.7",
+    "@4c/init": "^3.0.5",
+    "@4c/intl": "^1.2.17",
+    "@4c/rollout": "^2.1.8",
+    "@4c/start": "^2.1.0",
+    "pedantic": "^5.0.4",
+    "svg2c": "^1.4.17",
+    "ts-doctor": "^1.2.2",
     "yargs": "^15.0.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

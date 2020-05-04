@@ -3,6 +3,119 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.9](https://github.com/4Catalyzer/cli/compare/@4c/cli@2.1.8...@4c/cli@2.1.9) (2020-05-04)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+## [2.1.8](https://github.com/4Catalyzer/cli/compare/@4c/cli@2.1.7...@4c/cli@2.1.8) (2020-04-29)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+## [2.1.7](https://github.com/4Catalyzer/init/compare/@4c/cli@2.1.6...@4c/cli@2.1.7) (2020-04-09)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+## [2.1.6](https://github.com/4Catalyzer/init/compare/@4c/cli@2.1.5...@4c/cli@2.1.6) (2020-03-30)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+## [2.1.5](https://github.com/4Catalyzer/init/compare/@4c/cli@2.1.4...@4c/cli@2.1.5) (2020-03-24)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+## [2.1.4](https://github.com/4Catalyzer/init/compare/@4c/cli@2.1.3...@4c/cli@2.1.4) (2020-03-24)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+## [2.1.3](https://github.com/4Catalyzer/init/compare/@4c/cli@2.1.2...@4c/cli@2.1.3) (2020-03-24)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+## [2.1.2](https://github.com/4Catalyzer/init/compare/@4c/cli@2.1.1...@4c/cli@2.1.2) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/init/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+
+
+
+## [2.1.1](https://github.com/4Catalyzer/init/compare/@4c/cli@2.1.0...@4c/cli@2.1.1) (2020-03-13)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+# [2.1.0](https://github.com/4Catalyzer/init/compare/@4c/cli@2.0.1...@4c/cli@2.1.0) (2020-03-12)
+
+
+### Bug Fixes
+
+* Fix config handling ([#180](https://github.com/4Catalyzer/init/issues/180)) ([a400d6c](https://github.com/4Catalyzer/init/commit/a400d6ca0b3ee133a8d2d33e5c0224cb10b0c19c))
+
+
+### Features
+
+* add ts-doctor ([#176](https://github.com/4Catalyzer/init/issues/176)) ([0955357](https://github.com/4Catalyzer/init/commit/095535727940a602ad17cbe451c3e94148a2d4c9))
+
+
+
+
+
+## [2.0.1](https://github.com/4Catalyzer/init/compare/@4c/cli@2.0.0...@4c/cli@2.0.1) (2020-02-13)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
+# [2.0.0](https://github.com/4Catalyzer/init/compare/@4c/cli@1.0.5...@4c/cli@2.0.0) (2020-02-13)
+
+
+* feat!: Drop import-sort ([a20c58b](https://github.com/4Catalyzer/init/commit/a20c58bd929ef911737eab407357c5954c68c503))
+
+
+### BREAKING CHANGES
+
+* Drop import-sort
+
+
+
+
+
 ## [1.0.5](https://github.com/4Catalyzer/init/compare/@4c/cli@1.0.4...@4c/cli@1.0.5) (2019-11-27)
 
 **Note:** Version bump only for package @4c/cli

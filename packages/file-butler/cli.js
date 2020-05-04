@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs');
 const { success } = require('@4c/cli-core/ConsoleUtilities');
-const { readPackageJson } = require('@4c/cli-core/ConfigUtilities');
+const readPkgUp = require('read-pkg-up');
+const yargs = require('yargs');
 
 const {
   createAltPublishDir,
@@ -16,7 +16,7 @@ yargs
     'cp [src]',
 
     true,
-    _ =>
+    (_) =>
       _.positional('src', {
         type: 'string',
         default: 'src',
@@ -30,7 +30,7 @@ yargs
   .command(
     'flow [src]',
     true,
-    _ =>
+    (_) =>
       _.positional('src', {
         type: 'string',
         default: 'src',
@@ -40,7 +40,7 @@ yargs
   .command(
     'mjs [src]',
     false,
-    _ =>
+    (_) =>
       _.positional('src', {
         type: 'string',
         default: 'src',
@@ -50,14 +50,14 @@ yargs
   .command(
     'prepare-publish-dir [publish-dir]',
     true,
-    _ =>
+    (_) =>
       _.positional('publish-dir', {
         type: 'string',
       }),
-    async options => {
+    async (options) => {
       let { publishDir } = options;
       if (!publishDir) {
-        const result = await readPackageJson({ cwd: process.cwd });
+        const result = await readPkgUp({ cwd: process.cwd, normalize: false });
 
         if (result) {
           const { release, publishConfig } = result.package;

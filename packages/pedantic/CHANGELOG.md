@@ -3,6 +3,82 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.4](https://github.com/4Catalyzer/cli/compare/pedantic@5.0.3...pedantic@5.0.4) (2020-05-04)
+
+**Note:** Version bump only for package pedantic
+
+
+
+
+
+## [5.0.3](https://github.com/4Catalyzer/cli/compare/pedantic@5.0.2...pedantic@5.0.3) (2020-04-29)
+
+**Note:** Version bump only for package pedantic
+
+
+
+
+
+## [5.0.2](https://github.com/4Catalyzer/cli/compare/pedantic@5.0.1...pedantic@5.0.2) (2020-04-09)
+
+**Note:** Version bump only for package pedantic
+
+
+
+
+
+## [5.0.1](https://github.com/4Catalyzer/cli/compare/pedantic@5.0.0...pedantic@5.0.1) (2020-03-30)
+
+**Note:** Version bump only for package pedantic
+
+
+
+
+
+# [5.0.0](https://github.com/4Catalyzer/cli/compare/pedantic@4.0.1...pedantic@5.0.0) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/cli/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+* feat! Use Prettier v2.x ([5baf549](https://github.com/4Catalyzer/cli/commit/5baf54987a9ca10d0ce68a5ef204f0f139760b93))
+
+
+### BREAKING CHANGES
+
+* Prettier v2.x changes formatting
+
+
+
+
+
+## [4.0.1](https://github.com/4Catalyzer/cli/compare/pedantic@4.0.0...pedantic@4.0.1) (2020-03-12)
+
+
+### Bug Fixes
+
+* Fix config handling ([#180](https://github.com/4Catalyzer/cli/issues/180)) ([a400d6c](https://github.com/4Catalyzer/cli/commit/a400d6ca0b3ee133a8d2d33e5c0224cb10b0c19c))
+
+
+
+
+
+# [4.0.0](https://github.com/4Catalyzer/cli/compare/pedantic@3.0.5...pedantic@4.0.0) (2020-02-13)
+
+
+* feat!: Drop import-sort ([a20c58b](https://github.com/4Catalyzer/cli/commit/a20c58bd929ef911737eab407357c5954c68c503))
+
+
+### BREAKING CHANGES
+
+* Drop import-sort
+
+
+
+
+
 ## [3.0.5](https://github.com/4Catalyzer/cli/compare/pedantic@3.0.4...pedantic@3.0.5) (2019-11-27)
 
 **Note:** Version bump only for package pedantic

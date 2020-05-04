@@ -1,4 +1,4 @@
-module.exports = plop => {
+module.exports = (plop) => {
   plop.setHelper('eq', (a, b) => a === b);
   plop.setHelper('neq', (a, b) => a !== b);
 

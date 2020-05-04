@@ -1,10 +1,12 @@
 const path = require('path');
 const { debuglog } = require('util');
-const fs = require('fs-extra');
-const execa = require('execa');
-const Listr = require('listr');
-const { detectMonoRepo } = require('@4c/cli-core/ConfigUtilities');
+
 const { chalk, symbols, info } = require('@4c/cli-core/ConsoleUtilities');
+const { getPackages } = require('@manypkg/get-packages');
+const execa = require('execa');
+const fs = require('fs-extra');
+const Listr = require('listr');
+
 const { copy, copyRest } = require('./copy');
 
 const debug = debuglog('@4c/build');
@@ -23,7 +25,7 @@ exports.describe =
   'Compiles code via babel as well as Typescript type def files when appropriate.\n\n' +
   'Boolean flags can be negated by prefixing with --no-* (--foo, --no-foo)';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.positional('patterns', { default: ['src'] })
     .option('out-dir', {
       alias: 'd',
@@ -76,7 +78,7 @@ exports.builder = _ =>
 function run(...args) {
   return execa(...args, {
     env: { FORCE_COLOR: true },
-  }).catch(err => {
+  }).catch((err) => {
     throw new Error(
       `\n${symbols.error} ${chalk.redBright(
         'There was a problem running the build command:',
@@ -112,7 +114,9 @@ exports.handler = async ({
   '--': passthrough,
   ...options
 }) => {
-  const monoRepo = await detectMonoRepo();
+  const { tool } = await getPackages();
+  const monorepo = tool !== 'root';
+
   const pkg = await fs.readJson('package.json');
   const tsconfig = types && (options.tsconfig || getTsconfig());
 
@@ -160,8 +164,8 @@ exports.handler = async ({
       .filter(Boolean)
       .concat(['--ignore', '**/__tests__/**,**/__mocks__/**,**/*.d.ts']);
 
-    // try and be accepting of possible root config for monorepos
-    if (monoRepo) builtArgs.push('--root-mode', 'upward-optional');
+    // Try to be accepting of possible root config for monorepos.
+    if (monorepo) builtArgs.push('--root-mode', 'upward-optional');
     if (passthrough) builtArgs.push(...passthrough);
 
     debug(babelCmd, ...builtArgs);

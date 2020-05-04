@@ -1,43 +1,52 @@
 {
   "name": "@4c/rollout",
-  "version": "2.1.0",
-  "main": "command.js",
-  "author": "4catalyzer",
+  "version": "2.1.8",
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
   "license": "MIT",
+  "author": "4Catalyzer",
+  "main": "command.js",
+  "bin": {
+    "rollout": "cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git",
+    "directory": "packages/rollout"
+  },
   "scripts": {
     "test": "jest --runInBand",
     "tdd": "jest --watch --runInBand"
   },
-  "bin": {
-    "rollout": "cli.js"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "jest": {
-    "testEnvironment": "node",
-    "transform": {}
+    "preset": "@4c/jest-preset",
+    "testEnvironment": "node"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.1.0",
-    "@4c/file-butler": "^4.1.0",
-    "chalk": "^3.0.0",
-    "common-tags": "^1.8.0",
+    "@4c/cli-core": "^2.1.5",
+    "@4c/file-butler": "^4.1.7",
+    "chalk": "^4.0.0",
     "conventional-changelog": "^3.0.6",
-    "conventional-changelog-angular": "^5.0.3",
     "conventional-recommended-bump": "^6.0.0",
     "execa": "^4.0.0",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.0.0",
     "has-yarn": "^2.1.0",
     "listr": "^0.14.3",
     "listr-input": "^0.2.0",
+    "read-pkg-up": "^7.0.1",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.2",
     "semver": "^7.0.0"
   },
   "devDependencies": {
-    "jest": "^24.9.0",
-    "shelljs": "^0.8.3",
-    "tmp": "^0.1.0"
+    "@4c/jest-preset": "^1.5.0",
+    "jest": "^25.5.4",
+    "shelljs": "^0.8.4",
+    "tmp": "^0.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

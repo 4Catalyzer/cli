@@ -1,46 +1,40 @@
 {
   "name": "@4c/start",
-  "version": "2.0.4",
+  "version": "2.1.0",
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/start",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
+  "license": "MIT",
+  "author": "4Catalyzer",
   "main": "lib.js",
+  "bin": {
+    "start": "cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/4Catalyzer/cli.git",
     "directory": "packages/start"
   },
-  "bin": {
-    "start": "cli.js"
-  },
-  "author": "4Catalyzer",
-  "license": "MIT",
-  "scripts": {
-    "tdd": "jest --watch",
-    "test": "jest"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "jest": {
-    "preset": "@4c/jest-preset",
-    "testEnvironment": "node"
-  },
-  "devDependencies": {
-    "@4c/import-sort": "^4.3.6",
-    "@4c/jest-preset": "^1.4.3",
-    "@4c/prettier-config": "^1.1.0",
-    "jest": "^24.9.0",
-    "webpack": "^4.41.5"
-  },
   "dependencies": {
-    "@4c/cli-core": "^2.1.0",
+    "@4c/cli-core": "^2.1.5",
     "@babel/code-frame": "^7.5.5",
     "dotenv": "^8.1.0",
     "exists-case": "^0.1.0",
     "fork-ts-checker-webpack-plugin": "^4.0.0",
     "friendly-errors-webpack-plugin": "^2.0.0-beta.2",
     "react-dev-utils": "^10.0.0",
-    "resolve": "^1.12.0",
     "webpack-dev-server": "^3.8.0",
     "webpack-notifier": "^1.8.0",
     "webpackbar": "^4.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0"
+  },
+  "peerDependencies": {
+    "webpack": "^4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

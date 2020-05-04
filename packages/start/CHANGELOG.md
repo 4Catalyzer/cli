@@ -3,6 +3,79 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.11...@4c/start@2.1.0) (2020-05-04)
+
+
+### Features
+
+* better programmatic start usage ([#200](https://github.com/4Catalyzer/cli/issues/200)) ([b119d20](https://github.com/4Catalyzer/cli/commit/b119d20ec82c10f8bbabb1cbf4ce84db4783e2f6))
+
+
+
+
+
+## [2.0.11](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.10...@4c/start@2.0.11) (2020-04-29)
+
+**Note:** Version bump only for package @4c/start
+
+
+
+
+
+## [2.0.10](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.9...@4c/start@2.0.10) (2020-04-09)
+
+**Note:** Version bump only for package @4c/start
+
+
+
+
+
+## [2.0.9](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.8...@4c/start@2.0.9) (2020-03-30)
+
+**Note:** Version bump only for package @4c/start
+
+
+
+
+
+## [2.0.8](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.7...@4c/start@2.0.8) (2020-03-24)
+
+
+### Bug Fixes
+
+* broken from upstream bump ([#185](https://github.com/4Catalyzer/cli/issues/185)) ([268b8ab](https://github.com/4Catalyzer/cli/commit/268b8ab14baaf097b09eba8d6c569d7011070c69))
+
+
+
+
+
+## [2.0.7](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.6...@4c/start@2.0.7) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/cli/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+
+
+
+## [2.0.6](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.5...@4c/start@2.0.6) (2020-03-12)
+
+**Note:** Version bump only for package @4c/start
+
+
+
+
+
+## [2.0.5](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.4...@4c/start@2.0.5) (2020-02-13)
+
+**Note:** Version bump only for package @4c/start
+
+
+
+
+
 ## [2.0.4](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.3...@4c/start@2.0.4) (2019-11-25)
 
 **Note:** Version bump only for package @4c/start

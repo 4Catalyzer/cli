@@ -34,7 +34,7 @@ class Linter {
     if (this.fix && (result.fixableErrorCount || result.fixableWarningCount)) {
       result.errorCount -= result.fixableErrorCount;
       result.WarningCount -= result.fixableWarningCount;
-      result.messages = result.messages.filter(msg => msg.fix);
+      result.messages = result.messages.filter((msg) => msg.fix);
     }
 
     this.errorCount += result.errorCount;

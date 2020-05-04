@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.17](https://github.com/4Catalyzer/cli/compare/svg2c@1.4.16...svg2c@1.4.17) (2020-04-29)
+
+**Note:** Version bump only for package svg2c
+
+
+
+
+
+## [1.4.16](https://github.com/4Catalyzer/cli/compare/svg2c@1.4.15...svg2c@1.4.16) (2020-04-09)
+
+**Note:** Version bump only for package svg2c
+
+
+
+
+
+## [1.4.15](https://github.com/4Catalyzer/cli/compare/svg2c@1.4.14...svg2c@1.4.15) (2020-03-22)
+
+
+### Bug Fixes
+
+* Clean up dependencies ([2479dd7](https://github.com/4Catalyzer/cli/commit/2479dd743fbff67cbdb6a79f70dd3bdd00518003))
+
+
+
+
+
+## [1.4.14](https://github.com/4Catalyzer/cli/compare/svg2c@1.4.13...svg2c@1.4.14) (2020-03-12)
+
+**Note:** Version bump only for package svg2c
+
+
+
+
+
+## [1.4.13](https://github.com/4Catalyzer/cli/compare/svg2c@1.4.12...svg2c@1.4.13) (2020-02-13)
+
+**Note:** Version bump only for package svg2c
+
+
+
+
+
 ## [1.4.12](https://github.com/4Catalyzer/cli/compare/svg2c@1.4.11...svg2c@1.4.12) (2019-11-27)
 
 **Note:** Version bump only for package svg2c

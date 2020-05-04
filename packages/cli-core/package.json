@@ -1,27 +1,32 @@
 {
   "name": "@4c/cli-core",
-  "version": "2.1.0",
+  "version": "2.1.5",
+  "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/cli-core",
+  "bugs": {
+    "url": "https://github.com/4Catalyzer/cli/issues"
+  },
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "author": "4Catalyzer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git",
+    "directory": "packages/cli-core"
   },
   "dependencies": {
-    "chalk": "^3.0.0",
-    "comment-json": "^2.2.0",
+    "chalk": "^4.0.0",
     "execa": "^4.0.0",
-    "find-up": "^4.1.0",
-    "find-workspaces-root": "^0.1.0",
-    "fs-extra": "^8.1.0",
-    "get-workspaces": "^0.5.2",
+    "fs-extra": "^9.0.0",
     "globby": "^11.0.0",
     "inquirer": "^7.0.0",
     "is-ci": "^2.0.0",
-    "log-symbols": "^3.0.0",
+    "log-symbols": "^4.0.0",
     "ora": "^4.0.2",
-    "read-pkg-up": "^7.0.0",
     "slash": "^3.0.0",
     "strip-ansi": "^6.0.0",
     "text-table": "^0.2.0",
     "yargs": "^15.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -1,10 +1,12 @@
 /* eslint-disable no-param-reassign */
 const { promises: fs } = require('fs');
 const path = require('path');
-const camelCase = require('lodash/camelCase');
-const upperFirst = require('lodash/upperFirst');
+
 const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
+const camelCase = require('lodash/camelCase');
+const upperFirst = require('lodash/upperFirst');
+
 const svg2c = require('./lib');
 const typeDef = require('./typeDef');
 
@@ -14,7 +16,7 @@ exports.command = '$0 <patterns..>';
 
 exports.describe = 'Publish a new version';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.positional('patterns', {
     type: 'array',
     describe: 'A directory or pattern resolving to svgs',
@@ -73,7 +75,7 @@ exports.handler = async ({
   let count = 0;
 
   await Promise.all(
-    files.map(async file => {
+    files.map(async (file) => {
       const extname = path.extname(file);
       if (!extensions.includes(extname)) return;
 

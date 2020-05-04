@@ -1,11 +1,10 @@
 const { chalk } = require('@4c/cli-core/ConsoleUtilities');
+const { codeFrameColumns } = require('@babel/code-frame');
 const exists = require('exists-case');
-
 const { IssueOrigin } = require('fork-ts-checker-webpack-plugin/lib/issue');
 const {
   formatTitle,
 } = require('friendly-errors-webpack-plugin/src/utils/colors');
-const { codeFrameColumns } = require('@babel/code-frame');
 
 function formatCaseError({ content, severity, code }) {
   const rFiles = /(?:'|")(.+?)(?:'|")/gm;
@@ -17,7 +16,7 @@ function formatCaseError({ content, severity, code }) {
     if (match) files.push(match[1]);
   }
 
-  const fileOnDisk = files.find(file => exists.sync(file));
+  const fileOnDisk = files.find((file) => exists.sync(file));
 
   let formatted = `${formatTitle(
     severity,
@@ -25,7 +24,7 @@ function formatCaseError({ content, severity, code }) {
   )} Mismatched file name cases`;
 
   if (fileOnDisk) {
-    const otherFile = files.find(f => f !== fileOnDisk);
+    const otherFile = files.find((f) => f !== fileOnDisk);
 
     let diff = '';
     for (let i = 0; i < otherFile.length; i++) {
@@ -92,19 +91,19 @@ function formatError(err, fs) {
   );
 }
 
-module.exports = compiler => {
+module.exports = (compiler) => {
   const fs = compiler.inputFileSystem;
 
   function formatErrors(allErrors) {
     const errors = allErrors
-      .filter(e => e.type === 'typescript')
-      .map(e => e.message);
+      .filter((e) => e.type === 'typescript')
+      .map((e) => e.message);
 
     if (errors.length === 0) {
       return [];
     }
 
-    return errors.map(err => formatError(err, fs));
+    return errors.map((err) => formatError(err, fs));
   }
 
   return formatErrors;

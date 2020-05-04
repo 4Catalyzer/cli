@@ -1,10 +1,10 @@
 const format = require('./lib');
 
-exports.command = 'format <patterns..>';
+exports.command = '$0 <patterns..>';
 
 exports.describe = 'Format files';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.option('write', {
     type: 'boolean',
     default: true,
@@ -22,7 +22,7 @@ exports.builder = _ =>
         'By default node_modules is ignored, to opt out of this behavior pass this flag',
     });
 
-exports.handler = async argv => {
+exports.handler = async (argv) => {
   const { _, patterns, write, withNodeModules, ...options } = argv;
 
   await format(patterns, {

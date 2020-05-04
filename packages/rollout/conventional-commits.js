@@ -1,10 +1,11 @@
-const conventionalRecommendedBump = require('conventional-recommended-bump');
-const semver = require('semver');
-const path = require('path');
-const fs = require('fs-extra');
 const os = require('os');
-const conventionalChangelog = require('conventional-changelog');
+const path = require('path');
 const { promisify } = require('util');
+
+const conventionalChangelog = require('conventional-changelog');
+const conventionalRecommendedBump = require('conventional-recommended-bump');
+const fs = require('fs-extra');
+const semver = require('semver');
 
 const bump = promisify(conventionalRecommendedBump);
 

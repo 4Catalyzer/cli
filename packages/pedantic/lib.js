@@ -1,14 +1,14 @@
-const path = require('path');
 const { promises: fs } = require('fs');
+const path = require('path');
 const { debuglog } = require('util');
 
+const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 const {
   spinner,
   chalk,
   stripAnsi,
   table,
 } = require('@4c/cli-core/ConsoleUtilities');
-const ArgUtilities = require('@4c/cli-core/ArgUtilities');
 
 const FileFormatter = require('./FileFormatter');
 const Linter = require('./Linter');
@@ -55,7 +55,7 @@ module.exports = async (
 
   try {
     await Promise.all(
-      filePaths.map(async filePath => {
+      filePaths.map(async (filePath) => {
         let content;
         let code;
 
@@ -132,13 +132,13 @@ module.exports = async (
   if (!fix && needsFormatting.length) {
     let output = '\n';
     output += `${table(
-      needsFormatting.map(filePath => [
+      needsFormatting.map((filePath) => [
         '',
         path.relative(cwd, filePath).trim(),
       ]),
       {
         align: ['', 'l'],
-        stringLength: str => stripAnsi(str).length,
+        stringLength: (str) => stripAnsi(str).length,
       },
     )}
 

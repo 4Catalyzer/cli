@@ -1,10 +1,10 @@
-const handler = require('./lib');
+const devServer = require('./lib');
 
 exports.command = '$0';
 
 exports.describe = 'Start a webpack app in development mode';
 
-exports.builder = _ =>
+exports.builder = (_) =>
   _.option('config', {
     type: 'path',
     default: 'webpack.config.js',
@@ -23,4 +23,8 @@ exports.builder = _ =>
       describe: 'Provide a set of env variables via an env file',
     });
 
-exports.handler = handler;
+exports.handler = (args) => {
+  return devServer(args).catch(() => {
+    process.exit(1);
+  });
+};
