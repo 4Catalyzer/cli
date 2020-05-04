@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.11...@4c/start@2.1.0) (2020-05-04)
+
+
+### Features
+
+* better programmatic start usage ([#200](https://github.com/4Catalyzer/cli/issues/200)) ([b119d20](https://github.com/4Catalyzer/cli/commit/b119d20ec82c10f8bbabb1cbf4ce84db4783e2f6))
+
+
+
+
+
 ## [2.0.11](https://github.com/4Catalyzer/cli/compare/@4c/start@2.0.10...@4c/start@2.0.11) (2020-04-29)
 
 **Note:** Version bump only for package @4c/start

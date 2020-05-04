@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.8](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.1.7...@4c/rollout@2.1.8) (2020-05-04)
+
+**Note:** Version bump only for package @4c/rollout
+
+
+
+
+
 ## [2.1.7](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.1.6...@4c/rollout@2.1.7) (2020-04-29)
 
 **Note:** Version bump only for package @4c/rollout
