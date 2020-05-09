@@ -34,7 +34,8 @@ module.exports = async (
 ) => {
   debug('patterns:', filePatterns, 'fix:', fix, 'cwd', cwd);
   const progress = spinner('Checking formatting…');
-  const linter = new Linter({ cwd, fix, check });
+
+  const linter = new Linter({ cwd, fix });
 
   const filePaths = await ArgUtilities.resolveFilePatterns(filePatterns, {
     cwd,
@@ -77,7 +78,7 @@ module.exports = async (
 
           if (code !== content) needsFormatting.push(filePath);
 
-          code = linter.check(code, filePath);
+          code = await linter.check(code, filePath);
         } catch (err) {
           // Don't exit the process if one file failed
           process.exitCode = 2;
@@ -127,7 +128,7 @@ module.exports = async (
     process.exitCode = 1;
   }
 
-  console.log(linter.output());
+  console.log(await linter.output());
 
   if (!fix && needsFormatting.length) {
     let output = '\n';
