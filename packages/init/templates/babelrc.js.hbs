@@ -5,12 +5,12 @@ module.exports = {{#if (eq type 'web')}}api => ({{/if}}{
       {
         target: '{{type}}',
         {{#if (eq type 'web')}}
-        modules: api.env() === 'esm' ? false : 'commonjs'
+        modules: api.env() === 'esm' ? false : 'commonjs',
         {{/if}}
       },
     ],
-    {{~#if typescript~}}
+    {{#if typescript}}
     '@babel/preset-typescript',
-    {{~/if~}}
+    {{/if}}
   ]
 }{{#if (eq type 'web')}}){{/if}};
