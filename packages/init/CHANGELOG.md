@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.6](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.5...@4c/init@3.0.6) (2020-05-09)
+
+**Note:** Version bump only for package @4c/init
+
+
+
+
+
 ## [3.0.5](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.4...@4c/init@3.0.5) (2020-04-29)
 
 

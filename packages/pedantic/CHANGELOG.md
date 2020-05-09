@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.5](https://github.com/4Catalyzer/cli/compare/pedantic@5.0.4...pedantic@5.0.5) (2020-05-09)
+
+**Note:** Version bump only for package pedantic
+
+
+
+
+
 ## [5.0.4](https://github.com/4Catalyzer/cli/compare/pedantic@5.0.3...pedantic@5.0.4) (2020-05-04)
 
 **Note:** Version bump only for package pedantic
