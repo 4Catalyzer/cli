@@ -1,9 +1,13 @@
 language: node_js
 node_js:
-  - '10'
-  - '8'
+  - node
+{{#if (eq type 'node')}}
+  - lts/*
+{{/if}}
 
-cache: yarn
+cache:
+  yarn: true
+  npm: true
 {{#if semanticRelease}}
 
 deploy:
