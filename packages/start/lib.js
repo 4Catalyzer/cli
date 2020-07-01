@@ -5,6 +5,7 @@ const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const dotenv = require('dotenv');
 const clearConsole = require('react-dev-utils/clearConsole');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
+const log = require('webpack-log');
 
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -113,7 +114,14 @@ module.exports = async ({
       ...config.devServer,
     };
 
-    const devServer = new WebpackDevServer(compiler, serverConfig);
+    const devServer = new WebpackDevServer(
+      compiler,
+      serverConfig,
+      log({
+        name: '4c/start',
+        level: 'silent',
+      }),
+    );
 
     return new Promise((resolve, reject) => {
       devServer.listen(port, HOST, (err) => {

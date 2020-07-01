@@ -3,7 +3,7 @@ const {
   formatTitle,
 } = require('friendly-errors-webpack-plugin/src/utils/colors');
 
-const numToShow = 50;
+const numToShow = 30;
 function formatFiles(files) {
   const remaining = files.length - numToShow;
   const subset = files.slice(0, numToShow);

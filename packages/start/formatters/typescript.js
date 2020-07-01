@@ -1,7 +1,6 @@
 const { chalk } = require('@4c/cli-core/ConsoleUtilities');
 const { codeFrameColumns } = require('@babel/code-frame');
 const exists = require('exists-case');
-const { IssueOrigin } = require('fork-ts-checker-webpack-plugin/lib/issue');
 const {
   formatTitle,
 } = require('friendly-errors-webpack-plugin/src/utils/colors');
@@ -18,10 +17,7 @@ function formatCaseError({ content, severity, code }) {
 
   const fileOnDisk = files.find((file) => exists.sync(file));
 
-  let formatted = `${formatTitle(
-    severity,
-    `TS${code}`,
-  )} Mismatched file name cases`;
+  let formatted = `${formatTitle(severity, code)} Mismatched file name cases`;
 
   if (fileOnDisk) {
     const otherFile = files.find((f) => f !== fileOnDisk);
@@ -45,28 +41,13 @@ function formatCaseError({ content, severity, code }) {
 }
 
 function formatError(err, fs) {
-  const {
-    origin,
-    code,
-    severity,
-    message,
-    stack,
-    file,
-    line,
-    character: column,
-  } = err;
+  const { code, severity, message, file, location } = err;
   let fileRef = file && `in ${file}`;
+  const { line, column } = location ? location.start : {};
   if (line && column) fileRef += `(${line},${column})`;
 
-  if (code === 1149) {
+  if (code === 'TS1149') {
     return formatCaseError(err);
-  }
-
-  if (origin === IssueOrigin.INTERNAL) {
-    return (
-      `${formatTitle(severity, 'INTERNAL')} ${fileRef}\n` +
-      `${message}${stack ? `\nstack trace:\n${chalk.gray(stack)}` : ''}`
-    );
   }
 
   let frame;
@@ -78,15 +59,11 @@ function formatError(err, fs) {
   }
 
   if (source) {
-    frame = codeFrameColumns(
-      source,
-      { start: { line, column } },
-      { highlightCode: true },
-    );
+    frame = codeFrameColumns(source, location, { highlightCode: true });
   }
 
   return (
-    `${formatTitle(severity, `TS${code}`)} ${fileRef}` +
+    `${formatTitle(severity, code)} ${fileRef}` +
     `\n\n${message}${frame ? `\n\n${frame}` : ''}`
   );
 }
@@ -97,7 +74,7 @@ module.exports = (compiler) => {
   function formatErrors(allErrors) {
     const errors = allErrors
       .filter((e) => e.type === 'typescript')
-      .map((e) => e.message);
+      .map((e) => e.webpackError);
 
     if (errors.length === 0) {
       return [];
