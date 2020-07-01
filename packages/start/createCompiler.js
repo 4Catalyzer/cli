@@ -129,16 +129,6 @@ module.exports = function createCompiler({
   let tsMessagesResolver;
 
   function resolveTsMessages(messages) {
-    const format = (issue) =>
-      Object.assign(new Error(issue.message), {
-        type: 'typescript',
-        severity: 1000,
-        file: issue.file,
-        location: issue.location,
-        origin: issue.origin,
-      });
-
-    // this is the format these errors are inserted in when not async
     tsMessagesResolver({
       errors: messages.filter((m) => m.severity === 'error'),
       warnings: messages.filter((m) => m.severity === 'warning'),
