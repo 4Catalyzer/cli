@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.11](https://github.com/4Catalyzer/cli/compare/@4c/cli@2.1.10...@4c/cli@2.1.11) (2020-07-06)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
 ## [2.1.10](https://github.com/4Catalyzer/cli/compare/@4c/cli@2.1.9...@4c/cli@2.1.10) (2020-05-09)
 
 **Note:** Version bump only for package @4c/cli
