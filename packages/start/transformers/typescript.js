@@ -1,14 +1,14 @@
-const typescriptTransformer = (webpackError) => {
-  const { message } = webpackError;
+const typescriptTransformer = (error) => {
+  const { webpackError } = error;
 
-  return message && message.type
+  return webpackError && webpackError.origin === 'typescript'
     ? {
+        ...error,
         ...webpackError,
-        message,
         type: 'typescript',
         severity: 1000,
       }
-    : webpackError;
+    : error;
 };
 
 module.exports = typescriptTransformer;

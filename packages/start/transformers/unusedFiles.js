@@ -1,13 +1,17 @@
+const get = require('lodash/get');
+
 module.exports = (error) => {
+  const message = error.message || get(error, 'webpackError');
   if (
-    typeof error.message === 'string' &&
-    error.message.startsWith('\nUnusedFilesWebpackPlugin')
+    typeof message === 'string' &&
+    message.startsWith('\nUnusedFilesWebpackPlugin')
   ) {
     return {
       ...error,
       type: 'unused-files',
-      unusedFiles: error.message
+      unusedFiles: message
         .replace('UnusedFilesWebpackPlugin found some unused files:', '')
+        .trim()
         .split(/\n/)
         .filter(Boolean),
     };

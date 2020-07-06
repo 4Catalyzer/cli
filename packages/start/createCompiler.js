@@ -4,14 +4,13 @@ const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErro
 const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
 const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
 // eslint-disable-next-line import/no-extraneous-dependencies
+const get = require('lodash/get');
 const webpack = require('webpack');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const WebpackBar = require('webpackbar');
 
 const getFormatters = require('./formatters');
 const getTransformers = require('./transformers');
-
-const passthroughTSFormatter = (msg) => msg;
 
 function getMaxSeverityErrors(errors) {
   const maxSeverity = errors.reduce(
@@ -20,6 +19,44 @@ function getMaxSeverityErrors(errors) {
   );
 
   return errors.filter((e) => e.severity === maxSeverity);
+}
+
+function configureTypeChecker(config) {
+  if (Array.isArray(config)) return config.map(configureTypeChecker);
+
+  const { plugins = [], ...rest } = config;
+
+  const index = plugins.findIndex(
+    (p) => p.constructor.name === 'ForkTsCheckerWebpackPlugin',
+  );
+
+  if (index > -1 && !plugins[index].constructor.version)
+    throw new Error(
+      '@4c/start is only compatible with ForkTsCheckerWebpackPlugin v5 and above',
+    );
+
+  const options = index !== -1 ? plugins[index].options : {};
+
+  const plugin = new ForkTsCheckerWebpackPlugin({
+    ...options,
+    async: true,
+    logger: { infrastructure: 'silent', issues: 'silent' },
+    typescript: {
+      mode: 'write-references',
+      ...options.typescript,
+      configOverwrite: {
+        ...get(options, 'typescript.configOverwrite'),
+        compilerOptions: {
+          noUnusedLocals: false,
+          noUnusedParameters: false,
+          ...get(options, 'typescript.configOverwrite.compilerOptions'),
+        },
+      },
+    },
+  });
+
+  plugins[index === -1 ? plugins.length : index] = plugin;
+  return [{ ...rest, plugins }, plugin];
 }
 
 module.exports = function createCompiler({
@@ -31,8 +68,12 @@ module.exports = function createCompiler({
   progress: showProgress,
 }) {
   let compiler;
+  const [processedConfig, typeCheckerPlugin] = useTypeScript
+    ? configureTypeChecker(config)
+    : [config, null];
+
   try {
-    compiler = webpack(config);
+    compiler = webpack(processedConfig);
   } catch (err) {
     error('Failed to compile.');
     console.log();
@@ -84,64 +125,31 @@ module.exports = function createCompiler({
   progress.apply(compiler);
   notifier.apply(compiler);
 
-  let isTsAsync = false;
   let tsMessagesPromise;
   let tsMessagesResolver;
 
-  if (useTypeScript) {
-    // doesn't rely on the plugins instances being deduped
-    let forkTsCheckerWebpackPlugin = compiler.options.plugins.find(
-      (p) => p.constructor.name === 'ForkTsCheckerWebpackPlugin',
-    );
+  function resolveTsMessages(messages) {
+    tsMessagesResolver({
+      errors: messages.filter((m) => m.severity === 'error'),
+      warnings: messages.filter((m) => m.severity === 'warning'),
+    });
+    // empty the queue so the plugin doesn't report them
+    return [];
+  }
 
-    if (!forkTsCheckerWebpackPlugin) {
-      forkTsCheckerWebpackPlugin = new ForkTsCheckerWebpackPlugin({
-        silent: true,
-        compilerOptions: {
-          noUnusedLocals: false,
-          noUnusedParameters: false,
-        },
-      });
-      forkTsCheckerWebpackPlugin.apply(compiler);
-    }
-
-    forkTsCheckerWebpackPlugin.silent = true;
-    forkTsCheckerWebpackPlugin.formatter = passthroughTSFormatter;
-
-    isTsAsync = !!forkTsCheckerWebpackPlugin.options.async;
-
+  if (typeCheckerPlugin) {
     // in the async case forkTsChecker will emit errors _after_ the compilation
     // has already happened so we need wait and log them ourselves
-    if (isTsAsync) {
-      compiler.hooks.beforeCompile.tap('beforeCompile', () => {
-        tsMessagesPromise = new Promise((resolve) => {
-          tsMessagesResolver = (msgs) => resolve(msgs);
-        });
+
+    compiler.hooks.beforeCompile.tap('beforeCompile', () => {
+      tsMessagesPromise = new Promise((resolve) => {
+        tsMessagesResolver = resolve;
       });
+    });
 
-      forkTsCheckerWebpackPlugin.constructor
-        .getCompilerHooks(compiler)
-        .receive.tap('afterTypeScriptCheck', (diagnostics, lints) => {
-          const allMsgs = [...diagnostics, ...lints];
+    const hooks = typeCheckerPlugin.constructor.getCompilerHooks(compiler);
 
-          // this is the format these errors are inserted in when not async
-          const format = (msg) => ({
-            file: msg.file,
-            message: msg,
-            location: {
-              line: msg.line,
-              character: msg.character,
-            },
-          });
-
-          tsMessagesResolver({
-            errors: allMsgs.filter((m) => m.severity === 'error').map(format),
-            warnings: allMsgs
-              .filter((m) => m.severity === 'warning')
-              .map(format),
-          });
-        });
-    }
+    hooks.issues.tap('afterTypeScriptCheck', resolveTsMessages);
   }
 
   // "done" event fires when Webpack has finished recompiling the bundle.
@@ -153,7 +161,7 @@ module.exports = function createCompiler({
       errors: true,
     });
 
-    if (isTsAsync && statsData.errors.length === 0) {
+    if (statsData.errors.length === 0) {
       const delayedMsg = setTimeout(() => {
         console.log(chalk.yellow('waiting for typecheck results...'));
         console.log();
