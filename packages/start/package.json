@@ -31,7 +31,7 @@
     "webpackbar": "^4.0.0"
   },
   "devDependencies": {
-    "webpack": "^4.43.0"
+    "webpack": "^4.44.0"
   },
   "peerDependencies": {
     "webpack": "^4.0.0"
