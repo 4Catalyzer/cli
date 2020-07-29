@@ -31,7 +31,7 @@
     {{#if workspaceRoot}}
       "test": "jest",
     {{else}}
-      "test": "yarn lint && jest{{#if typescript}} && yarn typecheck{{/if}}",
+      "test": "yarn lint{{#if typescript}} && yarn typecheck{{/if}} && jest",
       "testonly": "jest",
     {{/if}}
 
