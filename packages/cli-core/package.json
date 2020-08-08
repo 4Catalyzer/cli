@@ -20,7 +20,7 @@
     "inquirer": "^7.0.0",
     "is-ci": "^2.0.0",
     "log-symbols": "^4.0.0",
-    "ora": "^4.0.2",
+    "ora": "^5.0.0",
     "slash": "^3.0.0",
     "strip-ansi": "^6.0.0",
     "text-table": "^0.2.0",
