@@ -41,8 +41,8 @@
     "semver": "^7.0.0"
   },
   "devDependencies": {
-    "@4c/jest-preset": "^1.5.1",
-    "jest": "^26.4.0",
+    "@4c/jest-preset": "^1.5.2",
+    "jest": "^26.4.2",
     "shelljs": "^0.8.4",
     "tmp": "^0.2.1"
   },
