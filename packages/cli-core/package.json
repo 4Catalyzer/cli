@@ -24,7 +24,7 @@
     "slash": "^3.0.0",
     "strip-ansi": "^6.0.0",
     "text-table": "^0.2.0",
-    "yargs": "^15.0.1"
+    "yargs": "^16.0.3"
   },
   "publishConfig": {
     "access": "public"
