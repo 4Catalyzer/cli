@@ -1,6 +1,6 @@
 {
   "name": "pedantic",
-  "version": "5.0.6",
+  "version": "5.0.7",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -24,7 +24,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.1.5",
+    "@4c/cli-core": "^2.1.6",
     "eslint": "^7.0.0",
     "prettier": "^2.0.0",
     "yargs": "^16.0.3"

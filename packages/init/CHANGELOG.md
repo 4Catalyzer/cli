@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.8](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.7...@4c/init@3.0.8) (2020-10-29)
+
+
+### Bug Fixes
+
+* Check types before running tests ([#218](https://github.com/4Catalyzer/cli/issues/218)) ([7ea293c](https://github.com/4Catalyzer/cli/commit/7ea293cac0e118279119f315c3e527dc08250c0a))
+
+
+
+
+
 ## [3.0.7](https://github.com/4Catalyzer/cli/compare/@4c/init@3.0.6...@4c/init@3.0.7) (2020-07-06)
 
 **Note:** Version bump only for package @4c/init

@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli-core",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/cli-core",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"

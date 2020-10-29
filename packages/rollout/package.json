@@ -1,6 +1,6 @@
 {
   "name": "@4c/rollout",
-  "version": "2.1.10",
+  "version": "2.1.11",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -25,8 +25,8 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.1.5",
-    "@4c/file-butler": "^4.1.7",
+    "@4c/cli-core": "^2.1.6",
+    "@4c/file-butler": "^4.1.8",
     "chalk": "^4.0.0",
     "conventional-changelog": "^3.0.6",
     "conventional-recommended-bump": "^6.0.0",
