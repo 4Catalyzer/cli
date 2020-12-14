@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@4c/jest-preset@^1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@4c/jest-preset/-/jest-preset-1.5.3.tgz#3bcb12f0bc9dd23a2e1bfe2b175d96f22c3cb31d"
-  integrity sha512-brmxGZDIl8LsqZpKEAe+yyk8elj/R8QaQ3/OVYyy8sCNemuHR0H2B0893jMkp2AZmOuXSE97zsAijZE1j2TSGg==
+"@4c/jest-preset@^1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@4c/jest-preset/-/jest-preset-1.5.4.tgz#6201d8398c89a1fdbf51007a52fe04a0bb63edd2"
+  integrity sha512-NyZ6WqaKgQ3SY5oCVMyddTbrLxafnvlU8JM73I4xI9XT5L7A7JyiHVxwexdbrBlRKa8AwoUiv8sdWpx4t16YFA==
   dependencies:
     babel-jest "^26.1.0"
     find-up "^5.0.0"
@@ -4313,10 +4313,10 @@ escodegen@^1.14.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-4catalyzer@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer/-/eslint-config-4catalyzer-1.1.4.tgz#d60c78a11a5fc5af0fdbfe10f379c12e0190aa0f"
-  integrity sha512-EuknTIJ1cUH2+TehFqJGu3FMwmO5YkSNkNVN1XNG+44Y1nszDBV5Fl2jhzQ4ohyedkmSJeIIM1Fp32AwQUy30Q==
+eslint-config-4catalyzer@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/eslint-config-4catalyzer/-/eslint-config-4catalyzer-1.1.5.tgz#6151d1c2406754ce29c7fd07eeeb6825ee887d19"
+  integrity sha512-50taSYb8sbqI0xBP+K7mfNs3gDqzet7VrZI5jPkuDPZ7hqK7HfLQUKY/Qzpaq0E0myMVmeu8uloc0ndZsg02bA==
   dependencies:
     babel-eslint "^10.0.3"
     eslint-config-airbnb-base "^14.0.0"
@@ -4379,10 +4379,10 @@ eslint-plugin-jest@^24.1.3:
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.0.1"
 
-eslint-plugin-prettier@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.2.0.tgz#af391b2226fa0e15c96f36c733f6e9035dbd952c"
-  integrity sha512-kOUSJnFjAUFKwVxuzy6sA5yyMx6+o9ino4gCdShzBNx4eyFRudWRYKCFolKjoM40PEiuU6Cn7wBLfq3WsGg7qg==
+eslint-plugin-prettier@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.3.0.tgz#61e295349a65688ffac0b7808ef0a8244bdd8d40"
+  integrity sha512-tMTwO8iUWlSRZIwS9k7/E4vrTsfvsrcM5p1eftyuqWH25nKsz/o6/54I7jwQ/3zobISyC7wMy9ZsFwgTxOcOpQ==
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
@@ -5659,10 +5659,10 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
-husky@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-4.3.0.tgz#0b2ec1d66424e9219d359e26a51c58ec5278f0de"
-  integrity sha512-tTMeLCLqSBqnflBZnlVDhpaIMucSGaYyX6855jM4AguGeWCeSzNdb1mfyWduTZ3pe3SJVvVWGL0jO1iKZVPfTA==
+husky@^4.3.6:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-4.3.6.tgz#ebd9dd8b9324aa851f1587318db4cccb7665a13c"
+  integrity sha512-o6UjVI8xtlWRL5395iWq9LKDyp/9TE7XMOTvIpEVzW638UcGxTmV5cfel6fsk/jbZSTlvfGVJf2svFtybcIZag==
   dependencies:
     chalk "^4.0.0"
     ci-info "^2.0.0"
