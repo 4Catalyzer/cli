@@ -13,6 +13,7 @@ const HOST = process.env.HOST || '0.0.0.0';
 module.exports = async ({
   config: cliConfig = 'webpack.config',
   envFile,
+  progress = !ConsoleUtilities.isCI(),
   ...cliOptions
 }) => {
   // lazy load to use local webpack
@@ -82,7 +83,7 @@ module.exports = async ({
       devSocket,
       urls,
       useTypeScript,
-      progress: cliOptions.progress,
+      progress,
     });
 
     const { proxy } = devServerConfig;
@@ -131,7 +132,7 @@ module.exports = async ({
           return;
         }
 
-        if (cliOptions.progress && ConsoleUtilities.isTTY) {
+        if (progress && ConsoleUtilities.isTTY) {
           clearConsole();
         }
       });
