@@ -1,6 +1,6 @@
 {
   "name": "@4c/rollout",
-  "version": "2.1.11",
+  "version": "2.1.12",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/4Catalyzer/cli/compare/@4c/start@2.1.3...@4c/start@2.2.0) (2021-01-20)
+
+
+### Features
+
+* better CI start output ([975564e](https://github.com/4Catalyzer/cli/commit/975564ee7ced768a5b278d0da0c963fa3b3d5f8d))
+
+
+
+
+
 ## [2.1.3](https://github.com/4Catalyzer/cli/compare/@4c/start@2.1.2...@4c/start@2.1.3) (2020-10-29)
 
 **Note:** Version bump only for package @4c/start
