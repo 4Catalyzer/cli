@@ -28,17 +28,17 @@
     "@4c/cli-core": "^2.1.6",
     "@4c/file-butler": "^4.1.8",
     "chalk": "^4.0.0",
-    "conventional-changelog": "^3.0.6",
-    "conventional-recommended-bump": "^6.0.0",
-    "execa": "^4.0.0",
-    "fs-extra": "^9.0.0",
+    "conventional-changelog": "^3.1.24",
+    "conventional-recommended-bump": "^6.1.0",
+    "execa": "^5.0.0",
+    "fs-extra": "^9.1.0",
     "has-yarn": "^2.1.0",
     "listr": "^0.14.3",
     "listr-input": "^0.2.0",
     "read-pkg-up": "^7.0.1",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.2",
-    "semver": "^7.0.0"
+    "semver": "^7.3.4"
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.5.4",

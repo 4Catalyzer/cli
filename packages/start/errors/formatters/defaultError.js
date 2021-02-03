@@ -1,30 +1,19 @@
-const {
-  formatTitle,
-} = require('friendly-errors-webpack-plugin/src/utils/colors');
+const upperFirst = require('lodash/upperFirst');
 
-function removeLoaders(file) {
-  if (!file) {
-    return '';
-  }
-  const split = file.split('!');
-  const filePath = split[split.length - 1];
-  return `in ${filePath}`;
-}
+const { formatTitle } = require('../webpackErrors');
 
 function displayError(severity, error) {
-  const baseError = formatTitle(severity, severity);
+  const baseError = formatTitle(severity, upperFirst(severity));
 
   if (!error.message) {
     return `${baseError}\n\n${error.webpackError}`;
   }
 
   return [
-    `${baseError} ${removeLoaders(error.file)}`,
+    `${baseError} ${error.file ? `in ${error.file.split('!').pop()}` : ''}`,
     '',
     error.message,
-    error.origin ? error.origin : '',
     '',
-    error.infos,
   ];
 }
 

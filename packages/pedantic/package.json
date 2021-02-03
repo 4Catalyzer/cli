@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "@4c/cli-core": "^2.1.6",
-    "eslint": "^7.0.0",
-    "prettier": "^2.0.0",
-    "yargs": "^16.0.3"
+    "eslint": "^7.19.0",
+    "prettier": "^2.2.1",
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.5.4",

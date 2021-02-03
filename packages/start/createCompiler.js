@@ -1,25 +1,12 @@
 const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const formatErrors = require('friendly-errors-webpack-plugin/src/core/formatErrors');
-const transformErrors = require('friendly-errors-webpack-plugin/src/core/transformErrors');
-const colors = require('friendly-errors-webpack-plugin/src/utils/colors');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const get = require('lodash/get');
 const webpack = require('webpack');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const WebpackBar = require('webpackbar');
 
-const getFormatters = require('./formatters');
-const getTransformers = require('./transformers');
-
-function getMaxSeverityErrors(errors) {
-  const maxSeverity = errors.reduce(
-    (res, curr) => (curr.severity > res ? curr.severity : res),
-    0,
-  );
-
-  return errors.filter((e) => e.severity === maxSeverity);
-}
+const Errors = require('./errors');
 
 function configureTypeChecker(config) {
   if (Array.isArray(config)) return config.map(configureTypeChecker);
@@ -73,7 +60,21 @@ module.exports = function createCompiler({
     : [config, null];
 
   try {
-    compiler = webpack(processedConfig);
+    compiler = webpack({
+      ...processedConfig,
+      plugins: [
+        ...(processedConfig.plugins || []),
+        new WebpackBar({
+          name: appName || 'App',
+          reporters: [showProgress ? 'fancy' : 'basic'],
+        }),
+        new WebpackNotifierPlugin({
+          title: appName,
+          excludeWarnings: true,
+          skipFirstNotification: true,
+        }),
+      ],
+    });
   } catch (err) {
     error('Failed to compile.');
     console.log();
@@ -82,48 +83,16 @@ module.exports = function createCompiler({
     process.exit(1);
   }
 
-  const formatters = getFormatters(compiler);
-  const transformers = getTransformers(compiler);
+  const printErrors = Errors.printer(compiler);
 
-  function printErrors(errors, severity) {
-    const topErrors = getMaxSeverityErrors(
-      transformErrors(errors, transformers),
-    );
-
-    const subtitle =
-      severity === 'error'
-        ? `Failed to compile with ${topErrors.length} ${severity}s`
-        : `Compiled with ${topErrors.length} ${severity}s`;
-
-    console.log(`${colors.formatText(severity, subtitle)}\n\n`);
-
-    formatErrors(topErrors, formatters, severity).forEach((err) =>
-      console.log(err),
-    );
-  }
-
-  function printAppInfo() {
+  function printAppInfo(severity = 'info') {
     console.log();
     console.log(
-      `${colors.formatTitle('info', 'I')} ` +
+      `${Errors.formatTitle(severity, 'I')} ` +
         `Your application is running here: ${urls.localUrlForTerminal}`,
     );
     console.log();
   }
-
-  const progress = new WebpackBar({
-    name: appName || 'App',
-    reporters: [showProgress ? 'fancy' : 'basic'],
-  });
-
-  const notifier = new WebpackNotifierPlugin({
-    title: appName,
-    excludeWarnings: true,
-    skipFirstNotification: true,
-  });
-
-  progress.apply(compiler);
-  notifier.apply(compiler);
 
   let tsMessagesPromise;
   let tsMessagesResolver;
@@ -161,7 +130,7 @@ module.exports = function createCompiler({
       errors: true,
     });
 
-    if (statsData.errors.length === 0) {
+    if (typeCheckerPlugin && statsData.errors.length === 0) {
       const delayedMsg = setTimeout(() => {
         console.log(chalk.yellow('waiting for typecheck results...'));
         console.log();
@@ -179,13 +148,16 @@ module.exports = function createCompiler({
       }
     }
 
+    let severity = 'info';
     if (statsData.errors.length) {
+      severity = 'error';
       printErrors(statsData.errors, 'error');
     } else if (statsData.warnings.length) {
+      severity = 'warning';
       printErrors(statsData.warnings, 'warning');
     }
 
-    printAppInfo();
+    printAppInfo(severity);
   });
 
   return compiler;

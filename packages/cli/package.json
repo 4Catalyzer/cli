@@ -25,10 +25,10 @@
     "pedantic": "^5.0.8",
     "svg2c": "^1.4.18",
     "ts-doctor": "^1.2.3",
-    "yargs": "^16.0.3"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "webpack": "^4.46.0"
+    "webpack": "^5.20.1"
   },
   "publishConfig": {
     "access": "public"

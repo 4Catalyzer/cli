@@ -1,9 +1,8 @@
 const { chalk } = require('@4c/cli-core/ConsoleUtilities');
 const { codeFrameColumns } = require('@babel/code-frame');
 const exists = require('exists-case');
-const {
-  formatTitle,
-} = require('friendly-errors-webpack-plugin/src/utils/colors');
+
+const { formatTitle } = require('../webpackErrors');
 
 function formatCaseError({ content, severity, code }) {
   const rFiles = /(?:'|")(.+?)(?:'|")/gm;

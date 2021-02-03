@@ -147,7 +147,7 @@ module.exports = async ({
     });
   } catch (err) {
     if (err && err.message) {
-      ConsoleUtilities.error(err.message);
+      ConsoleUtilities.error(err);
     }
     throw err;
   }
