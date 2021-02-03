@@ -1,6 +1,6 @@
 {
   "name": "@4c/intl",
-  "version": "1.2.21",
+  "version": "1.2.22",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/intl",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -24,7 +24,7 @@
     "transform": {}
   },
   "dependencies": {
-    "@4c/cli-core": "^2.1.6",
+    "@4c/cli-core": "^2.2.0",
     "chalk": "^4.0.0",
     "glob": "^7.1.3"
   },

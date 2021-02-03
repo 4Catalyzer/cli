@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/4Catalyzer/cli/compare/@4c/cli@2.1.13...@4c/cli@2.2.0) (2021-02-03)
+
+
+### Features
+
+* support webpack 5 bump all the deps ([603a29c](https://github.com/4Catalyzer/cli/commit/603a29cfc8aa9ca10d6e8c06414ab75b8286ea86))
+
+
+
+
+
 ## [2.1.13](https://github.com/4Catalyzer/cli/compare/@4c/cli@2.1.12...@4c/cli@2.1.13) (2021-01-20)
 
 **Note:** Version bump only for package @4c/cli

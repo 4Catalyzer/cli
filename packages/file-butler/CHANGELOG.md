@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/4Catalyzer/cli/compare/@4c/file-butler@4.1.8...@4c/file-butler@4.2.0) (2021-02-03)
+
+
+### Features
+
+* support webpack 5 bump all the deps ([603a29c](https://github.com/4Catalyzer/cli/commit/603a29cfc8aa9ca10d6e8c06414ab75b8286ea86))
+
+
+
+
+
 ## [4.1.8](https://github.com/4Catalyzer/cli/compare/@4c/file-butler@4.1.7...@4c/file-butler@4.1.8) (2020-10-29)
 
 **Note:** Version bump only for package @4c/file-butler
