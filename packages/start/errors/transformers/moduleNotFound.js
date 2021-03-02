@@ -1,7 +1,7 @@
 const TYPE = 'module-not-found';
 
 function transform(error) {
-  if (error.message.includes('Module not found:')) {
+  if (error.message && error.message.includes('Module not found:')) {
     const [, module] = error.message.match(/Can't resolve '([^']+)'/);
 
     return {
