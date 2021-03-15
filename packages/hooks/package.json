@@ -1,0 +1,44 @@
+{
+  "name": "hookem",
+  "version": "1.0.0",
+  "main": "lib.js",
+  "repository": {
+    "directory": "packages/hooks",
+    "type": "git",
+    "url": "https://github.com/4Catalyzer/cli.git"
+  },
+  "bin": {
+    "hookem": "cli.js"
+  },
+  "author": "4Catalyzer",
+  "license": "MIT",
+  "scripts": {
+    "tdd": "jest --watch",
+    "_install": "node cli install",
+    "preuninstall": "node cli uninstall",
+    "prepublishOnly": "pinst --enable",
+    "postpublish": "pinst --disable",
+    "test": "jest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "jest": {
+    "preset": "@4c/jest-preset",
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@4c/cli": "^2.0.1",
+    "@4c/jest-preset": "^1.5.4",
+    "@4c/prettier-config": "^1.1.0",
+    "jest": "^26.6.3",
+    "pinst": "^2.1.6"
+  },
+  "dependencies": {
+    "@4c/cli-core": "^2.2.0",
+    "find-up": "^5.0.0",
+    "has-yarn": "^2.1.0",
+    "read-pkg-up": "^7.0.1",
+    "yargs": "^16.2.0"
+  }
+}
