@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/4Catalyzer/cli/compare/@4c/start@2.3.0...@4c/start@2.4.0) (2021-03-16)
+
+
+### Features
+
+* allow disabling typechecking ([9b3eea6](https://github.com/4Catalyzer/cli/commit/9b3eea6942b0839d3280a7e82ac5c0c8264bdcef))
+
+
+
+
+
 # [2.3.0](https://github.com/4Catalyzer/cli/compare/@4c/start@2.2.0...@4c/start@2.3.0) (2021-02-03)
 
 
