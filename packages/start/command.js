@@ -18,6 +18,11 @@ exports.builder = (_) =>
       default: true,
       describe: 'Disable the progress bar',
     })
+    .option('typecheck', {
+      type: 'boolean',
+      default: true,
+      describe: 'Enable typechecking for TypeScript projects',
+    })
     .option('env-file', {
       type: 'path',
       describe: 'Provide a set of env variables via an env file',

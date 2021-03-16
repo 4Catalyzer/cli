@@ -63,7 +63,8 @@ module.exports = async ({
     const appName =
       config.name || require(path.resolve('./package.json')).name;
 
-    const useTypeScript = fs.existsSync(`tsconfig.json`);
+    const useTypeScript =
+      cliOptions.typecheck && fs.existsSync(`tsconfig.json`);
 
     const urls = prepareUrls(protocol, HOST, port);
 
