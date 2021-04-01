@@ -4,6 +4,44 @@ const path = require('path');
 const { red, green, yellow, blue } = require('chalk');
 const glob = require('glob');
 
+const formatters = {
+  json: (msgs) => {
+    const results = {};
+    // removes debug info like start, file, etc
+    for (const { id, description, defaultMessage } of Object.values(msgs)) {
+      results[id] = {
+        id,
+        description,
+        defaultMessage,
+      };
+    }
+    return results;
+  },
+
+  smartling: (msgs) => {
+    const results = {
+      smartling: {
+        translate_paths: [
+          {
+            path: '*/message',
+            key: '{*}/message',
+            instruction: '*/description',
+          },
+        ],
+        variants_enabled: true,
+        string_format: 'icu',
+      },
+    };
+    for (const [id, msg] of Object.entries(msgs)) {
+      results[id] = {
+        message: msg.defaultMessage,
+        description: msg.description,
+      };
+    }
+    return results;
+  },
+};
+
 function toPatterns(files) {
   return files.map((file) => {
     let pattern = path.join(process.cwd(), file);
@@ -24,12 +62,19 @@ exports.builder = (_) =>
   _.positional('paths', {
     type: 'string',
     describe: 'A glob selecting messages JSON files',
-  }).option('out-dir', {
-    alias: 'd',
-    string: true,
-  });
+  })
+    .option('out-dir', {
+      alias: 'd',
+      string: true,
+    })
+    .option('format', {
+      alias: 'f',
+      describe:
+        'output messages in a specfic format for upload to translation service',
+      choices: ['smartling'],
+    });
 
-exports.handler = ({ paths, outDir }) => {
+exports.handler = ({ paths, outDir, format = 'json' }) => {
   const messages = {};
   const duplicates = new Map();
 
@@ -97,15 +142,11 @@ exports.handler = ({ paths, outDir }) => {
     console.log(green('No duplicate message ids, writing out messages file…'));
   }
 
-  Object.keys(messages).forEach((id) => {
-    delete messages[id].file;
-    delete messages[id].start;
-    delete messages[id].end;
-  });
+  const result = formatters[format](messages);
 
   writeFileSync(
     path.join(process.cwd(), outDir, 'messages.en.json'),
-    JSON.stringify(messages),
+    JSON.stringify(result),
     'utf8',
   );
 };
