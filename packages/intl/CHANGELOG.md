@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/4Catalyzer/cli/compare/@4c/intl@1.2.22...@4c/intl@1.3.0) (2021-04-01)
+
+
+### Features
+
+* output smartling format for intl ([#272](https://github.com/4Catalyzer/cli/issues/272)) ([ba5f34a](https://github.com/4Catalyzer/cli/commit/ba5f34a58d3a58abf07c8dd95f680599e3a524a4))
+
+
+
+
+
 ## [1.2.22](https://github.com/4Catalyzer/cli/compare/@4c/intl@1.2.21...@4c/intl@1.2.22) (2021-02-03)
 
 **Note:** Version bump only for package @4c/intl
