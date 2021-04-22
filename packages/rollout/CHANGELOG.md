@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.2.0...@4c/rollout@2.2.1) (2021-04-22)
+
+
+### Bug Fixes
+
+* OTP input not working ([ded9a9e](https://github.com/4Catalyzer/cli/commit/ded9a9efc518313087bf117a7b2e674c06f81972))
+
+
+
+
+
 # [2.2.0](https://github.com/4Catalyzer/cli/compare/@4c/rollout@2.1.12...@4c/rollout@2.2.0) (2021-02-03)
 
 
