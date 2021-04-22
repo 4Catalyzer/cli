@@ -5,6 +5,7 @@ const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
 const GitUtilities = require('@4c/cli-core/GitUtilities');
 const PromptUtilities = require('@4c/cli-core/PromptUtilities');
 const { createAltPublishDir } = require('@4c/file-butler');
+const exitHook = require('async-exit-hook');
 const chalk = require('chalk');
 const execa = require('execa');
 const fs = require('fs-extra');
@@ -28,11 +29,13 @@ async function runLifecycle(script, pkg) {
 }
 
 let rolledBack = false;
-async function maybeRollbackGit(tag, skipGit, skipVersion) {
+async function maybeRollbackGit(tag, skipGit, skipVersion, prompt = true) {
   if (skipGit || rolledBack) return;
-  const confirmed = await PromptUtilities.confirm(
-    'There was a problem publishing, do you want to rollback the git operations?',
-  );
+  const confirmed =
+    !prompt ||
+    (await PromptUtilities.confirm(
+      'There was a problem publishing, do you want to rollback the git operations?',
+    ));
 
   rolledBack = true;
   if (!confirmed) return;
@@ -142,7 +145,7 @@ async function npmPublish(pkgJson, options) {
     args.push('--access', isPublic ? 'public' : 'restricted');
   }
 
-  const child = await execa('npm', args, { stdio: [0, 1, 'pipe'] });
+  const child = await execa('npm', args);
 
   if (publishDir) {
     await runLifecycle('publish', pkgJson);
@@ -231,7 +234,7 @@ const handler = async (argv) => {
     skipVersion,
     conventionalCommits,
     public: isPublic,
-    allowBranch = ['master'],
+    allowBranch = ['main', 'master'],
   } = { ...packageJson.release, ...argv };
 
   let { publishDir, nextVersion: version } = argv;
@@ -305,6 +308,7 @@ const handler = async (argv) => {
     },
     {
       title: 'Running tests',
+      skip: () => skipChecks,
       task: () => exec('npm', ['test']),
     },
   ]);
@@ -334,6 +338,12 @@ const handler = async (argv) => {
   const gitTag = `v${nextVersion}`;
 
   try {
+    exitHook((callback = () => {}) => {
+      maybeRollbackGit(gitTag, skipGit, skipVersion, false).then(() =>
+        callback(),
+      );
+    });
+
     await runTasks([
       {
         title: isSameVersion

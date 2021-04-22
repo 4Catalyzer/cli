@@ -1,6 +1,7 @@
 const path = require('path');
 
 const execa = require('execa');
+const gitDefaultBranch = require('git-default-branch');
 const slash = require('slash');
 
 function hasTag(tag) {
@@ -17,6 +18,8 @@ function hasTag(tag) {
 const repoName = (name) => name.replace(/^@.+\//, '');
 
 exports.repoName = repoName;
+
+exports.getDefaultBranch = () => gitDefaultBranch();
 
 exports.getRemoteUrl = (cwd) =>
   execa('git', ['config', 'remote.origin.url'], { cwd })
