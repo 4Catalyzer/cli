@@ -41,7 +41,7 @@ function formatCaseError({ content, severity, code }) {
 
 function formatError(err, fs) {
   const { code, severity, message, file, location } = err;
-  let fileRef = file && `in ${file}`;
+  let fileRef = file && ` in ${file}`;
   const { line, column } = location ? location.start : {};
   if (line && column) fileRef += `(${line},${column})`;
 
@@ -50,19 +50,20 @@ function formatError(err, fs) {
   }
 
   let frame;
-  let source = '';
-  try {
-    source = fs.readFileSync(file).toString();
-  } catch {
-    /* ignore */
-  }
-
-  if (source) {
-    frame = codeFrameColumns(source, location, { highlightCode: true });
+  if (location && file) {
+    let source = '';
+    try {
+      source = fs.readFileSync(file).toString();
+      if (source) {
+        frame = codeFrameColumns(source, location, { highlightCode: true });
+      }
+    } catch {
+      /* ignore */
+    }
   }
 
   return (
-    `${formatTitle(severity, code)} ${fileRef}` +
+    `${formatTitle(severity, code)}${fileRef}` +
     `\n\n${message}${frame ? `\n\n${frame}` : ''}`
   );
 }
