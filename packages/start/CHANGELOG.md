@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.3](https://github.com/4Catalyzer/cli/compare/@4c/start@2.4.2...@4c/start@2.4.3) (2021-05-14)
+
+
+### Bug Fixes
+
+* better error formatting and guards ([0741c1a](https://github.com/4Catalyzer/cli/commit/0741c1a26e08fe81ec6421982c84ebb825b7dc0a))
+
+
+
+
+
 ## [2.4.2](https://github.com/4Catalyzer/cli/compare/@4c/start@2.4.1...@4c/start@2.4.2) (2021-04-22)
 
 **Note:** Version bump only for package @4c/start
