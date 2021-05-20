@@ -30,7 +30,7 @@
     "webpackbar": "^5.0.0-3"
   },
   "devDependencies": {
-    "webpack": "^5.36.2",
+    "webpack": "^5.37.0",
     "webpack-atoms": "^16.0.1"
   },
   "peerDependencies": {
