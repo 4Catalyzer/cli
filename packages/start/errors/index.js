@@ -18,12 +18,14 @@ function printer(compiler) {
   const formatters = [
     require('./formatters/unusedFiles'),
     require('./formatters/moduleNotFound'),
+    require('./formatters/relayCompiler'),
     require('./formatters/typescript')(compiler),
     require('./formatters/defaultError'),
   ];
   const transformers = [
     require('./transformers/moduleNotFound'),
     require('./transformers/typescript'),
+    require('./transformers/relayCompiler'),
     require('./transformers/unusedFiles'),
   ];
 

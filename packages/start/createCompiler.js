@@ -8,6 +8,29 @@ const WebpackBar = require('webpackbar');
 
 const Errors = require('./errors');
 
+function configureRelayPluginReporter(config) {
+  const { plugins = [] } = config;
+  const pluginInstance = plugins.find(
+    (p) =>
+      p.constructor.name === 'RelayCompilerWebpackPlugin' &&
+      !p.options.getReporter,
+  );
+
+  if (pluginInstance) {
+    pluginInstance.options.getReporter = (logger) => ({
+      reportMessage(message) {
+        if (logger) logger.log(message);
+      },
+      reportTime(_name, _ms) {},
+
+      reportError(_location, err) {
+        // log just the message since webpack mangles the Error object
+        logger.error(err.message);
+      },
+    });
+  }
+}
+
 function configureTypeChecker(config) {
   if (Array.isArray(config)) return config.map(configureTypeChecker);
 
@@ -58,6 +81,8 @@ module.exports = function createCompiler({
   const [processedConfig, typeCheckerPlugin] = useTypeScript
     ? configureTypeChecker(config)
     : [config, null];
+
+  configureRelayPluginReporter(processedConfig);
 
   try {
     compiler = webpack({
@@ -128,7 +153,23 @@ module.exports = function createCompiler({
       all: false,
       warnings: true,
       errors: true,
+      logging: 'error',
     });
+
+    if (statsData.logging.RelayCompilerPlugin) {
+      const relayErrors = new Set();
+
+      statsData.logging.RelayCompilerPlugin.entries.forEach((e) =>
+        relayErrors.add(e.args[0]),
+      );
+
+      statsData.errors.push(
+        ...Array.from(relayErrors, (message) => ({
+          origin: 'relay-compiler',
+          message,
+        })),
+      );
+    }
 
     if (typeCheckerPlugin && statsData.errors.length === 0) {
       const delayedMsg = setTimeout(() => {
