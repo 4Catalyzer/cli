@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.1](https://github.com/4Catalyzer/cli/compare/@4c/start@2.5.0...@4c/start@2.5.1) (2021-05-20)
+
+
+### Bug Fixes
+
+* oops ([91acdeb](https://github.com/4Catalyzer/cli/commit/91acdebe338e89280b1573290c2ca575b3a3fad7))
+
+
+
+
+
 # [2.5.0](https://github.com/4Catalyzer/cli/compare/@4c/start@2.4.3...@4c/start@2.5.0) (2021-05-20)
 
 
