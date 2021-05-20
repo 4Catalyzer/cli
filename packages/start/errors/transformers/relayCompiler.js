@@ -3,7 +3,7 @@ const typescriptTransformer = (error) => {
 
   return webpackError && webpackError.origin === 'relay-compiler'
     ? {
-        message: error,
+        message: error.message,
         type: 'relay-compiler',
         severity: 1000,
       }
