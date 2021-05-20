@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/4Catalyzer/cli/compare/@4c/start@2.4.3...@4c/start@2.5.0) (2021-05-20)
+
+
+### Features
+
+* handle relay compiler errors nicely ([0094e95](https://github.com/4Catalyzer/cli/commit/0094e95d0608c4066432bbcdfaa3251f3d658a2a))
+
+
+
+
+
 ## [2.4.3](https://github.com/4Catalyzer/cli/compare/@4c/start@2.4.2...@4c/start@2.4.3) (2021-05-14)
 
 
