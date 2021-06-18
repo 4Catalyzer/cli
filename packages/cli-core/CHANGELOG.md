@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/4Catalyzer/cli/compare/@4c/cli-core@2.2.1...@4c/cli-core@2.3.0) (2021-06-18)
+
+
+### Features
+
+* bump init scaffolding ([30f0d97](https://github.com/4Catalyzer/cli/commit/30f0d9755a0f6b324216b9d14d3f0238a5b640f9))
+
+
+
+
+
 ## [2.2.1](https://github.com/4Catalyzer/cli/compare/@4c/cli-core@2.2.0...@4c/cli-core@2.2.1) (2021-04-22)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@4c/start",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/start",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -17,7 +17,7 @@
     "directory": "packages/start"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.2.1",
+    "@4c/cli-core": "^2.3.0",
     "@babel/code-frame": "^7.12.13",
     "dotenv": "^8.1.0",
     "exists-case": "^0.1.0",
