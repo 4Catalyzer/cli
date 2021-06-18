@@ -30,7 +30,7 @@ exports.remoteUrl = (name, org = '4Catalyzer') =>
   `https://github.com/${org}/${repoName(name)}.git`;
 
 exports.isGitRepo = (dest) =>
-  execa('git', ['rev-parse'], { cwd: dest, stdio: 'inherit' })
+  execa('git', ['rev-parse'], { cwd: dest, stdio: 'ignore' })
     .then(() => true)
     .catch(() => false);
 

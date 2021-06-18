@@ -22,6 +22,7 @@ exports.handler = async ({ location }) => {
 
   const answers = await newPkg.runPrompts([location]);
   const result = await newPkg.runActions(answers);
+
   if (result.failures) {
     result.failures.forEach(
       (f) =>

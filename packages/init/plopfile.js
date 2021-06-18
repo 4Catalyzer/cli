@@ -71,13 +71,6 @@ const prompts = [
     message: 'Do you need babel (maybe not?)',
     when: (_) => _.type === 'node' && !_.typescript,
   },
-  {
-    name: 'semanticRelease',
-    type: 'confirm',
-    default: false,
-    message: 'Do you want to use semantic-release to handle releases?',
-    when: (_) => !getRoot(_.location),
-  },
 ];
 
 module.exports = (plop) => {
@@ -121,8 +114,8 @@ module.exports = (plop) => {
         },
         !workspaceRoot && {
           type: 'add',
-          path: `{{location}}/.travis.yml`,
-          templateFile: `${templatePath}/.travis.yml.hbs`,
+          path: `{{location}}/.github/workflows/ci.yml`,
+          templateFile: `${templatePath}/ci.yml.hbs`,
           skipIfExists: true,
           data,
         },
@@ -156,7 +149,7 @@ module.exports = (plop) => {
         },
         async (_) => {
           const isGitRepo = await GitUtilities.isGitRepo(location);
-          if (!isGitRepo) return;
+          if (isGitRepo) return;
 
           try {
             await GitUtilities.init(location);
@@ -200,14 +193,8 @@ module.exports = (plop) => {
           ]),
 
         !workspaceRoot &&
-          (({ semanticRelease }) => {
-            if (semanticRelease) {
-              console.log(
-                '\nRun `npx semantic-release-cli setup` after pushing to github for the first time to setup semantic release\n',
-              );
-            } else {
-              console.log('Done!');
-            }
+          (() => {
+            console.log('Done! Run `yarn` to install dependencies.');
           }),
       ].filter(Boolean);
     },

@@ -46,10 +46,8 @@
   },
   {{#unless workspaceRoot}}
     "prettier": "@4c/prettier-config",
-    "husky": {
-      "hooks": {
-        "pre-commit": "lint-staged"
-      }
+    "gitHooks": {
+      "pre-commit": "lint-staged"
     },
     "lint-staged": {
       "*": [
@@ -64,18 +62,10 @@
   },
   {{#unless workspaceRoot}}
     "release": {
-    {{#if semanticRelease}}
-      {{#if babel}}
-        "pkgRoot": "lib",
-      {{/if}}
-      "extends": [
-        "@4c/semantic-release-config"
-      ]
-    {{else}}
+      "conventionalCommits": true,
       {{#if babel}}
         "publishDir": "lib"
       {{/if}}
-    {{/if}}
     },
   {{/unless}}
 
@@ -84,7 +74,7 @@
     "@4c/jest-preset": "^1.4.5",
     "@4c/prettier-config": "^1.1.0",
     {{#if babel}}
-      "@4c/babel-preset": "^7.1.0",
+      "@4c/babel-preset": "^8.1.1",
     {{/if}}
     {{#if typescript}}
       {{#if (eq type 'node')}}
@@ -95,7 +85,7 @@
       "eslint-config-prettier": "^6.10.0",
       "eslint-plugin-import": "^2.20.1",
       "eslint-plugin-prettier": "^3.1.2",
-      "eslint-plugin-jest": "^23.7.0",
+      "eslint-plugin-jest": "^24.3.6",
       "eslint-config-4catalyzer-jest": "^2.0.4",
       {{#if (eq type 'web') }}
         "eslint-config-4catalyzer-react": "^1.0.3",
@@ -106,21 +96,16 @@
         "eslint-config-4catalyzer": "^1.1.0",
       {{/if}}
       {{#if typescript}}
-        "typescript": "^3.7.5",
-        "@4c/tsconfig": "^0.3.1",
+        "typescript": "^4.3.4",
+        "@4c/tsconfig": "^0.4.0",
         "@babel/preset-typescript": "^7.8.3",
-        "eslint-config-4catalyzer-typescript": "^1.1.6",
-        "@typescript-eslint/eslint-plugin": "^2.19.2",
+        "eslint-config-4catalyzer-typescript": "^3.1.0",
+        "@typescript-eslint/eslint-plugin": "^4.27.0",
       {{/if}}
-      {{#if semanticRelease}}
-        "@4c/semantic-release-config": "^2.0.3",
-        "semantic-release": "^15.5.0",
-        "travis-deploy-once": "^5.0.0",
-      {{/if}}
-      "husky": "^3.0.9",
-      "lint-staged": "^9.4.2",
+      "hookem": "^1.0.6",
+      "lint-staged": "^11.0.0",
       "prettier": "^2.0.1",
     {{/unless}}
-    "jest": "^26.0.0"
+    "jest": "^27.0.4"
   }
 }
