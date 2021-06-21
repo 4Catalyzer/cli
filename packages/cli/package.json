@@ -28,7 +28,7 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "webpack": "^5.38.1"
+    "webpack": "^5.39.1"
   },
   "publishConfig": {
     "access": "public"
