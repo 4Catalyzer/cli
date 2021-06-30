@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.3](https://github.com/4Catalyzer/cli/compare/@4c/start@2.5.2...@4c/start@2.5.3) (2021-06-30)
+
+
+### Bug Fixes
+
+* peer dep ([2f690b1](https://github.com/4Catalyzer/cli/commit/2f690b1eef8f09cefa722a363853aa2320c3ec08))
+
+
+
+
+
 ## [2.5.2](https://github.com/4Catalyzer/cli/compare/@4c/start@2.5.1...@4c/start@2.5.2) (2021-06-18)
 
 **Note:** Version bump only for package @4c/start
