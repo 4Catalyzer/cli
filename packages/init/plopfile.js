@@ -169,6 +169,14 @@ export default (plop) => {
           skipIfExists: true,
           data,
         },
+        answers.typescript &&
+          workspaceRoot && {
+            type: 'add',
+            path: `{{location}}/tsconfig.build.json`,
+            templateFile: `${templatePath}/tsconfig.build.json.hbs`,
+            skipIfExists: true,
+            data,
+          },
         answers.babel && {
           type: 'add',
           path: `{{location}}/.babelrc.js`,
