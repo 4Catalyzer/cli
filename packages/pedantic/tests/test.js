@@ -1,9 +1,10 @@
-const path = require('path');
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
-const pedantic = require('../lib');
+import pedantic from '../lib.js';
 
 describe('pedantic', () => {
-  const cwd = path.resolve(__dirname, './fixtures');
+  const cwd = resolve(dirname(fileURLToPath(import.meta.url)), './fixtures');
   it('should', async () => {
     await pedantic(['**/*.js'], { cwd });
   });

@@ -17,11 +17,12 @@
     "directory": "packages/pedantic"
   },
   "scripts": {
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "jest": {
-    "preset": "@4c/jest-preset",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "transformIgnorePatterns": [".*"],
+    "transform": {}
   },
   "dependencies": {
     "@4c/cli-core": "^2.3.0",

@@ -1,11 +1,11 @@
-const format = require('./lib');
+import format from './lib.js';
 
-exports.command = '$0 <patterns..>';
+export const command = '$0 <patterns..>';
 
-exports.describe = 'Format files';
+export const describe = 'Format files';
 
-exports.builder = (_) =>
-  _.option('write', {
+export function builder(_) {
+  return _.option('write', {
     type: 'boolean',
     default: true,
     describe: 'Write fixed files to disk',
@@ -21,8 +21,9 @@ exports.builder = (_) =>
       describe:
         'By default node_modules is ignored, to opt out of this behavior pass this flag',
     });
+}
 
-exports.handler = async (argv) => {
+export async function handler(argv) {
   const { _, patterns, write, withNodeModules, ...options } = argv;
 
   await format(patterns, {
@@ -31,4 +32,4 @@ exports.handler = async (argv) => {
     ignoreNodeModules: !withNodeModules,
     ...options,
   });
-};
+}

@@ -11,6 +11,7 @@
   "main": "command.js",
   "exports": {
     ".": "./command.js",
+    "./command": "./command.js",
     "./copy": "./copy.js"
   },
   "bin": {

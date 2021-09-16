@@ -1,11 +1,11 @@
-const format = require('./lib');
+import format from './lib.js';
 
-exports.command = '$0 <patterns..>';
+export const command = '$0 <patterns..>';
 
-exports.describe = 'Lint files use ESLint and prettier';
+export const describe = 'Lint files use ESLint and prettier';
 
-exports.builder = (_) =>
-  _.option('fix', {
+export function builder(_) {
+  return _.option('fix', {
     type: 'boolean',
     default: false,
     describe: 'Automatically fix any fixable errors',
@@ -26,8 +26,9 @@ exports.builder = (_) =>
       describe:
         'By default node_modules is ignored, to opt out of this behavior pass this flag',
     });
+}
 
-exports.handler = async (argv) => {
+export async function handler(argv) {
   const { _, patterns, fix, withWarnings, withNodeModules, ...options } = argv;
 
   await format(patterns, {
@@ -37,4 +38,4 @@ exports.handler = async (argv) => {
     ignoreNodeModules: !withNodeModules,
     ...options,
   });
-};
+}
