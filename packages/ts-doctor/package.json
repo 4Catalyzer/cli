@@ -8,6 +8,7 @@
   "license": "MIT",
   "author": "4Catalyzer",
   "main": "workspaces.js",
+  "type": "module",
   "bin": {
     "ts-doc": "cli.js",
     "ts-doctor": "cli.js"

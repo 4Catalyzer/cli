@@ -1,4 +1,4 @@
-const camelCase = require('lodash/camelCase');
+import camelCase from 'lodash/camelCase.js';
 
 const SPECIAL_ATTRS = {
   class: 'className',
@@ -34,15 +34,13 @@ const camelCaseAttributes = {
   },
 };
 
-module.exports = {
-  plugins: [
-    { removeViewBox: false },
-    { removeXMLNS: true },
-    { removeComments: true },
-    { camelCaseAttributes },
-  ],
-  js2svg: {
-    pretty: true,
-    indent: '  ',
-  },
+export const plugins = [
+  { removeViewBox: false },
+  { removeXMLNS: true },
+  { removeComments: true },
+  { camelCaseAttributes },
+];
+export const js2svg = {
+  pretty: true,
+  indent: '  ',
 };

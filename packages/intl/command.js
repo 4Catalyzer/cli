@@ -1,8 +1,10 @@
-const { writeFileSync, statSync } = require('fs');
-const path = require('path');
+import { statSync, writeFileSync } from 'fs';
+import { join, relative } from 'path';
 
-const { red, green, yellow, blue } = require('chalk');
-const glob = require('glob');
+import chalk from 'chalk';
+import { sync } from 'glob';
+
+const { red, green, yellow, blue } = chalk;
 
 const formatters = {
   json: (msgs) => {
@@ -44,22 +46,22 @@ const formatters = {
 
 function toPatterns(files) {
   return files.map((file) => {
-    let pattern = path.join(process.cwd(), file);
+    let pattern = join(process.cwd(), file);
     const stat = statSync(pattern);
     if (!stat || stat.isDirectory()) {
-      pattern = path.join(pattern, './**/*.json');
+      pattern = join(pattern, './**/*.json');
     }
     return pattern;
   });
 }
 
-exports.command = '$0 [paths..]';
+export const command = '$0 [paths..]';
 
-exports.describe =
+export const describe =
   'Consolidate individual message.json files into a single locale';
 
-exports.builder = (_) =>
-  _.positional('paths', {
+export function builder(_) {
+  return _.positional('paths', {
     type: 'string',
     describe: 'A glob selecting messages JSON files',
   })
@@ -73,15 +75,16 @@ exports.builder = (_) =>
         'output messages in a specfic format for upload to translation service',
       choices: ['smartling'],
     });
+}
 
-exports.handler = ({ paths, outDir, format = 'json' }) => {
+export function handler({ paths, outDir, format = 'json' }) {
   const messages = {};
   const duplicates = new Map();
 
   let files = [];
   try {
     files = toPatterns([].concat(paths))
-      .map((pattern) => glob.sync(pattern))
+      .map((pattern) => sync(pattern))
       .reduce((arr, next) => [...arr, ...next], []);
   } catch (err) {
     /* ignore */
@@ -91,7 +94,7 @@ exports.handler = ({ paths, outDir, format = 'json' }) => {
     console.log(
       yellow(
         'No messages found in: \n' +
-          `  ${paths.map((f) => path.join(process.cwd(), f)).join('\n  ')}`,
+          `  ${paths.map((f) => join(process.cwd(), f)).join('\n  ')}`,
       ),
     );
 
@@ -109,7 +112,7 @@ exports.handler = ({ paths, outDir, format = 'json' }) => {
     json.forEach((descriptor) => {
       const { id } = descriptor;
       // eslint-disable-next-line no-param-reassign
-      descriptor.file = path.relative(process.cwd(), filepath);
+      descriptor.file = relative(process.cwd(), filepath);
 
       if (messages[id]) {
         const dup = duplicates.get(id);
@@ -145,8 +148,8 @@ exports.handler = ({ paths, outDir, format = 'json' }) => {
   const result = formatters[format](messages);
 
   writeFileSync(
-    path.join(process.cwd(), outDir, 'messages.en.json'),
+    join(process.cwd(), outDir, 'messages.en.json'),
     JSON.stringify(result),
     'utf8',
   );
-};
+}

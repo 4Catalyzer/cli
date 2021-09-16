@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 
-const { success } = require('@4c/cli-core/ConsoleUtilities');
-const readPkgUp = require('read-pkg-up');
-const yargs = require('yargs');
+import { success } from '@4c/cli-core/ConsoleUtilities';
+import readPkgUp from 'read-pkg-up';
+import Yargs from 'yargs';
 
-const {
+import {
   createAltPublishDir,
-  renameMjs,
-  renameFlowTypes,
   renameFiles,
-} = require('./lib');
+  renameFlowTypes,
+  renameMjs,
+} from './lib';
+
+const yargs = Yargs();
 
 yargs
   .command(

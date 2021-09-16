@@ -8,8 +8,19 @@
   "license": "MIT",
   "author": "4Catalyzer",
   "main": "lib.js",
+  "type": "module",
   "bin": {
     "svg2c": "cli.js"
+  },
+  "exports": {
+    "./command": "./command.js",
+    "./command.js": "./command.js",
+
+    "./lib": "./lib.js",
+    "./lib.js": "./lib.js",
+
+    "./loader": "./loader.cjs",
+    "./loader.js": "./loader.cjs"
   },
   "repository": {
     "type": "git",

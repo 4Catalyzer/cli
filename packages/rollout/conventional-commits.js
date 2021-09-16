@@ -1,20 +1,20 @@
-const os = require('os');
-const path = require('path');
-const { promisify } = require('util');
+import { EOL } from 'os';
+import { join } from 'path';
+import { promisify } from 'util';
 
-const conventionalChangelog = require('conventional-changelog');
-const conventionalRecommendedBump = require('conventional-recommended-bump');
-const fs = require('fs-extra');
-const semver = require('semver');
+import conventionalChangelog from 'conventional-changelog';
+import conventionalRecommendedBump from 'conventional-recommended-bump';
+import fsExtra from 'fs-extra';
+import semver from 'semver';
 
 const bump = promisify(conventionalRecommendedBump);
 
-const BLANK_LINE = os.EOL + os.EOL;
+const BLANK_LINE = EOL + EOL;
 
-exports.recommendedBump = async (
+export async function recommendedBump(
   currentVersion,
   { preset = 'angular' } = {},
-) => {
+) {
   if (semver.prerelease(currentVersion)) return null;
 
   let { releaseType } = await bump({ preset });
@@ -25,22 +25,22 @@ exports.recommendedBump = async (
     else if (releaseType === 'minor') releaseType = 'patch';
   }
   return releaseType;
-};
+}
 
-exports.updateChangelog = async (
+export async function updateChangelog(
   cwd,
   version,
   { preset = 'angular' } = {},
-) => {
-  const outFile = path.join(cwd, 'CHANGELOG.md');
-  const existing = await fs
-    .readFile(path.join(cwd, 'CHANGELOG.md'), 'utf8')
+) {
+  const outFile = join(cwd, 'CHANGELOG.md');
+  const existing = await fsExtra
+    .readFile(join(cwd, 'CHANGELOG.md'), 'utf8')
     .catch(() => '');
 
   const stream = conventionalChangelog(
     {
       preset,
-      pkg: { path: path.join(cwd, 'package.json') },
+      pkg: { path: join(cwd, 'package.json') },
       outputUnreleased: true,
       warn: console.warn,
     },
@@ -52,5 +52,5 @@ exports.updateChangelog = async (
     changelog = item.toString() + changelog;
   }
 
-  await fs.outputFile(outFile, changelog);
-};
+  await fsExtra.outputFile(outFile, changelog);
+}

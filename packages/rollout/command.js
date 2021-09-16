@@ -1,25 +1,25 @@
-const path = require('path');
-const { promisify } = require('util');
+import path from 'path';
+import { promisify } from 'util';
 
-const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
-const GitUtilities = require('@4c/cli-core/GitUtilities');
-const PromptUtilities = require('@4c/cli-core/PromptUtilities');
-const { createAltPublishDir } = require('@4c/file-butler');
-const exitHook = require('async-exit-hook');
-const chalk = require('chalk');
-const execa = require('execa');
-const fs = require('fs-extra');
-const hasYarn = require('has-yarn');
-const Listr = require('listr');
-const readPkgUp = require('read-pkg-up');
-const rimraf = require('rimraf');
-const { from } = require('rxjs');
-const { catchError } = require('rxjs/operators');
-const semver = require('semver');
+import ConsoleUtilities from '@4c/cli-core/ConsoleUtilities';
+import GitUtilities from '@4c/cli-core/GitUtilities';
+import PromptUtilities from '@4c/cli-core/PromptUtilities';
+import { createAltPublishDir } from '@4c/file-butler';
+import exitHook from 'async-exit-hook';
+import chalk from 'chalk';
+import execa from 'execa';
+import fs from 'fs-extra';
+import hasYarn from 'has-yarn';
+import Listr from 'listr';
+import readPkgUp from 'read-pkg-up';
+import rimraf from 'rimraf';
+import { from } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import semver from 'semver';
 
-const { updateChangelog, recommendedBump } = require('./conventional-commits');
-const handleNpmError = require('./handleNpmError');
-const { exec } = require('./rx');
+import { recommendedBump, updateChangelog } from './conventional-commits.js';
+import handleNpmError from './handleNpmError.js';
+import { exec } from './rx.js';
 
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
 
@@ -159,11 +159,11 @@ function runTasks(tasks) {
   return new Listr(tasks.filter(Boolean)).run();
 }
 
-exports.command = '$0 [nextVersion]';
+export const command = '$0 [nextVersion]';
 
-exports.describe = 'Publish a new version';
+export const describe = 'Publish a new version';
 
-exports.builder = (_) =>
+export const builder = (_) =>
   _.positional('nextVersion', {
     type: 'string',
     describe: 'The next version',
@@ -217,7 +217,7 @@ exports.builder = (_) =>
       default: undefined,
     });
 
-const handler = async (argv) => {
+const handlerImpl = async (argv) => {
   const cwd = process.cwd();
   const { path: pkgPath, packageJson } = await readPkgUp({
     cwd,
@@ -420,8 +420,8 @@ const handler = async (argv) => {
   );
 };
 
-exports.handler = (argv) =>
-  handler(argv).catch((err) => {
+export const handler = (argv) =>
+  handlerImpl(argv).catch((err) => {
     console.error(`\n${ConsoleUtilities.symbols.error} ${err.message}`);
     process.exit(1);
   });

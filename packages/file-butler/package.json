@@ -12,6 +12,7 @@
     "cli.js"
   ],
   "main": "lib.js",
+  "type": "module",
   "bin": {
     "file-butler": "cli.js"
   },
@@ -24,8 +25,8 @@
     "@4c/cli-core": "^2.3.0",
     "cpy": "^8.1.1",
     "fs-extra": "^9.1.0",
-    "globby": "^11.0.2",
-    "read-pkg-up": "^7.0.1",
+    "globby": "^12.0.2",
+    "read-pkg-up": "^8.0.0",
     "yargs": "^16.2.0"
   },
   "publishConfig": {

@@ -1,15 +1,20 @@
-const path = require('path');
+import {
+  basename as _basename,
+  extname as _extname,
+  join,
+  normalize,
+} from 'path';
 
-const cpy = require('cpy');
-const fs = require('fs-extra');
-const globby = require('globby');
+import cpy from 'cpy';
+import { copyFile, outputJson, readJson } from 'fs-extra';
+import globby from 'globby';
 
 const strReg = /\[\s*(\w+)\s*\]/g;
 const interpolate = (pattern) => (filename) => {
-  const extname = path.extname(filename);
+  const extname = _extname(filename);
   const params = {
     extname,
-    basename: path.basename(filename, extname),
+    basename: _basename(filename, extname),
   };
   return pattern.replace(strReg, (_, key) => params[key]);
 };
@@ -24,7 +29,7 @@ async function findReadme() {
     absolute: true,
     deep: false,
     case: false,
-    transform: (fp) => path.normalize(fp),
+    transform: (fp) => normalize(fp),
   });
   return readmePath;
 }
@@ -34,7 +39,7 @@ async function findLicense() {
     absolute: true,
     deep: false,
     case: false,
-    transform: (fp) => path.normalize(fp),
+    transform: (fp) => normalize(fp),
   });
   return licensePath;
 }
@@ -42,7 +47,7 @@ async function findLicense() {
 async function createPublishPkgJson(outDir) {
   let pkgJson;
   try {
-    pkgJson = await fs.readJson(path.join(process.cwd(), 'package.json'));
+    pkgJson = await readJson(join(process.cwd(), 'package.json'));
   } catch (err) {
     console.error('No readable package.json at this root', err);
   }
@@ -60,7 +65,7 @@ async function createPublishPkgJson(outDir) {
     pkgJson[main] = pkgJson[main].replace(rMain, '');
   }
 
-  await fs.outputJson(path.join(outDir, 'package.json'), pkgJson, {
+  await outputJson(join(outDir, 'package.json'), pkgJson, {
     spaces: 2,
   });
 }
@@ -69,12 +74,10 @@ const createAltPublishDir = async ({ publishDir }) => {
   await createPublishPkgJson(publishDir);
 
   const readme = await findReadme();
-  if (readme)
-    await fs.copyFile(readme, path.join(publishDir, path.basename(readme)));
+  if (readme) await copyFile(readme, join(publishDir, _basename(readme)));
 
   const license = await findLicense();
-  if (license)
-    await fs.copyFile(license, path.join(publishDir, path.basename(license)));
+  if (license) await copyFile(license, join(publishDir, _basename(license)));
 };
 
 const renameMjs = ({ src, pattern, outDir }) =>
@@ -101,7 +104,7 @@ const renameFiles = ({ src, pattern, outDir, rename }) =>
     },
   });
 
-module.exports = {
+export default {
   createAltPublishDir,
   renameMjs,
   renameFlowTypes,

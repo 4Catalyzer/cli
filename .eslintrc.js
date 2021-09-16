@@ -9,7 +9,9 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/packages/{start,build,pedantic,cli}/**'],
+      files: [
+        '**/packages/{start,build,pedantic,cli,rollout,ts-doctor,intl,svg-to-component}/**',
+      ],
       rules: {
         'import/extensions': ['error', 'ignorePackages'],
       },

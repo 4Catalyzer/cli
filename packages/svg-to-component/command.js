@@ -1,23 +1,34 @@
 /* eslint-disable no-param-reassign */
-const { promises: fs } = require('fs');
-const path = require('path');
+import { promises as fs } from 'fs';
+import {
+  extname as _extname,
+  relative as _relative,
+  basename,
+  dirname,
+  join,
+  resolve,
+} from 'path';
 
-const ArgUtilities = require('@4c/cli-core/ArgUtilities');
-const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
-const camelCase = require('lodash/camelCase');
-const upperFirst = require('lodash/upperFirst');
+import { resolveFilePatterns } from '@4c/cli-core/ArgUtilities';
+import {
+  debug as _debug,
+  error,
+  success,
+} from '@4c/cli-core/ConsoleUtilities';
+import camelCase from 'lodash/camelCase.js';
+import upperFirst from 'lodash/upperFirst.js';
 
-const svg2c = require('./lib');
-const typeDef = require('./typeDef');
+import svg2c, { getConfig } from './lib.js';
+import typeDef from './typeDef.js';
 
-const debug = ConsoleUtilities.debug('svg2c');
+const debug = _debug('svg2c');
 
-exports.command = '$0 <patterns..>';
+export const command = '$0 <patterns..>';
 
-exports.describe = 'Publish a new version';
+export const describe = 'Publish a new version';
 
-exports.builder = (_) =>
-  _.positional('patterns', {
+export function builder(_) {
+  return _.positional('patterns', {
     type: 'array',
     describe: 'A directory or pattern resolving to svgs',
   })
@@ -52,8 +63,9 @@ exports.builder = (_) =>
       type: 'boolean',
       describe: 'Disable the generation of typescript types',
     });
+}
 
-exports.handler = async ({
+export async function handler({
   patterns,
   outDir,
   baseDir,
@@ -61,37 +73,37 @@ exports.handler = async ({
   esModules,
   noTypes,
   config: extraConfig,
-}) => {
-  const files = await ArgUtilities.resolveFilePatterns(patterns, {
+}) {
+  const files = await resolveFilePatterns(patterns, {
     absolute: true,
   });
 
   if (!files.length) {
-    ConsoleUtilities.error('The provided file patterns returned no files');
+    error('The provided file patterns returned no files');
     process.exit(1);
   }
 
-  const config = await svg2c.getConfig(extraConfig);
+  const config = await getConfig(extraConfig);
   let count = 0;
 
   await Promise.all(
     files.map(async (file) => {
-      const extname = path.extname(file);
+      const extname = _extname(file);
       if (!extensions.includes(extname)) return;
 
       count++;
 
       const src = await fs.readFile(file, 'utf8');
 
-      const displayName = upperFirst(camelCase(path.basename(file, extname)));
+      const displayName = upperFirst(camelCase(basename(file, extname)));
 
-      const base = baseDir ? path.resolve(baseDir) : path.dirname(file);
-      const relative = path.dirname(path.relative(base, file));
+      const base = baseDir ? resolve(baseDir) : dirname(file);
+      const relative = dirname(_relative(base, file));
 
-      const output = path.join(outDir, relative, `${displayName}.js`);
-      const typeOut = path.join(outDir, relative, `${displayName}.d.ts`);
+      const output = join(outDir, relative, `${displayName}.js`);
+      const typeOut = join(outDir, relative, `${displayName}.d.ts`);
 
-      debug(`${path.basename(file)} -> ${displayName}`);
+      debug(`${basename(file)} -> ${displayName}`);
 
       const code = await svg2c(src, {
         config,
@@ -99,7 +111,7 @@ exports.handler = async ({
         filename: file,
       });
 
-      await fs.mkdir(path.dirname(output), { recursive: true });
+      await fs.mkdir(dirname(output), { recursive: true });
 
       await Promise.all([
         fs.writeFile(output, code, 'utf8'),
@@ -108,5 +120,5 @@ exports.handler = async ({
     }),
   );
 
-  ConsoleUtilities.success(`Successfully built ${count} svg components`);
-};
+  success(`Successfully built ${count} svg components`);
+}

@@ -11,6 +11,15 @@
   "bin": {
     "pedantic": "cli.js"
   },
+  "exports": {
+    ".": "./lib.js",
+    
+    "./lint": "./lint.js",
+    "./lint.js": "./lint.js",
+
+    "./format": "./format.js",
+    "./format.js": "./format.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/4Catalyzer/cli.git",
