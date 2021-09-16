@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/4Catalyzer/cli/compare/ts-doctor@1.3.2...ts-doctor@1.3.3) (2021-09-16)
+
+
+### Bug Fixes
+
+* bump eslint for prettier ([3ce4d11](https://github.com/4Catalyzer/cli/commit/3ce4d115261ff13acb9abac1fdf8cf2144c11f4c))
+
+
+
+
+
 ## [1.3.2](https://github.com/4Catalyzer/cli/compare/ts-doctor@1.3.1...ts-doctor@1.3.2) (2021-06-18)
 
 **Note:** Version bump only for package ts-doctor

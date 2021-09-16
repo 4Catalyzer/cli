@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.1](https://github.com/4Catalyzer/cli/compare/@4c/init@3.2.0...@4c/init@3.2.1) (2021-09-16)
+
+
+### Bug Fixes
+
+* bump eslint for prettier ([3ce4d11](https://github.com/4Catalyzer/cli/commit/3ce4d115261ff13acb9abac1fdf8cf2144c11f4c))
+
+
+
+
+
 # [3.2.0](https://github.com/4Catalyzer/cli/compare/@4c/init@3.1.1...@4c/init@3.2.0) (2021-06-18)
 
 

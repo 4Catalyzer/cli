@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/4Catalyzer/cli/compare/pedantic@5.1.2...pedantic@5.1.3) (2021-09-16)
+
+
+### Bug Fixes
+
+* bump eslint for prettier ([3ce4d11](https://github.com/4Catalyzer/cli/commit/3ce4d115261ff13acb9abac1fdf8cf2144c11f4c))
+
+
+
+
+
 ## [5.1.2](https://github.com/4Catalyzer/cli/compare/pedantic@5.1.1...pedantic@5.1.2) (2021-06-18)
 
 **Note:** Version bump only for package pedantic
