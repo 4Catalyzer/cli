@@ -2,6 +2,7 @@
   "name": "hookem",
   "version": "1.0.9",
   "main": "lib.js",
+  "type": "module",
   "repository": {
     "directory": "packages/hooks",
     "type": "git",

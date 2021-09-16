@@ -1,14 +1,18 @@
-const fs = require('fs');
-const path = require('path');
+import { readFileSync, writeFileSync } from 'fs';
+import { basename, dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
-const glob = require('glob');
-const prettier = require('prettier');
+import glob from 'glob';
+import prettier from 'prettier';
 
-const templatePath = path.resolve(__dirname, './templates');
+const templatePath = resolve(
+  dirname(fileURLToPath(import.meta.url)),
+  './templates',
+);
 
 // my own convention of naming scoped repo's like 4c-foo on disk
 const getPackageNameFromPath = (scope, outDir) => {
-  let name = path.basename(outDir);
+  let name = basename(outDir);
 
   if (!scope) return name;
   name = name.replace(new RegExp(`^${scope.slice(1)}-`), '');
@@ -30,22 +34,17 @@ const sortJsonPath = (jsonFile, paths) => {
     obj[p] = result;
   });
 
-  fs.writeFileSync(jsonFile, JSON.stringify(obj, null, 2));
+  writeFileSync(jsonFile, JSON.stringify(obj, null, 2));
 };
 
 const runPrettier = (pattern, cwd) =>
   glob
     .sync(pattern, { cwd, absolute: true, dot: true })
     .map((filepath) =>
-      fs.writeFileSync(
+      writeFileSync(
         filepath,
-        prettier.format(fs.readFileSync(filepath, 'utf8'), { filepath }),
+        prettier.format(readFileSync(filepath, 'utf8'), { filepath }),
       ),
     );
 
-module.exports = {
-  getPackageNameFromPath,
-  templatePath,
-  sortJsonPath,
-  runPrettier,
-};
+export { getPackageNameFromPath, templatePath, sortJsonPath, runPrettier };

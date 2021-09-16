@@ -12,6 +12,13 @@
   "bin": {
     "rollout": "cli.js"
   },
+  "exports": {
+    "./command": "./command.js",
+    "./command.js": "./command.js",
+
+    "./conventional-commits": "./conventional-commits.js",
+    "./conventional-commits.js": "./conventional-commits.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/4Catalyzer/cli.git",

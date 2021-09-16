@@ -6,16 +6,9 @@ module.exports = {
     'no-console': 'off',
     'import/no-dynamic-require': 'off',
     'prettier/prettier': 'error',
+    'import/extensions': ['error', 'ignorePackages'],
   },
   overrides: [
-    {
-      files: [
-        '**/packages/{start,build,pedantic,cli,rollout,ts-doctor,intl,svg-to-component}/**',
-      ],
-      rules: {
-        'import/extensions': ['error', 'ignorePackages'],
-      },
-    },
     {
       files: ['**/__tests__/**', '**/tests/**'],
       plugins: ['jest'],

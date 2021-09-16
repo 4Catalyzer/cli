@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 import * as build from '@4c/build/command';
-import init from '@4c/init/command.js';
-import intl from '@4c/intl/command.js';
-import rollout from '@4c/rollout/command.js';
-import * as start from '@4c/start/command.js';
-import * as format from 'pedantic/format.js';
-import * as lint from 'pedantic/lint.js';
-import svg2c from 'svg2c/command.js';
-import workspaces from 'ts-doctor/workspaces.js';
+import init from '@4c/init/command';
+import intl from '@4c/intl/command';
+import rollout from '@4c/rollout/command';
+import * as start from '@4c/start/command';
+import * as format from 'pedantic/format';
+import * as lint from 'pedantic/lint';
+import svg2c from 'svg2c/command';
+import workspaces from 'ts-doctor';
 import Yargs from 'yargs';
 
 function setCmdName(name, cmd) {

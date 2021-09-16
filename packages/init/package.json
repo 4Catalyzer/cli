@@ -8,8 +8,13 @@
   "license": "MIT",
   "author": "4Catalyzer",
   "main": "command.js",
+  "type": "module",
   "bin": {
     "init": "cli.js"
+  },
+  "exports": {
+    "./command": "./command.js",
+    "./command.js": "./command.js"
   },
   "repository": {
     "type": "git",

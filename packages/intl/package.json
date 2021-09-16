@@ -12,6 +12,10 @@
   "bin": {
     "intl": "cli.js"
   },
+  "exports": {
+    "./command": "./command.js",
+    "./command.js": "./command.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/4Catalyzer/cli.git",

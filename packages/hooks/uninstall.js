@@ -1,11 +1,11 @@
-const { uninstall } = require('./lib');
+import { uninstall } from './lib.js';
 
-exports.command = '$0';
+export const command = '$0';
 
-exports.describe = 'Uninstall hooks';
+export const describe = 'Uninstall hooks';
 
-exports.handler = async () => {
+export async function handler() {
   await uninstall();
 
   console.log("Hook'em hooks removed");
-};
+}

@@ -11,6 +11,17 @@
   "bin": {
     "start": "cli.js"
   },
+  "exports": {
+    "./command": "./command.js",
+    "./command.js": "./command.js",
+
+    "./createCompiler": "./createCompiler.js",
+    "./createCompiler.js": "./createCompiler.js",
+
+    "./lib": "./lib.js",
+    "./lib.js": "./lib.js"
+  },
+
   "type": "module",
   "repository": {
     "type": "git",

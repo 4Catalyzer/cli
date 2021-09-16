@@ -1,10 +1,10 @@
-const { promises: fs, existsSync } = require('fs');
-const path = require('path');
-const { debuglog } = require('util');
+import { existsSync, promises as fs } from 'fs';
+import { join } from 'path';
+import { debuglog } from 'util';
 
-const findUp = require('find-up');
-const hasYarn = require('has-yarn');
-const readPkgUp = require('read-pkg-up');
+import findUp from 'find-up';
+import hasYarn from 'has-yarn';
+import readPkgUp from 'read-pkg-up';
 
 const debug = debuglog('hookem');
 
@@ -30,7 +30,7 @@ async function install() {
     return false;
   }
 
-  const hookDir = path.join(gitDir, 'hooks');
+  const hookDir = join(gitDir, 'hooks');
 
   if (!existsSync(hookDir)) {
     await fs.mkdir(hookDir);
@@ -39,7 +39,7 @@ async function install() {
   return Promise.all(
     Object.entries(hooks).map(async ([hook, cmd]) => {
       const command = useYarn ? `yarn run ${cmd}` : `npx --no-install ${cmd}`;
-      const filename = path.join(hookDir, hook);
+      const filename = join(hookDir, hook);
 
       if (existsSync(filename)) {
         const data = await fs.readFile(filename, 'utf-8');
@@ -98,7 +98,7 @@ async function uninstall() {
 
   if (!gitDir) return null;
 
-  const hookDir = path.join(gitDir, 'hooks');
+  const hookDir = join(gitDir, 'hooks');
 
   if (!existsSync(hookDir)) {
     return null;
@@ -107,7 +107,7 @@ async function uninstall() {
 
   return Promise.all(
     files.map(async (hookName) => {
-      const filename = path.join(hookDir, hookName);
+      const filename = join(hookDir, hookName);
       if (await canRemove(filename)) {
         await fs.unlink(filename);
       }
@@ -115,4 +115,4 @@ async function uninstall() {
   );
 }
 
-module.exports = { install, uninstall };
+export default { install, uninstall };

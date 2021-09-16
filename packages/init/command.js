@@ -1,23 +1,33 @@
 // Cherry pick to avoid pulling in all of core-js
 // see: https://github.com/plopjs/node-plop/pull/163
-const nodePlop = require('node-plop/lib/node-plop').default;
 
-// load an instance of plop from a plopfile
+import { fileURLToPath } from 'url';
 
-exports.command = '$0 [location]';
+import nodePlop from 'node-plop/lib/node-plop.js';
 
-exports.describe = 'create a new package';
+export const command = '$0 [location]';
 
-exports.builder = (_) =>
-  _.positional('location', {
+export const describe = 'create a new package';
+
+export function builder(_) {
+  return _.positional('location', {
     type: 'string',
     default: process.cwd(),
     describe: 'the location of the package',
     normalize: true,
   });
+}
 
-exports.handler = async ({ location }) => {
-  const plop = nodePlop(`${__dirname}/plopfile.js`);
+const filePath = fileURLToPath(new URL('plopfile.cjs', import.meta.url));
+
+export async function handler({ location }) {
+  const plop = nodePlop.default(filePath);
+
+  // we need to wait for the promise in plopfile.js to resolve out of band
+  // because plop doesn't await it internally and this is the only way to get ESM
+  // working since it requires the file we pass in
+  await import('./plopfile.cjs').then((m) => m.ready);
+
   const newPkg = plop.getGenerator('new-package');
 
   const answers = await newPkg.runPrompts([location]);
@@ -31,4 +41,4 @@ exports.handler = async ({ location }) => {
         console.error(f.error),
     );
   }
-};
+}
