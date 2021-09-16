@@ -25,11 +25,11 @@
   "dependencies": {
     "@4c/cli-core": "^2.3.0",
     "@manypkg/get-packages": "^1.1.1",
-    "comment-json": "^4.1.0",
-    "lodash": "^4.17.20",
+    "comment-json": "^4.1.1",
+    "lodash": "^4.17.21",
     "prettier": "^2.4.1",
-    "typescript": "^4.1.3",
-    "yargs": "^16.2.0"
+    "typescript": "^4.4.3",
+    "yargs": "^17.1.1"
   },
   "publishConfig": {
     "access": "public"

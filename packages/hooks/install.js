@@ -1,13 +1,13 @@
-const { install } = require('./lib');
+import { install } from './lib.js';
 
-exports.command = '$0';
+export const command = '$0';
 
-exports.describe = 'Install hooks';
+export const describe = 'Install hooks';
 
-exports.handler = async () => {
+export async function handler() {
   const installed = await install();
 
   if (installed) {
     console.log("Hook'em hooks created");
   }
-};
+}

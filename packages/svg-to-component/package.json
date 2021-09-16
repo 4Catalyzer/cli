@@ -15,10 +15,8 @@
   "exports": {
     "./command": "./command.js",
     "./command.js": "./command.js",
-
     "./lib": "./lib.js",
     "./lib.js": "./lib.js",
-
     "./loader": "./loader.cjs",
     "./loader.js": "./loader.cjs"
   },
@@ -33,10 +31,10 @@
   },
   "dependencies": {
     "@4c/cli-core": "^2.3.0",
-    "@babel/core": "^7.12.13",
-    "@babel/preset-react": "^7.12.13",
-    "js-yaml": "^4.0.0",
-    "lodash": "^4.17.20",
+    "@babel/core": "^7.15.5",
+    "@babel/preset-react": "^7.14.5",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
     "svgo": "^1.2.2"
   }
 }

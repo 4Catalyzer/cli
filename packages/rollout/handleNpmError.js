@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import chalk from 'chalk';
 import listrInput from 'listr-input';
-import rxjs from 'rxjs';
-import catchError from 'rxjs/operators/catchError.js';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 const handleNpmError = (error, task, executor, prompt) => {
   if (
@@ -26,7 +26,7 @@ const handleNpmError = (error, task, executor, prompt) => {
     );
   }
 
-  return rxjs.throwError(error);
+  return throwError(error);
 };
 
 export default handleNpmError;

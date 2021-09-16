@@ -2,9 +2,9 @@ import { existsSync, promises as fs } from 'fs';
 import { join } from 'path';
 import { debuglog } from 'util';
 
-import findUp from 'find-up';
+import { findUp } from 'find-up';
 import hasYarn from 'has-yarn';
-import readPkgUp from 'read-pkg-up';
+import { readPackageUpAsync } from 'read-pkg-up';
 
 const debug = debuglog('hookem');
 
@@ -14,7 +14,7 @@ const isHook = (contents) => contents.includes('# hookem');
 
 async function install() {
   const [{ packageJson }, gitDir] = await Promise.all([
-    readPkgUp(),
+    readPackageUpAsync(),
     findUp('.git', { type: 'directory' }),
   ]);
 
@@ -115,4 +115,4 @@ async function uninstall() {
   );
 }
 
-export default { install, uninstall };
+export { install, uninstall };

@@ -1,6 +1,6 @@
 import execa from 'execa';
 import rxjs from 'rxjs';
-import filter from 'rxjs/operators/filter.js';
+import { filter } from 'rxjs/operators';
 
 const { merge, Observable } = rxjs;
 
@@ -61,8 +61,4 @@ const exec = (cmd, args) => {
   ).pipe(filter(Boolean));
 };
 
-export default {
-  fromAsyncIterator,
-  split,
-  exec,
-};
+export { fromAsyncIterator, split, exec };

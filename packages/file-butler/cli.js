@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { success } from '@4c/cli-core/ConsoleUtilities';
-import readPkgUp from 'read-pkg-up';
+import { readPackageUpAsync } from 'read-pkg-up';
 import Yargs from 'yargs';
 
 import {
@@ -9,7 +9,7 @@ import {
   renameFiles,
   renameFlowTypes,
   renameMjs,
-} from './lib';
+} from './lib.js';
 
 const yargs = Yargs();
 
@@ -59,7 +59,10 @@ yargs
     async (options) => {
       let { publishDir } = options;
       if (!publishDir) {
-        const result = await readPkgUp({ cwd: process.cwd, normalize: false });
+        const result = await readPackageUpAsync({
+          cwd: process.cwd,
+          normalize: false,
+        });
 
         if (result) {
           const { release, publishConfig } = result.package;

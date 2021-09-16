@@ -6,9 +6,10 @@ import {
 } from 'path';
 
 import cpy from 'cpy';
-import { copyFile, outputJson, readJson } from 'fs-extra';
-import globby from 'globby';
+import fsExtra from 'fs-extra';
+import { globby } from 'globby';
 
+const { copyFile, outputJson, readJson } = fsExtra;
 const strReg = /\[\s*(\w+)\s*\]/g;
 const interpolate = (pattern) => (filename) => {
   const extname = _extname(filename);
@@ -104,9 +105,4 @@ const renameFiles = ({ src, pattern, outDir, rename }) =>
     },
   });
 
-export default {
-  createAltPublishDir,
-  renameMjs,
-  renameFlowTypes,
-  renameFiles,
-};
+export { createAltPublishDir, renameMjs, renameFlowTypes, renameFiles };

@@ -2,7 +2,7 @@ import { statSync, writeFileSync } from 'fs';
 import { join, relative } from 'path';
 
 import chalk from 'chalk';
-import { sync } from 'glob';
+import glob from 'glob';
 
 const { red, green, yellow, blue } = chalk;
 
@@ -84,7 +84,7 @@ export function handler({ paths, outDir, format = 'json' }) {
   let files = [];
   try {
     files = toPatterns([].concat(paths))
-      .map((pattern) => sync(pattern))
+      .map((pattern) => glob.sync(pattern))
       .reduce((arr, next) => [...arr, ...next], []);
   } catch (err) {
     /* ignore */

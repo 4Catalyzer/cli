@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { promises as fs } from 'fs';
+import { createRequire } from 'module';
 import { extname as _extname, basename, resolve } from 'path';
 
 import { chalk } from '@4c/cli-core/ConsoleUtilities';
@@ -9,10 +10,9 @@ import camelCase from 'lodash/camelCase.js';
 import upperFirst from 'lodash/upperFirst.js';
 import Svgo from 'svgo';
 
-import defaultConfig, {
-  js2svg as _js2svg,
-  plugins as _plugins,
-} from './svgo.config.js';
+import * as defaultConfig from './svgo.config.js';
+
+const require = createRequire(import.meta.url);
 
 // https://github.com/svg/svgo/blob/fe0ecaf31eb87a913638a62f842044e425683623/lib/svgo/coa.js
 async function loadConfig(config) {
@@ -70,9 +70,9 @@ export async function getConfig(externalConfig) {
     [RESOLVED]: true,
     ...defaultConfig,
     ...config,
-    plugins: [..._plugins, ...config.plugins],
+    plugins: [...defaultConfig.plugins, ...config.plugins],
     js2svg: {
-      ..._js2svg,
+      ...defaultConfig.js2svg,
       ...config.js2svg,
     },
   };

@@ -29,7 +29,7 @@
     "slash": "^4.0.0",
     "strip-ansi": "^7.0.1",
     "text-table": "^0.2.0",
-    "yargs": "^16.2.0"
+    "yargs": "^17.1.1"
   },
   "publishConfig": {
     "access": "public"

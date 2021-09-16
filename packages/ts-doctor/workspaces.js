@@ -7,7 +7,7 @@ import { error, info } from '@4c/cli-core/ConsoleUtilities';
 import getPkgs from '@manypkg/get-packages';
 import commentJson from 'comment-json';
 import get from 'lodash/get.js';
-import { format } from 'prettier';
+import prettier from 'prettier';
 import tsc from 'typescript';
 
 const { stringify: _stringify, parse } = commentJson;
@@ -83,7 +83,7 @@ function addReference(tsConfig, ref) {
 }
 
 function stringify(json, filepath) {
-  return format(_stringify(json, null, 2), { filepath });
+  return prettier.format(_stringify(json, null, 2), { filepath });
 }
 
 function buildWorkspaceSources(baseDir, tsPackages) {
