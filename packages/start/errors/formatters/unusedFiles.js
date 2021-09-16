@@ -1,6 +1,6 @@
-const { chalk } = require('@4c/cli-core/ConsoleUtilities');
+import { chalk } from '@4c/cli-core/ConsoleUtilities';
 
-const { formatTitle } = require('../webpackErrors');
+import { formatTitle } from '../webpackErrors.js';
 
 const numToShow = 30;
 function formatFiles(files) {
@@ -14,7 +14,7 @@ function formatFiles(files) {
   return `${subset.join('\n')}\n... ${chalk.bold(`${remaining} more files`)}`;
 }
 
-module.exports = (allErrors, severity) => {
+export default (allErrors, severity) => {
   const errors = allErrors.filter((e) => e.type === 'unused-files');
 
   if (errors.length === 0) {

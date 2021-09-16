@@ -21,4 +21,4 @@ function transform(error) {
   return error;
 }
 
-module.exports = transform;
+export default transform;

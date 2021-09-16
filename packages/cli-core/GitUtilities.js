@@ -1,8 +1,8 @@
-const path = require('path');
+import { relative, resolve } from 'path';
 
-const execa = require('execa');
-const gitDefaultBranch = require('git-default-branch');
-const slash = require('slash');
+import execa from 'execa';
+import gitDefaultBranch from 'git-default-branch';
+import slash from 'slash';
 
 function hasTag(tag) {
   return execa('git', [
@@ -15,45 +15,51 @@ function hasTag(tag) {
     () => false,
   );
 }
-const repoName = (name) => name.replace(/^@.+\//, '');
+export const repoName = (name) => name.replace(/^@.+\//, '');
 
-exports.repoName = repoName;
+export function getDefaultBranch() {
+  return gitDefaultBranch();
+}
 
-exports.getDefaultBranch = () => gitDefaultBranch();
-
-exports.getRemoteUrl = (cwd) =>
-  execa('git', ['config', 'remote.origin.url'], { cwd })
+export function getRemoteUrl(cwd) {
+  return execa('git', ['config', 'remote.origin.url'], { cwd })
     .then((r) => r.stdout)
     .catch(() => '');
+}
 
-exports.remoteUrl = (name, org = '4Catalyzer') =>
-  `https://github.com/${org}/${repoName(name)}.git`;
+export function remoteUrl(name, org = '4Catalyzer') {
+  return `https://github.com/${org}/${repoName(name)}.git`;
+}
 
-exports.isGitRepo = (dest) =>
-  execa('git', ['rev-parse'], { cwd: dest, stdio: 'ignore' })
+export function isGitRepo(dest) {
+  return execa('git', ['rev-parse'], { cwd: dest, stdio: 'ignore' })
     .then(() => true)
     .catch(() => false);
+}
 
-exports.init = (dest) =>
-  exports
-    .isGitRepo(dest)
-    .then(
-      (isGit) =>
-        !isGit && execa('git', ['init'], { cwd: dest, stdio: 'inherit' }),
-    );
+export function init(dest) {
+  return isGitRepo(dest).then(
+    (isGit) =>
+      !isGit && execa('git', ['init'], { cwd: dest, stdio: 'inherit' }),
+  );
+}
 
-exports.addFile = (file) =>
-  execa('git', [
+export function addFile(file) {
+  return execa('git', [
     'add',
-    slash(path.relative(process.cwd(), path.resolve(process.cwd(), file))),
+    slash(relative(process.cwd(), resolve(process.cwd(), file))),
   ]);
+}
 
-exports.commit = (message) =>
-  execa('git', ['commit', '--no-verify', '-m', message]);
+export function commit(message) {
+  return execa('git', ['commit', '--no-verify', '-m', message]);
+}
 
-exports.removeLastCommit = () => execa('git', ['reset', 'HEAD~1', '--hard']);
+export function removeLastCommit() {
+  return execa('git', ['reset', 'HEAD~1', '--hard']);
+}
 
-exports.assertClean = async () => {
+export async function assertClean() {
   const result = await execa('git', ['status', '--porcelain']).then(
     (d) => d.stdout,
   );
@@ -62,9 +68,9 @@ exports.assertClean = async () => {
     throw new Error(
       'Git working tree is not clean, please commit or stash any unstaged changes',
     );
-};
+}
 
-exports.assertMatchesRemote = async () => {
+export async function assertMatchesRemote() {
   const result = await execa('git', [
     'rev-list',
     '--count',
@@ -74,26 +80,32 @@ exports.assertMatchesRemote = async () => {
 
   if (result !== '0')
     throw new Error('The remote differs from the local working tree');
-};
+}
 
-exports.addRemote = (dest, name, org) =>
-  execa('git', ['remote', 'add', 'origin', exports.remoteUrl(name, org)], {
+export function addRemote(dest, name, org) {
+  return execa('git', ['remote', 'add', 'origin', remoteUrl(name, org)], {
     cwd: dest,
     stdio: 'inherit',
   }).catch((err) => {
     if ((err.stderr || '').match(/remote origin already exists/)) return;
     throw err;
   });
+}
 
-exports.addTag = async (tag) => {
+export async function addTag(tag) {
   if (await hasTag(tag)) return;
   await execa('git', ['tag', tag, '-m', tag]);
-};
+}
 
-exports.removeTag = (tag) => execa('git', ['tag', '-d', tag]);
-exports.getCurrentBranch = (opts) =>
-  execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'], opts).then(
+export function removeTag(tag) {
+  return execa('git', ['tag', '-d', tag]);
+}
+export function getCurrentBranch(opts) {
+  return execa('git', ['rev-parse', '--abbrev-ref', 'HEAD'], opts).then(
     (r) => r.stdout,
   );
+}
 
-exports.pushWithTags = () => execa('git', ['push', '--follow-tags']);
+export function pushWithTags() {
+  return execa('git', ['push', '--follow-tags']);
+}

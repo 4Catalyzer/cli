@@ -1,56 +1,51 @@
-const { debuglog } = require('util');
+import { debuglog } from 'util';
 
-const chalk = require('chalk');
-const isCI = require('is-ci');
-const symbols = require('log-symbols');
-const ora = require('ora');
-const stripAnsi = require('strip-ansi');
-const table = require('text-table');
+import chalk from 'chalk';
+import _isCI from 'is-ci';
+import symbols from 'log-symbols';
+import ora from 'ora';
+import stripAnsi from 'strip-ansi';
+import table from 'text-table';
 
-exports.symbols = symbols;
-exports.chalk = chalk;
-exports.stripAnsi = stripAnsi;
-exports.table = table;
+export { symbols, chalk, stripAnsi, table, debuglog as debug };
 
-exports.isCI = () => isCI;
+export const isCI = () => _isCI;
 
-exports.isTTY = () => process.stdout.isTTY && !isCI;
+export function isTTY() {
+  return process.stdout.isTTY && !_isCI;
+}
 
-exports.spinner = (text) => ora(text).start();
+export const spinner = (text) => ora(text).start();
 
-exports.step = async (text, fn, skip) => {
-  const spinner = exports.spinner(text);
+export async function step(text, fn, skip) {
+  const s = spinner(text);
 
   if (skip) {
-    spinner.warn(`Skipping: ${text}`);
+    s.warn(`Skipping: ${text}`);
     return;
   }
 
   try {
-    await fn(spinner);
-    spinner.succeed();
+    await fn(s);
+    s.succeed();
   } catch (err) {
-    spinner.fail(err.message);
+    s.fail(err.message);
     throw err;
   }
+}
+
+export const info = (msg) => {
+  console.log(chalk.blue(`${symbols.info}  ${msg}`));
 };
 
-Object.assign(exports, {
-  debug: debuglog,
+export const warn = (msg) => {
+  console.log(chalk.yellow(`${symbols.warning}  ${msg}`));
+};
 
-  info: (msg) => {
-    console.log(chalk.blue(`${symbols.info}  ${msg}`));
-  },
+export const error = (msg) => {
+  console.log(chalk.red(`${symbols.error}  ${msg}`));
+};
 
-  warn: (msg) => {
-    console.log(chalk.yellow(`${symbols.warning}  ${msg}`));
-  },
-
-  error: (msg) => {
-    console.log(chalk.red(`${symbols.error}  ${msg}`));
-  },
-
-  success: (msg) => {
-    console.log(chalk.green(`${symbols.success}  ${msg}`));
-  },
-});
+export const success = (msg) => {
+  console.log(chalk.green(`${symbols.success}  ${msg}`));
+};

@@ -1,9 +1,9 @@
-const {
+import {
+  formatErrors,
   formatText,
   formatTitle,
-  formatErrors,
   transformErrors,
-} = require('./webpackErrors');
+} from './webpackErrors.js';
 
 function getMaxSeverityErrors(errors) {
   const maxSeverity = errors.reduce(
@@ -14,20 +14,20 @@ function getMaxSeverityErrors(errors) {
   return errors.filter((e) => e.severity === maxSeverity);
 }
 
-function printer(compiler) {
-  const formatters = [
-    require('./formatters/unusedFiles'),
-    require('./formatters/moduleNotFound'),
-    require('./formatters/relayCompiler'),
-    require('./formatters/typescript')(compiler),
-    require('./formatters/defaultError'),
-  ];
-  const transformers = [
-    require('./transformers/moduleNotFound'),
-    require('./transformers/typescript'),
-    require('./transformers/relayCompiler'),
-    require('./transformers/unusedFiles'),
-  ];
+async function printer(compiler) {
+  const formatters = await Promise.all([
+    import('./formatters/unusedFiles.js').then((m) => m.default),
+    import('./formatters/moduleNotFound.js').then((m) => m.default),
+    import('./formatters/relayCompiler.js').then((m) => m.default),
+    import('./formatters/typescript.js').then((m) => m.default(compiler)),
+    import('./formatters/defaultError.js').then((m) => m.default),
+  ]);
+  const transformers = await Promise.all([
+    import('./transformers/moduleNotFound.js').then((m) => m.default),
+    import('./transformers/typescript.js').then((m) => m.default),
+    import('./transformers/relayCompiler.js').then((m) => m.default),
+    import('./transformers/unusedFiles.js').then((m) => m.default),
+  ]);
 
   return (errors, severity) => {
     const topErrors = getMaxSeverityErrors(
@@ -47,9 +47,4 @@ function printer(compiler) {
   };
 }
 
-module.exports = {
-  printer,
-  formatText,
-  formatTitle,
-  formatErrors,
-};
+export { printer, formatText, formatTitle, formatErrors };

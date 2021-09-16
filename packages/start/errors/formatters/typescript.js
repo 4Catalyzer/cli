@@ -1,8 +1,8 @@
-const { chalk } = require('@4c/cli-core/ConsoleUtilities');
-const { codeFrameColumns } = require('@babel/code-frame');
-const exists = require('exists-case');
+import { chalk } from '@4c/cli-core/ConsoleUtilities';
+import { codeFrameColumns } from '@babel/code-frame';
+import { sync } from 'exists-case';
 
-const { formatTitle } = require('../webpackErrors');
+import { formatTitle } from '../webpackErrors.js';
 
 function formatCaseError({ content, severity, code }) {
   const rFiles = /(?:'|")(.+?)(?:'|")/gm;
@@ -14,7 +14,7 @@ function formatCaseError({ content, severity, code }) {
     if (match) files.push(match[1]);
   }
 
-  const fileOnDisk = files.find((file) => exists.sync(file));
+  const fileOnDisk = files.find((file) => sync(file));
 
   let formatted = `${formatTitle(severity, code)} Mismatched file name cases`;
 
@@ -39,7 +39,7 @@ function formatCaseError({ content, severity, code }) {
   return formatted;
 }
 
-function formatError(err, fs) {
+export function formatError(err, fs) {
   const { code, severity, message, file, location } = err;
   let fileRef = file && ` in ${file}`;
   const { line, column } = location ? location.start : {};
@@ -68,7 +68,7 @@ function formatError(err, fs) {
   );
 }
 
-module.exports = (compiler) => {
+export default (compiler) => {
   const fs = compiler.inputFileSystem;
 
   function formatErrors(allErrors) {
@@ -85,5 +85,3 @@ module.exports = (compiler) => {
 
   return formatErrors;
 };
-
-module.exports.formatError = formatError;

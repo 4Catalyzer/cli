@@ -9,6 +9,12 @@ module.exports = {
   },
   overrides: [
     {
+      files: ['**/packages/start/**'],
+      rules: {
+        'import/extensions': ['error', 'ignorePackages'],
+      },
+    },
+    {
       files: ['**/__tests__/**', '**/tests/**'],
       plugins: ['jest'],
       env: {

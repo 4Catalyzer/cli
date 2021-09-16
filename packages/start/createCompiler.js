@@ -1,12 +1,12 @@
-const { chalk, error } = require('@4c/cli-core/ConsoleUtilities');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+import { chalk, error } from '@4c/cli-core/ConsoleUtilities';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 // eslint-disable-next-line import/no-extraneous-dependencies
-const get = require('lodash/get');
-const webpack = require('webpack');
-const WebpackNotifierPlugin = require('webpack-notifier');
-const WebpackBar = require('webpackbar');
+import get from 'lodash/get.js';
+import webpack from 'webpack';
+import WebpackNotifierPlugin from 'webpack-notifier';
+import WebpackBar from 'webpackbar';
 
-const Errors = require('./errors');
+import { formatTitle, printer } from './errors/index.js';
 
 function configureRelayPluginReporter(config) {
   const { plugins = [] } = config;
@@ -69,7 +69,7 @@ function configureTypeChecker(config) {
   return [{ ...rest, plugins }, plugin];
 }
 
-module.exports = function createCompiler({
+export default async function createCompiler({
   appName,
   config,
   devSocket,
@@ -108,12 +108,12 @@ module.exports = function createCompiler({
     process.exit(1);
   }
 
-  const printErrors = Errors.printer(compiler);
+  const printErrors = await printer(compiler);
 
   function printAppInfo(severity = 'info') {
     console.log();
     console.log(
-      `${Errors.formatTitle(severity, 'I')} ` +
+      `${formatTitle(severity, 'I')} ` +
         `Your application is running here: ${urls.localUrlForTerminal}`,
     );
     console.log();
@@ -202,4 +202,4 @@ module.exports = function createCompiler({
   });
 
   return compiler;
-};
+}

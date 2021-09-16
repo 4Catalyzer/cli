@@ -11,4 +11,4 @@ const typescriptTransformer = (error) => {
     : error;
 };
 
-module.exports = typescriptTransformer;
+export default typescriptTransformer;

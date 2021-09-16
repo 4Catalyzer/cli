@@ -1,3 +1,7 @@
 #!/usr/bin/env node
 
-require('@4c/cli-core/createCliFromCommand')(require('./command'));
+import createCliFromCommand from '@4c/cli-core/createCliFromCommand';
+
+import * as Command from './command.js';
+
+createCliFromCommand(Command);

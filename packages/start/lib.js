@@ -1,41 +1,45 @@
-const fs = require('fs');
-const path = require('path');
+import { existsSync, readFileSync } from 'fs';
+import { createRequire } from 'module';
+import { resolve as _resolve } from 'path';
 
-const ConsoleUtilities = require('@4c/cli-core/ConsoleUtilities');
-const dotenv = require('dotenv');
-const clearConsole = require('react-dev-utils/clearConsole');
-const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
-const log = require('webpack-log');
+import { error, isCI, isTTY } from '@4c/cli-core/ConsoleUtilities';
+import { parse } from 'dotenv';
+import clearConsole from 'react-dev-utils/clearConsole.js';
+import noopServiceWorkerMiddleware from 'react-dev-utils/noopServiceWorkerMiddleware.js';
+import log from 'webpack-log';
+
+const require = createRequire(import.meta.url);
 
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
-module.exports = async ({
+export default async ({
   config: cliConfig = 'webpack.config',
   envFile,
-  progress = !ConsoleUtilities.isCI(),
+  progress = !isCI(),
   ...cliOptions
 }) => {
   // lazy load to use local webpack
-  const WebpackDevServer = require('webpack-dev-server');
-  const {
-    choosePort,
-    prepareUrls,
-  } = require('react-dev-utils/WebpackDevServerUtils');
-  const createCompiler = require('./createCompiler');
+  const [
+    WebpackDevServer,
+    { choosePort, prepareUrls },
+    createCompiler,
+  ] = await Promise.all([
+    import('webpack-dev-server').then((m) => m.default),
+    import('react-dev-utils/WebpackDevServerUtils.js').then((m) => m.default),
+    import('./createCompiler.js').then((m) => m.default),
+  ]);
 
   try {
     if (envFile) {
-      const parsed = dotenv.parse(fs.readFileSync(envFile));
+      const parsed = parse(readFileSync(envFile));
       Object.entries(parsed).forEach(([key, value]) => {
         process.env[key] = value;
       });
     }
 
     let config =
-      typeof cliConfig === 'string'
-        ? require(path.resolve(cliConfig))
-        : cliConfig;
+      typeof cliConfig === 'string' ? require(_resolve(cliConfig)) : cliConfig;
 
     if (typeof config === 'function') {
       config = config({}, { ...cliOptions, mode: 'development' });
@@ -60,11 +64,9 @@ module.exports = async ({
 
     const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 
-    const appName =
-      config.name || require(path.resolve('./package.json')).name;
+    const appName = config.name || require(_resolve('./package.json')).name;
 
-    const useTypeScript =
-      cliOptions.typecheck && fs.existsSync(`tsconfig.json`);
+    const useTypeScript = cliOptions.typecheck && existsSync(`tsconfig.json`);
 
     const urls = prepareUrls(protocol, HOST, port);
 
@@ -78,7 +80,7 @@ module.exports = async ({
     };
 
     // Create a webpack compiler that is configured with custom messages.
-    const compiler = createCompiler({
+    const compiler = await createCompiler({
       appName,
       config,
       devSocket,
@@ -128,12 +130,12 @@ module.exports = async ({
     return new Promise((resolve, reject) => {
       devServer.listen(port, HOST, (err) => {
         if (err) {
-          ConsoleUtilities.error(err);
+          error(err);
           reject(err);
           return;
         }
 
-        if (progress && ConsoleUtilities.isTTY) {
+        if (progress && isTTY) {
           clearConsole();
         }
       });
@@ -148,7 +150,7 @@ module.exports = async ({
     });
   } catch (err) {
     if (err && err.message) {
-      ConsoleUtilities.error(err);
+      error(err);
     }
     throw err;
   }

@@ -1,9 +1,9 @@
-const globby = require('globby');
+import globby from 'globby';
 
-exports.resolveFilePatterns = (
+export function resolveFilePatterns(
   patterns,
   { ignoreNodeModules = true, ...rest } = {},
-) => {
+) {
   let fullPatterns = patterns;
 
   if (ignoreNodeModules)
@@ -18,4 +18,4 @@ exports.resolveFilePatterns = (
   ]);
 
   return globby(fullPatterns, { dot: true, nodir: true, ...rest });
-};
+}

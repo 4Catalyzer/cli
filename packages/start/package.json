@@ -11,6 +11,7 @@
   "bin": {
     "start": "cli.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/4Catalyzer/cli.git",
