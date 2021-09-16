@@ -27,7 +27,7 @@
     "@4c/cli-core": "^2.3.0",
     "eslint": "^7.32.0",
     "prettier": "^2.4.1",
-    "yargs": "^16.2.0"
+    "yargs": "^17.1.1"
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.6.0",
