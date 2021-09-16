@@ -9,7 +9,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/packages/start/**'],
+      files: ['**/packages/{start,build}/**'],
       rules: {
         'import/extensions': ['error', 'ignorePackages'],
       },

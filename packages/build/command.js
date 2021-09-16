@@ -1,79 +1,86 @@
-const path = require('path');
-const { debuglog } = require('util');
+import { createRequire } from 'module';
+import { dirname, isAbsolute, join, resolve } from 'path';
+import { debuglog } from 'util';
 
-const { chalk, symbols, info } = require('@4c/cli-core/ConsoleUtilities');
-const { getPackages } = require('@manypkg/get-packages');
-const execa = require('execa');
-const fs = require('fs-extra');
-const Listr = require('listr');
+import { chalk, info, symbols } from '@4c/cli-core/ConsoleUtilities';
+import { getPackages } from '@manypkg/get-packages';
+import execa from 'execa';
+import fsExtra from 'fs-extra';
+import Listr from 'listr';
 
-const { copy, copyRest } = require('./copy');
+import { copy, copyRest } from './copy.js';
+
+const require = createRequire(import.meta.url);
 
 const debug = debuglog('@4c/build');
+const { existsSync, readJson, readJsonSync } = fsExtra;
 
 function getCli(pkg, cmd) {
   const pkgPath = require.resolve(`${pkg}/package.json`);
-  const { bin } = fs.readJsonSync(pkgPath);
-  const loc = path.join(path.dirname(pkgPath), bin[cmd]);
+  const { bin } = readJsonSync(pkgPath);
+  const loc = join(dirname(pkgPath), bin[cmd]);
 
   return loc;
 }
 
-exports.command = '$0 [patterns..]';
+export const command = '$0 [patterns..]';
 
-exports.describe =
+export const describe =
   'Compiles code via babel as well as Typescript type def files when appropriate.\n\n' +
   'Boolean flags can be negated by prefixing with --no-* (--foo, --no-foo)';
 
-exports.builder = (_) =>
-  _.positional('patterns', { default: ['src'] })
-    .option('out-dir', {
-      alias: 'd',
-      type: 'string',
-    })
-    .option('type-dir', {
-      type: 'string',
-      describe:
-        'The location of any additional type defs, to be copied to the output folders',
-    })
-    .option('esm', {
-      type: 'boolean',
-      default: undefined,
-      describe: 'Builds an esm build',
-    })
-    .option('extensions', {
-      alias: 'x',
-      default: ['.js', '.ts', '.tsx'],
-      describe: 'The extensions of files to compile',
-    })
-    .option('clean', {
-      type: 'boolean',
-      default: true,
-      describe: 'Remove out directory before building',
-    })
-    .option('tsconfig', {
-      type: 'path',
-      describe: 'The tsconfig.json location to use for type defs',
-    })
-    .option('only-types', {
-      type: 'boolean',
-      describe: 'Compile only the type definitions',
-    })
-    // off with `no-types`
-    .option('types', {
-      type: 'boolean',
-      default: true,
-      describe: 'Compile type defs',
-    })
-    .option('copy-files', {
-      type: 'boolean',
-      default: true,
-      describe: 'When compiling a directory copy over non-compilable files',
-    })
-    // so we can pass anything after -- to babel
-    .parserConfiguration({
-      'populate--': true,
-    });
+export function builder(_) {
+  return (
+    _.positional('patterns', { default: ['src'] })
+      .option('out-dir', {
+        alias: 'd',
+        type: 'string',
+      })
+      .option('type-dir', {
+        type: 'string',
+        describe:
+          'The location of any additional type defs, to be copied to the output folders',
+      })
+      .option('esm', {
+        type: 'boolean',
+        default: undefined,
+        describe: 'Builds an esm build',
+      })
+      .option('extensions', {
+        alias: 'x',
+        default: ['.js', '.ts', '.tsx'],
+        describe: 'The extensions of files to compile',
+      })
+      .option('clean', {
+        type: 'boolean',
+        default: true,
+        describe: 'Remove out directory before building',
+      })
+      .option('tsconfig', {
+        type: 'path',
+        describe: 'The tsconfig.json location to use for type defs',
+      })
+      .option('only-types', {
+        type: 'boolean',
+        describe: 'Compile only the type definitions',
+      })
+      // off with `no-types`
+      .option('types', {
+        type: 'boolean',
+        default: true,
+        describe: 'Compile type defs',
+      })
+      .option('copy-files', {
+        type: 'boolean',
+        default: true,
+        describe: 'When compiling a directory copy over non-compilable files',
+      })
+      // so we can pass anything after -- to babel
+      .parserConfiguration({
+        'populate--': true,
+      })
+  );
+}
 
 function run(...args) {
   return execa(...args, {
@@ -90,18 +97,18 @@ function run(...args) {
 let babelCmd;
 
 const safeToDelete = (dir, cwd = process.cwd()) => {
-  const resolvedDir = path.isAbsolute(dir) ? dir : path.resolve(cwd, dir);
+  const resolvedDir = isAbsolute(dir) ? dir : resolve(cwd, dir);
 
   return resolvedDir.startsWith(cwd) && resolvedDir !== cwd;
 };
 
 const getTsconfig = () => {
-  if (fs.existsSync('./tsconfig.build.json')) return './tsconfig.build.json';
-  if (fs.existsSync('./tsconfig.json')) return './tsconfig.json';
+  if (existsSync('./tsconfig.build.json')) return './tsconfig.build.json';
+  if (existsSync('./tsconfig.json')) return './tsconfig.json';
   return null;
 };
 
-exports.handler = async ({
+export async function handler({
   patterns,
   esm,
   outDir,
@@ -113,14 +120,14 @@ exports.handler = async ({
   copyFiles,
   '--': passthrough,
   ...options
-}) => {
+}) {
   const { tool } = await getPackages();
   const monorepo = tool !== 'root';
 
-  const pkg = await fs.readJson('package.json');
+  const pkg = await readJson('package.json');
   const tsconfig = types && (options.tsconfig || getTsconfig());
 
-  const buildTypes = tsconfig && !!fs.existsSync(tsconfig);
+  const buildTypes = tsconfig && !!existsSync(tsconfig);
   const tscCmd = buildTypes && getCli('typescript', 'tsc');
 
   if (tsconfig && !options.tsconfig) {
@@ -130,7 +137,7 @@ exports.handler = async ({
   }
   if (!outDir) {
     // eslint-disable-next-line no-param-reassign
-    outDir = pkg.main && path.dirname(pkg.main);
+    outDir = pkg.main && dirname(pkg.main);
   }
 
   const isSameEntry = pkg.module && pkg.main && pkg.module === pkg.main;
@@ -138,7 +145,7 @@ exports.handler = async ({
   let esmRoot;
   let esmRootInOutDir = false;
   if (esm !== false) {
-    esmRoot = pkg.module && path.dirname(pkg.module);
+    esmRoot = pkg.module && dirname(pkg.module);
 
     if (esm === true && !esmRoot) {
       throw new Error(
@@ -267,4 +274,4 @@ exports.handler = async ({
     console.error(err.message);
     process.exitCode = 1;
   }
-};
+}

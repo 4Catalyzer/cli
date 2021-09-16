@@ -5,9 +5,14 @@
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
   },
+  "type": "module",
   "license": "MIT",
   "author": "4Catalyzer",
   "main": "command.js",
+  "exports": {
+    ".": "./command.js",
+    "./copy": "./copy.js"
+  },
   "bin": {
     "build": "cli.js"
   },
