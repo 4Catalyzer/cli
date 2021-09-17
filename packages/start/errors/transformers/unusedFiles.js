@@ -1,4 +1,4 @@
-module.exports = (error) => {
+export default (error) => {
   const message = error.message || error.webpackError;
   if (
     typeof message === 'string' &&

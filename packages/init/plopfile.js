@@ -1,15 +1,21 @@
-const path = require('path');
+import { isAbsolute, relative, resolve } from 'path';
 
-const GitUtilities = require('@4c/cli-core/GitUtilities');
-const findWorkspaceRoot = require('find-yarn-workspace-root');
+import {
+  isGitRepo as _isGitRepo,
+  addRemote,
+  getRemoteUrl,
+  init,
+  remoteUrl,
+} from '@4c/cli-core/GitUtilities';
+import findWorkspaceRoot from 'find-yarn-workspace-root';
 
-const addHelpers = require('./addHelpers');
-const {
+import addHelpers from './addHelpers.js';
+import {
+  getPackageNameFromPath,
   runPrettier,
   sortJsonPath,
   templatePath,
-  getPackageNameFromPath,
-} = require('./utils');
+} from './utils.js';
 
 let $workspaceRoot;
 const getRoot = (location) => {
@@ -23,7 +29,7 @@ const prompts = [
     type: 'input',
     message: 'package location',
     filter: (location) =>
-      path.isAbsolute(location) ? location : path.resolve(location),
+      isAbsolute(location) ? location : resolve(location),
   },
   {
     name: 'scopePackage',
@@ -73,7 +79,7 @@ const prompts = [
   },
 ];
 
-module.exports = (plop) => {
+export default (plop) => {
   addHelpers(plop);
 
   // controller generator
@@ -87,8 +93,7 @@ module.exports = (plop) => {
       if (type === 'web' || typescript) answers.babel = true; // eslint-disable-line no-param-reassign
       const data = {
         workspaceRoot,
-        workspaceLocation:
-          workspaceRoot && path.relative(workspaceRoot, location),
+        workspaceLocation: workspaceRoot && relative(workspaceRoot, location),
         esm: answers.babel && type === 'web',
         includeEslint: !workspaceRoot && type === 'web',
       };
@@ -96,8 +101,7 @@ module.exports = (plop) => {
       return [
         async () => {
           data.gitRepo =
-            (await GitUtilities.getRemoteUrl(workspaceRoot)) ||
-            GitUtilities.remoteUrl(answers.name);
+            (await getRemoteUrl(workspaceRoot)) || remoteUrl(answers.name);
         },
         {
           type: 'add',
@@ -148,12 +152,12 @@ module.exports = (plop) => {
           data,
         },
         async (_) => {
-          const isGitRepo = await GitUtilities.isGitRepo(location);
+          const isGitRepo = await _isGitRepo(location);
           if (isGitRepo) return;
 
           try {
-            await GitUtilities.init(location);
-            await GitUtilities.addRemote(location, _.name);
+            await init(location);
+            await addRemote(location, _.name);
           } catch {
             /* ignore */
           }

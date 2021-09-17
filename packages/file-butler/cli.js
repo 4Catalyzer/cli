@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 
-const { success } = require('@4c/cli-core/ConsoleUtilities');
-const readPkgUp = require('read-pkg-up');
-const yargs = require('yargs');
+import { success } from '@4c/cli-core/ConsoleUtilities';
+import { readPackageUpAsync } from 'read-pkg-up';
+import Yargs from 'yargs';
 
-const {
+import {
   createAltPublishDir,
-  renameMjs,
-  renameFlowTypes,
   renameFiles,
-} = require('./lib');
+  renameFlowTypes,
+  renameMjs,
+} from './lib.js';
+
+const yargs = Yargs();
 
 yargs
   .command(
@@ -57,7 +59,10 @@ yargs
     async (options) => {
       let { publishDir } = options;
       if (!publishDir) {
-        const result = await readPkgUp({ cwd: process.cwd, normalize: false });
+        const result = await readPackageUpAsync({
+          cwd: process.cwd,
+          normalize: false,
+        });
 
         if (result) {
           const { release, publishConfig } = result.package;

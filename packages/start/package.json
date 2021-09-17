@@ -11,6 +11,15 @@
   "bin": {
     "start": "cli.js"
   },
+  "exports": {
+    "./command": "./command.js",
+    "./command.js": "./command.js",
+    "./createCompiler": "./createCompiler.js",
+    "./createCompiler.js": "./createCompiler.js",
+    "./lib": "./lib.js",
+    "./lib.js": "./lib.js"
+  },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/4Catalyzer/cli.git",
@@ -18,14 +27,14 @@
   },
   "dependencies": {
     "@4c/cli-core": "^2.3.0",
-    "@babel/code-frame": "^7.12.13",
+    "@babel/code-frame": "^7.14.5",
     "dotenv": "^8.1.0",
     "exists-case": "^0.1.0",
-    "fork-ts-checker-webpack-plugin": "^6.1.0",
-    "lodash": "^4.17.20",
+    "fork-ts-checker-webpack-plugin": "^6.3.3",
+    "lodash": "^4.17.21",
     "react-dev-utils": "^11.0.1",
     "webpack-dev-server": "^3.11.2",
-    "webpack-log": "^3.0.1",
+    "webpack-log": "^3.0.2",
     "webpack-notifier": "^1.13.0",
     "webpackbar": "^5.0.0-3"
   },

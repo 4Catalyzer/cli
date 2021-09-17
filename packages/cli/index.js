@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-const build = require('@4c/build/command');
-const init = require('@4c/init/command');
-const intl = require('@4c/intl/command');
-const rollout = require('@4c/rollout/command');
-const start = require('@4c/start/command');
-const format = require('pedantic/format');
-const lint = require('pedantic/lint');
-const svg2c = require('svg2c/command');
-const workspaces = require('ts-doctor/workspaces');
-const yargs = require('yargs');
+import * as build from '@4c/build/command';
+import * as init from '@4c/init/command';
+import * as intl from '@4c/intl/command';
+import * as rollout from '@4c/rollout/command';
+import * as start from '@4c/start/command';
+import * as format from 'pedantic/format';
+import * as lint from 'pedantic/lint';
+import * as svg2c from 'svg2c/command';
+import * as workspaces from 'ts-doctor';
+import Yargs from 'yargs';
 
 function setCmdName(name, cmd) {
   return {
@@ -17,6 +17,7 @@ function setCmdName(name, cmd) {
     command: cmd.command.replace(/^\$0/, name),
   };
 }
+const yargs = Yargs();
 
 yargs
   .help()

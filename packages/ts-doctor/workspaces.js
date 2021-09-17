@@ -1,21 +1,26 @@
 /* eslint-disable no-param-reassign */
 
-const { promises: fs } = require('fs');
-const path = require('path');
+import { promises as fs } from 'fs';
+import { dirname, join, normalize, relative, resolve } from 'path';
 
-const { info, error } = require('@4c/cli-core/ConsoleUtilities');
-const { getPackages } = require('@manypkg/get-packages');
-const commentJson = require('comment-json');
-const get = require('lodash/get');
-const prettier = require('prettier');
-const { parseJsonConfigFileContent, sys } = require('typescript');
+import { error, info } from '@4c/cli-core/ConsoleUtilities';
+import getPkgs from '@manypkg/get-packages';
+import commentJson from 'comment-json';
+import get from 'lodash/get.js';
+import prettier from 'prettier';
+import tsc from 'typescript';
 
-exports.command = '$0';
+const { stringify: _stringify, parse } = commentJson;
+const { getPackages } = getPkgs;
+const { parseJsonConfigFileContent, sys } = tsc;
 
-exports.describe = 'Configure TypeScript project references for a monorepo';
+export const command = '$0';
 
-exports.builder = (_) =>
-  _.option('cwd', {
+export const describe =
+  'Configure TypeScript project references for a monorepo';
+
+export function builder(_) {
+  return _.option('cwd', {
     type: 'path',
     describe: 'The current working directory',
   })
@@ -32,6 +37,7 @@ exports.builder = (_) =>
       describe:
         'Adds a workspace-sources key to the root package.json with metadata about how imports made to source files',
     });
+}
 
 async function getTsConfig(dir, configFile = 'tsconfig.json') {
   const file = `${dir}/${configFile}`;
@@ -43,7 +49,7 @@ async function getTsConfig(dir, configFile = 'tsconfig.json') {
   }
 
   try {
-    return commentJson.parse(tsConfigStr);
+    return parse(tsConfigStr);
   } catch (err) {
     err.message = `in ${file}\n\n${err.message}`;
     throw err;
@@ -69,17 +75,15 @@ function addProjectCompilerOptions(tsConfig, compilerOptions) {
 }
 
 function addReference(tsConfig, ref) {
-  const normalizedPath = path.normalize(ref);
+  const normalizedPath = normalize(ref);
   const refs = tsConfig.references || [];
-  const existing = refs.findIndex(
-    (r) => path.normalize(r.path) !== normalizedPath,
-  );
+  const existing = refs.findIndex((r) => normalize(r.path) !== normalizedPath);
   refs.splice(existing, 1, { path: normalizedPath });
   tsConfig.references = refs;
 }
 
 function stringify(json, filepath) {
-  return prettier.format(commentJson.stringify(json, null, 2), { filepath });
+  return prettier.format(_stringify(json, null, 2), { filepath });
 }
 
 function buildWorkspaceSources(baseDir, tsPackages) {
@@ -88,19 +92,18 @@ function buildWorkspaceSources(baseDir, tsPackages) {
   tsPackages.forEach(({ dir, packageJson, compilerOptions }) => {
     const publishDir = get(packageJson, 'publishConfig.directory');
 
-    const srcDir = path.relative(baseDir, compilerOptions.rootDir);
+    const srcDir = relative(baseDir, compilerOptions.rootDir);
     const outDir = compilerOptions.outDir
-      ? path.relative(baseDir, compilerOptions.outDir)
-      : publishDir ||
-        (packageJson.main ? path.dirname(packageJson.main) : '.');
+      ? relative(baseDir, compilerOptions.outDir)
+      : publishDir || (packageJson.main ? dirname(packageJson.main) : '.');
 
-    const relPath = path.relative(baseDir, dir);
+    const relPath = relative(baseDir, dir);
 
     const key = publishDir
       ? `${packageJson.name}/*`
-      : path.join(packageJson.name, outDir, '/*');
+      : join(packageJson.name, outDir, '/*');
 
-    sources[key] = [path.join(relPath, srcDir, '/*')];
+    sources[key] = [join(relPath, srcDir, '/*')];
   });
 
   return sources;
@@ -136,11 +139,11 @@ async function writeBuildConfig(dir) {
   );
 }
 
-exports.handler = async ({
+export async function handler({
   cwd = process.cwd(),
   withBuildConfigs,
   withSourcesMetadata,
-}) => {
+}) {
   const { tool, root, packages } = await getPackages(cwd);
   if (tool === 'root') {
     error(`Monorepo not detected in ${cwd}`);
@@ -188,7 +191,7 @@ exports.handler = async ({
 
   await Promise.all(
     tsPackages.map(({ dir, packageJson, tsConfig, compilerOptions }) => {
-      addReference(rootTsConfig, path.relative(root.dir, dir));
+      addReference(rootTsConfig, relative(root.dir, dir));
 
       const deps = getLocalDeps(packageJson);
       const dirty = addProjectCompilerOptions(tsConfig, compilerOptions);
@@ -202,7 +205,7 @@ exports.handler = async ({
           dep.packageJson.publishConfig &&
           dep.packageJson.publishConfig.directory;
 
-        addReference(tsConfig, path.relative(dir, dep.dir), compilerOptions);
+        addReference(tsConfig, relative(dir, dep.dir), compilerOptions);
 
         // When the dependency publishes a differenct directory than its root,
         //  we also need to configure `paths` for any cherry-picked imports.
@@ -211,8 +214,8 @@ exports.handler = async ({
           tsConfig.compilerOptions.baseUrl =
             tsConfig.compilerOptions.baseUrl || '.';
 
-          const basePath = path.resolve(dir, tsConfig.compilerOptions.baseUrl);
-          const relPath = path.relative(basePath, dep.dir);
+          const basePath = resolve(dir, tsConfig.compilerOptions.baseUrl);
+          const relPath = relative(basePath, dep.dir);
 
           tsConfig.compilerOptions.paths =
             tsConfig.compilerOptions.paths || {};
@@ -252,4 +255,4 @@ exports.handler = async ({
     rootTsConfigPath,
     stringify(rootTsConfig, rootTsConfigPath),
   );
-};
+}

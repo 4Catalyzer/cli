@@ -1,15 +1,18 @@
 /* eslint-disable no-param-reassign */
-const { promises: fs } = require('fs');
-const path = require('path');
+import { promises as fs } from 'fs';
+import { createRequire } from 'module';
+import { extname as _extname, basename, resolve } from 'path';
 
-const { chalk } = require('@4c/cli-core/ConsoleUtilities');
-const { transformAsync } = require('@babel/core');
-const yaml = require('js-yaml');
-const camelCase = require('lodash/camelCase');
-const upperFirst = require('lodash/upperFirst');
-const Svgo = require('svgo');
+import { chalk } from '@4c/cli-core/ConsoleUtilities';
+import babel from '@babel/core';
+import { safeLoad } from 'js-yaml';
+import camelCase from 'lodash/camelCase.js';
+import upperFirst from 'lodash/upperFirst.js';
+import Svgo from 'svgo';
 
-const defaultConfig = require('./svgo.config.js');
+import * as defaultConfig from './svgo.config.js';
+
+const require = createRequire(import.meta.url);
 
 // https://github.com/svg/svgo/blob/fe0ecaf31eb87a913638a62f842044e425683623/lib/svgo/coa.js
 async function loadConfig(config) {
@@ -24,7 +27,7 @@ async function loadConfig(config) {
       );
     }
   }
-  const configPath = path.resolve(config);
+  const configPath = resolve(config);
 
   try {
     configData = JSON.parse(await fs.readFile(configPath, 'utf8'));
@@ -40,7 +43,7 @@ async function loadConfig(config) {
       );
     }
 
-    configData = yaml.safeLoad(configData);
+    configData = safeLoad(configData);
 
     if (!configData || Array.isArray(configData)) {
       throw new Error(chalk.red(`Error: invalid config file '${config}'.`));
@@ -51,7 +54,7 @@ async function loadConfig(config) {
 
 const RESOLVED = Symbol('svg2c resolved config');
 
-async function getConfig(externalConfig) {
+export async function getConfig(externalConfig) {
   if (!externalConfig) return defaultConfig;
 
   const config =
@@ -75,16 +78,13 @@ async function getConfig(externalConfig) {
   };
 }
 
-module.exports = async function svg2c(
-  source,
-  { esModules, filename, config },
-) {
-  const extname = path.extname(filename);
+export default async function svg2c(source, { esModules, filename, config }) {
+  const extname = _extname(filename);
   const svgoConfig = await getConfig(config);
 
   const svgo = new Svgo(svgoConfig);
 
-  const displayName = upperFirst(camelCase(path.basename(filename, extname)));
+  const displayName = upperFirst(camelCase(basename(filename, extname)));
 
   const reactImport = esModules
     ? 'import React from "react"'
@@ -92,7 +92,7 @@ module.exports = async function svg2c(
 
   const exportName = esModules ? 'export default' : 'module.exports =';
 
-  const { code } = await transformAsync(
+  const { code } = await babel.transformAsync(
     (await svgo.optimize(source)).data.trim(),
     {
       presets: [
@@ -122,6 +122,4 @@ Svg.displayName = "${displayName}";
 Svg.element = element;
 ${exportName} Svg;
 `;
-};
-
-module.exports.getConfig = getConfig;
+}

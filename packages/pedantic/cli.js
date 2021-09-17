@@ -1,14 +1,18 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs');
+import Yargs from 'yargs';
+
+import format from './format.js';
+import lint from './lint.js';
+
+const yargs = Yargs(process.argv.slice(2));
 
 yargs
-  .help()
   .alias('h', 'help')
   .version()
   .alias(`v`, `version`)
   .wrap(yargs.terminalWidth())
   .strict()
-  .command(require('./format'))
-  .command(require('./lint'))
+  .command(format)
+  .command(lint)
   .parse(process.argv.slice(2));

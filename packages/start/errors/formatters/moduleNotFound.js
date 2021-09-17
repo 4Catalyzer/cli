@@ -1,6 +1,6 @@
-const { chalk } = require('@4c/cli-core/ConsoleUtilities');
+import { chalk } from '@4c/cli-core/ConsoleUtilities';
 
-const { formatTitle } = require('../webpackErrors');
+import { formatTitle } from '../webpackErrors.js';
 
 function formatModuleNotFound(allErrors) {
   const errors = allErrors.filter((e) => e.type === 'module-not-found');
@@ -42,4 +42,4 @@ function formatModuleNotFound(allErrors) {
   ];
 }
 
-module.exports = formatModuleNotFound;
+export default formatModuleNotFound;

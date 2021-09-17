@@ -6,6 +6,7 @@ module.exports = {
     'no-console': 'off',
     'import/no-dynamic-require': 'off',
     'prettier/prettier': 'error',
+    'import/extensions': ['error', 'ignorePackages'],
   },
   overrides: [
     {

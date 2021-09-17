@@ -1,11 +1,11 @@
-const devServer = require('./lib');
+import devServer from './lib.js';
 
-exports.command = '$0';
+export const command = '$0';
 
-exports.describe = 'Start a webpack app in development mode';
+export const describe = 'Start a webpack app in development mode';
 
-exports.builder = (_) =>
-  _.option('config', {
+export function builder(_) {
+  return _.option('config', {
     type: 'path',
     default: 'webpack.config.js',
   })
@@ -27,9 +27,11 @@ exports.builder = (_) =>
       type: 'path',
       describe: 'Provide a set of env variables via an env file',
     });
+}
 
-exports.handler = (args) => {
-  return devServer(args).catch(() => {
+export function handler(args) {
+  return devServer(args).catch((err) => {
+    console.error(err);
     process.exit(1);
   });
-};
+}

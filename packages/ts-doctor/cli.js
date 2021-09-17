@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs');
+import Yargs from 'yargs';
 
-yargs
+import * as Command from './workspaces.js';
+
+Yargs()
   .help()
   .alias('h', 'help')
   .version()
   .alias('v', 'version')
-  .wrap(yargs.terminalWidth())
+  .wrap(Yargs().terminalWidth())
   .strict()
-  .command(require('./workspaces'))
+  .command(Command)
   .parse(process.argv.slice(2));

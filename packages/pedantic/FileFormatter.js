@@ -1,4 +1,4 @@
-const prettier = require('prettier');
+import prettier from 'prettier';
 
 class Formatter {
   constructor({ filePath, ignorePath }) {
@@ -29,4 +29,4 @@ class Formatter {
   }
 }
 
-module.exports = Formatter;
+export default Formatter;

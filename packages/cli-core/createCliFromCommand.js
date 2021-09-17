@@ -1,15 +1,17 @@
-const yargs = require('yargs');
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
-module.exports = (
+export default (
   { command, describe, handler, builder },
-  argv = process.argv.slice(2),
-) =>
-  yargs
+  argv = process.argv,
+) => {
+  const yargsInst = yargs(hideBin(argv));
+  return yargsInst
     .help()
     .alias('h', 'help')
     .version()
     .alias(`v`, `version`)
-    .wrap(yargs.terminalWidth())
+    .wrap(yargsInst.terminalWidth())
     .strict()
-    .command(command, describe, builder, handler)
-    .parse(argv);
+    .command(command, describe, builder, handler).argv;
+};

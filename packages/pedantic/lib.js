@@ -1,17 +1,17 @@
-const { promises: fs } = require('fs');
-const path = require('path');
-const { debuglog } = require('util');
+import { promises as fs } from 'fs';
+import { relative } from 'path';
+import { debuglog } from 'util';
 
-const ArgUtilities = require('@4c/cli-core/ArgUtilities');
-const {
-  spinner,
+import { resolveFilePatterns } from '@4c/cli-core/ArgUtilities';
+import {
   chalk,
+  spinner,
   stripAnsi,
   table,
-} = require('@4c/cli-core/ConsoleUtilities');
+} from '@4c/cli-core/ConsoleUtilities';
 
-const FileFormatter = require('./FileFormatter');
-const Linter = require('./Linter');
+import FileFormatter from './FileFormatter.js';
+import Linter from './Linter.js';
 
 const debug = debuglog('pedantic');
 
@@ -21,7 +21,7 @@ const debug = debuglog('pedantic');
  *  - fix & check: fix anything that's fixable and report non-fixable errors
  *  - check: report fixable and non-fixable errors
  */
-module.exports = async (
+export default async (
   filePatterns,
   {
     cwd = process.cwd(),
@@ -37,7 +37,7 @@ module.exports = async (
 
   const linter = new Linter({ cwd, fix });
 
-  const filePaths = await ArgUtilities.resolveFilePatterns(filePatterns, {
+  const filePaths = await resolveFilePatterns(filePatterns, {
     cwd,
     ignoreNodeModules,
     absolute: true,
@@ -92,7 +92,7 @@ module.exports = async (
 
         numDifferent++;
 
-        progress.text = chalk.dim(path.relative(cwd, filePath));
+        progress.text = chalk.dim(relative(cwd, filePath));
 
         if (fix) {
           await fs.writeFile(filePath, code, 'utf8');
@@ -133,10 +133,7 @@ module.exports = async (
   if (!fix && needsFormatting.length) {
     let output = '\n';
     output += `${table(
-      needsFormatting.map((filePath) => [
-        '',
-        path.relative(cwd, filePath).trim(),
-      ]),
+      needsFormatting.map((filePath) => ['', relative(cwd, filePath).trim()]),
       {
         align: ['', 'l'],
         stringLength: (str) => stripAnsi(str).length,

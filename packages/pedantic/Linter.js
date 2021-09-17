@@ -1,4 +1,4 @@
-const { ESLint } = require('eslint');
+import eslint from 'eslint';
 
 class Linter {
   #eslint;
@@ -8,7 +8,7 @@ class Linter {
   constructor({ cwd, fix }) {
     this.fix = fix;
 
-    this.#eslint = new ESLint({ cwd, fix });
+    this.#eslint = new eslint.ESLint({ cwd, fix });
     this.#results = [];
 
     this.errorCount = 0;
@@ -53,4 +53,4 @@ class Linter {
   }
 }
 
-module.exports = Linter;
+export default Linter;

@@ -1,5 +1,5 @@
-const { chalk } = require('@4c/cli-core/ConsoleUtilities');
-const upperFirst = require('lodash/upperFirst');
+import { chalk } from '@4c/cli-core/ConsoleUtilities';
+import upperFirst from 'lodash/upperFirst.js';
 
 function getFile(e) {
   if (e.file) {
@@ -56,4 +56,4 @@ function formatText(severity, message) {
   return chalk[textColor(severity)](message);
 }
 
-module.exports = { formatTitle, formatText, formatErrors, transformErrors };
+export { formatTitle, formatText, formatErrors, transformErrors };

@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-const chalk = require('chalk');
-const listrInput = require('listr-input');
-const { throwError } = require('rxjs');
-const { catchError } = require('rxjs/operators');
+import chalk from 'chalk';
+import listrInput from 'listr-input';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 const handleNpmError = (error, task, executor, prompt) => {
   if (
@@ -29,4 +29,4 @@ const handleNpmError = (error, task, executor, prompt) => {
   return throwError(error);
 };
 
-module.exports = handleNpmError;
+export default handleNpmError;

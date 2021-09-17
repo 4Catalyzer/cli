@@ -1,10 +1,9 @@
-const path = require('path');
+import { relative, resolve } from 'path';
 
-const cpy = require('cpy');
-const fs = require('fs-extra');
+import cpy from 'cpy';
+import fsExtra from 'fs-extra';
 
-const relativeOut = (src, outDir) =>
-  path.relative(path.resolve(src), path.resolve(outDir));
+const relativeOut = (src, outDir) => relative(resolve(src), resolve(outDir));
 
 function copy(patterns, base, outDir) {
   return cpy(
@@ -22,7 +21,8 @@ function copyRest(sources, outDir, extensions) {
   return Promise.all(
     sources.map((base) => {
       // babel allows this, tho we don't usually specify file names in
-      if (!fs.statSync(base).isDirectory()) {
+
+      if (!fsExtra.statSync(base).isDirectory()) {
         return cpy([base, '!**/__tests__/**', '!**/__mocks__/**'], outDir);
       }
 
@@ -40,4 +40,4 @@ function copyRest(sources, outDir, extensions) {
   );
 }
 
-module.exports = { copy, copyRest };
+export { copy, copyRest };

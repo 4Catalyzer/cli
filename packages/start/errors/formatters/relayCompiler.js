@@ -1,6 +1,6 @@
-const upperFirst = require('lodash/upperFirst');
+import upperFirst from 'lodash/upperFirst.js';
 
-const { formatTitle } = require('../webpackErrors');
+import { formatTitle } from '../webpackErrors.js';
 
 function displayError(severity, error) {
   return [
@@ -20,4 +20,4 @@ function format(errors, type) {
     .reduce((accum, error) => accum.concat(displayError(type, error)), []);
 }
 
-module.exports = format;
+export default format;

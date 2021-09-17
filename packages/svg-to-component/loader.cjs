@@ -1,5 +1,3 @@
-const svg2c = require('./lib');
-
 module.exports = function svg2cLoader(content) {
   const cb = this.async();
   const { config, esmodules } = this.query;
@@ -9,11 +7,13 @@ module.exports = function svg2cLoader(content) {
   }
 
   const run = async () => {
-    const code = await svg2c(content, {
-      config,
-      esmodules,
-      filename: this.resourcePath,
-    });
+    const code = await import('./lib.js').then((m) =>
+      m.default(content, {
+        config,
+        esmodules,
+        filename: this.resourcePath,
+      }),
+    );
 
     return code;
   };

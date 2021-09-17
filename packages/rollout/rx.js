@@ -1,6 +1,8 @@
-const execa = require('execa');
-const { merge, Observable } = require('rxjs');
-const { filter } = require('rxjs/operators');
+import execa from 'execa';
+import rxjs from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+const { merge, Observable } = rxjs;
 
 function fromAsyncIterator(iterable) {
   return new Observable((subscriber) => {
@@ -59,8 +61,4 @@ const exec = (cmd, args) => {
   ).pipe(filter(Boolean));
 };
 
-module.exports = {
-  fromAsyncIterator,
-  split,
-  exec,
-};
+export { fromAsyncIterator, split, exec };

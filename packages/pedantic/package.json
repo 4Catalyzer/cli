@@ -8,8 +8,16 @@
   "license": "MIT",
   "author": "4Catalyzer",
   "main": "lib.js",
+  "type": "module",
   "bin": {
     "pedantic": "cli.js"
+  },
+  "exports": {
+    ".": "./lib.js",
+    "./lint": "./lint.js",
+    "./lint.js": "./lint.js",
+    "./format": "./format.js",
+    "./format.js": "./format.js"
   },
   "repository": {
     "type": "git",
@@ -17,17 +25,20 @@
     "directory": "packages/pedantic"
   },
   "scripts": {
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "jest": {
-    "preset": "@4c/jest-preset",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "transformIgnorePatterns": [
+      ".*"
+    ],
+    "transform": {}
   },
   "dependencies": {
     "@4c/cli-core": "^2.3.0",
     "eslint": "^7.32.0",
     "prettier": "^2.4.1",
-    "yargs": "^16.2.0"
+    "yargs": "^17.1.1"
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.6.0",
