@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/4Catalyzer/cli/compare/@4c/build@2.3.2...@4c/build@3.0.0) (2021-09-17)
+
+
+* feat!: convert to ESM (#318) ([5862163](https://github.com/4Catalyzer/cli/commit/58621632fc3961f3ed24eeddc4342645b8b5673b)), closes [#318](https://github.com/4Catalyzer/cli/issues/318)
+
+
+### BREAKING CHANGES
+
+* the codebase has migrated to native ESM which requires node 12+ and may cause issues downstream
+
+
+
+
+
 ## [2.3.2](https://github.com/4Catalyzer/cli/compare/@4c/build@2.3.1...@4c/build@2.3.2) (2021-06-18)
 
 **Note:** Version bump only for package @4c/build

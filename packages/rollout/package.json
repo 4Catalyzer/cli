@@ -1,6 +1,6 @@
 {
   "name": "@4c/rollout",
-  "version": "2.2.2",
+  "version": "3.0.0",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -32,8 +32,8 @@
     "testEnvironment": "node"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.3.0",
-    "@4c/file-butler": "^4.2.2",
+    "@4c/cli-core": "^3.0.0",
+    "@4c/file-butler": "^5.0.0",
     "async-exit-hook": "^2.0.1",
     "chalk": "^4.1.2",
     "conventional-changelog": "^3.1.24",

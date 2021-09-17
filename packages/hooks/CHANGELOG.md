@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/4Catalyzer/cli/compare/hookem@1.0.9...hookem@2.0.0) (2021-09-17)
+
+
+* feat!: convert to ESM (#318) ([5862163](https://github.com/4Catalyzer/cli/commit/58621632fc3961f3ed24eeddc4342645b8b5673b)), closes [#318](https://github.com/4Catalyzer/cli/issues/318)
+
+
+### BREAKING CHANGES
+
+* the codebase has migrated to native ESM which requires node 12+ and may cause issues downstream
+
+
+
+
+
 ## [1.0.9](https://github.com/4Catalyzer/cli/compare/hookem@1.0.8...hookem@1.0.9) (2021-09-16)
 
 **Note:** Version bump only for package hookem

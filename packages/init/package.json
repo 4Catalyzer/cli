@@ -1,6 +1,6 @@
 {
   "name": "@4c/init",
-  "version": "3.2.1",
+  "version": "4.0.0",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/init",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -22,7 +22,7 @@
     "directory": "packages/init"
   },
   "dependencies": {
-    "@4c/cli-core": "^2.3.0",
+    "@4c/cli-core": "^3.0.0",
     "find-yarn-workspace-root": "^2.0.0",
     "glob": "^7.1.7",
     "node-plop": "^0.26.2",
