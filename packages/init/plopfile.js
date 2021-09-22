@@ -23,6 +23,8 @@ const getRoot = (location) => {
   return $workspaceRoot;
 };
 
+const include = (condition, array) => (condition ? array.filter(Boolean) : []);
+
 const prompts = [
   {
     name: 'location',
@@ -109,48 +111,50 @@ export default (plop) => {
           templateFile: `${templatePath}/package.json.hbs`,
           data,
         },
-        !workspaceRoot && {
-          type: 'add',
-          path: '{{location}}/.gitignore',
-          templateFile: `${templatePath}/gitignore`,
-          skipIfExists: true,
-          data,
-        },
-        !workspaceRoot && {
-          type: 'add',
-          path: `{{location}}/.github/workflows/ci.yml`,
-          templateFile: `${templatePath}/ci.yml.hbs`,
-          skipIfExists: true,
-          data,
-        },
-        !workspaceRoot && {
-          type: 'add',
-          path: `{{location}}/.eslintrc.json`,
-          templateFile: `${templatePath}/.eslintrc.hbs`,
-          skipIfExists: true,
-          data,
-        },
-        !workspaceRoot && {
-          type: 'add',
-          path: `{{location}}/.eslintignore`,
-          templateFile: `${templatePath}/ignore`,
-          skipIfExists: true,
-          data,
-        },
-        !workspaceRoot && {
-          type: 'add',
-          path: `{{location}}/.prettierignore`,
-          templateFile: `${templatePath}/ignore`,
-          skipIfExists: true,
-          data,
-        },
-        !workspaceRoot && {
-          type: 'add',
-          path: `{{location}}/LICENSE`,
-          templateFile: `${templatePath}/LICENSE.hbs`,
-          skipIfExists: true,
-          data,
-        },
+        ...include(!workspaceRoot, [
+          {
+            type: 'add',
+            path: '{{location}}/.gitignore',
+            templateFile: `${templatePath}/gitignore`,
+            skipIfExists: true,
+            data,
+          },
+          {
+            type: 'add',
+            path: `{{location}}/.github/workflows/ci.yml`,
+            templateFile: `${templatePath}/ci.yml.hbs`,
+            skipIfExists: true,
+            data,
+          },
+          {
+            type: 'add',
+            path: `{{location}}/.eslintrc.json`,
+            templateFile: `${templatePath}/.eslintrc.hbs`,
+            skipIfExists: true,
+            data,
+          },
+          {
+            type: 'add',
+            path: `{{location}}/.eslintignore`,
+            templateFile: `${templatePath}/ignore`,
+            skipIfExists: true,
+            data,
+          },
+          {
+            type: 'add',
+            path: `{{location}}/.prettierignore`,
+            templateFile: `${templatePath}/ignore`,
+            skipIfExists: true,
+            data,
+          },
+          {
+            type: 'add',
+            path: `{{location}}/LICENSE`,
+            templateFile: `${templatePath}/LICENSE.hbs`,
+            skipIfExists: true,
+            data,
+          },
+        ]),
         async (_) => {
           const isGitRepo = await _isGitRepo(location);
           if (isGitRepo) return;
@@ -162,14 +166,21 @@ export default (plop) => {
             /* ignore */
           }
         },
-        answers.typescript && {
-          type: 'add',
-          path: `{{location}}/tsconfig.json`,
-          templateFile: `${templatePath}/tsconfig.json.hbs`,
-          skipIfExists: true,
-          data,
-        },
-        answers.typescript &&
+        ...include(answers.typescript, [
+          {
+            type: 'add',
+            path: `{{location}}/tsconfig.json`,
+            templateFile: `${templatePath}/tsconfig.json.hbs`,
+            skipIfExists: true,
+            data,
+          },
+          {
+            type: 'add',
+            path: `{{location}}/test/tsconfig.json`,
+            templateFile: `${templatePath}/tsconfig.test.json.hbs`,
+            skipIfExists: true,
+            data,
+          },
           workspaceRoot && {
             type: 'add',
             path: `{{location}}/tsconfig.build.json`,
@@ -177,6 +188,7 @@ export default (plop) => {
             skipIfExists: true,
             data,
           },
+        ]),
         answers.babel && {
           type: 'add',
           path: `{{location}}/.babelrc.js`,
@@ -190,6 +202,15 @@ export default (plop) => {
             answers.typescript ? 'ts' : 'js'
           }`,
           templateFile: `${templatePath}/index.js.hbs`,
+          skipIfExists: true,
+          data,
+        },
+        {
+          type: 'add',
+          path: `{{location}}/test/example.test.${
+            answers.typescript ? 'ts' : 'js'
+          }`,
+          templateFile: `${templatePath}/example.test.js.hbs`,
           skipIfExists: true,
           data,
         },

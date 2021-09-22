@@ -3,6 +3,7 @@
 
 import { fileURLToPath } from 'url';
 
+import { symbols } from '@4c/cli-core/ConsoleUtilities';
 import nodePlop from 'node-plop/lib/node-plop.js';
 
 export const command = '$0 [location]';
@@ -20,7 +21,7 @@ export function builder(_) {
 
 const filePath = fileURLToPath(new URL('plopfile.cjs', import.meta.url));
 
-export async function handler({ location }) {
+async function handlerImpl({ location }) {
   const plop = nodePlop.default(filePath);
 
   // we need to wait for the promise in plopfile.js to resolve out of band
@@ -36,9 +37,14 @@ export async function handler({ location }) {
   if (result.failures) {
     result.failures.forEach(
       (f) =>
-        f.error &&
-        !f.error.startsWith('Aborted due to previous') &&
-        console.error(f.error),
+        (!f.error || !f.error.startsWith('Aborted due to previous')) &&
+        console.error(f.message || f.error),
     );
   }
 }
+
+export const handler = (argv) =>
+  handlerImpl(argv).catch((err) => {
+    console.error(`\n${symbols.error} ${err.message}`);
+    process.exit(1);
+  });

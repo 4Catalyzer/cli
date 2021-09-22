@@ -20,7 +20,7 @@ const getPackageNameFromPath = (scope, outDir) => {
 };
 
 const sortJsonPath = (jsonFile, paths) => {
-  const obj = require(jsonFile);
+  const obj = JSON.parse(readFileSync(jsonFile));
   paths.forEach((p) => {
     if (!obj[p]) return;
 
