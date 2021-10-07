@@ -1,8 +1,11 @@
 import { statSync, writeFileSync } from 'fs';
+import { createRequire } from 'module';
 import { join, relative } from 'path';
 
 import chalk from 'chalk';
 import glob from 'glob';
+
+const require = createRequire(import.meta.url);
 
 const { red, green, yellow, blue } = chalk;
 

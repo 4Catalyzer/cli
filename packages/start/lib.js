@@ -20,15 +20,14 @@ export default async ({
   ...cliOptions
 }) => {
   // lazy load to use local webpack
-  const [
-    WebpackDevServer,
-    { choosePort, prepareUrls },
-    createCompiler,
-  ] = await Promise.all([
-    import('webpack-dev-server').then((m) => m.default),
-    import('react-dev-utils/WebpackDevServerUtils.js').then((m) => m.default),
-    import('./createCompiler.js').then((m) => m.default),
-  ]);
+  const [WebpackDevServer, { choosePort, prepareUrls }, createCompiler] =
+    await Promise.all([
+      import('webpack-dev-server').then((m) => m.default),
+      import('react-dev-utils/WebpackDevServerUtils.js').then(
+        (m) => m.default,
+      ),
+      import('./createCompiler.js').then((m) => m.default),
+    ]);
 
   try {
     if (envFile) {
