@@ -1,6 +1,6 @@
 {
   "name": "pedantic",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/rollout",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"

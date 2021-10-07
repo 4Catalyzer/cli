@@ -1,6 +1,6 @@
 {
   "name": "@4c/init",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/init",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/4Catalyzer/cli/compare/@4c/intl@2.0.0...@4c/intl@2.0.1) (2021-10-07)
+
+
+### Bug Fixes
+
+* rogue require ([d4b689b](https://github.com/4Catalyzer/cli/commit/d4b689bb952c598345dec899a1a1f7104f7b594b))
+
+
+
+
+
 # [2.0.0](https://github.com/4Catalyzer/cli/compare/@4c/intl@1.3.2...@4c/intl@2.0.0) (2021-09-17)
 
 

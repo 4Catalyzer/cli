@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/4Catalyzer/cli/compare/@4c/init@4.0.0...@4c/init@4.1.0) (2021-10-07)
+
+
+### Features
+
+* init improvements ([5fc796d](https://github.com/4Catalyzer/cli/commit/5fc796d20689db412675030bdfb972705827db4b))
+
+
+
+
+
 # [4.0.0](https://github.com/4Catalyzer/cli/compare/@4c/init@3.2.1...@4c/init@4.0.0) (2021-09-17)
 
 

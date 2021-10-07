@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/4Catalyzer/cli/compare/@4c/cli@3.0.0...@4c/cli@3.0.1) (2021-10-07)
+
+**Note:** Version bump only for package @4c/cli
+
+
+
+
+
 # [3.0.0](https://github.com/4Catalyzer/cli/compare/@4c/cli@2.2.9...@4c/cli@3.0.0) (2021-09-17)
 
 
