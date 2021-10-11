@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@4c/jest-preset@^1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@4c/jest-preset/-/jest-preset-1.6.1.tgz#a727a5cdea0e6d81a588e93390eea355497a75ef"
-  integrity sha512-4CxqTjtV1cfrZ5Ma2XawAP6nynZqzG897j06Crarw4554D/hgMqeznRQ1HWIZ9BzbRNoTNtNgE7D8LM8RLZnhg==
+"@4c/jest-preset@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@4c/jest-preset/-/jest-preset-1.6.2.tgz#bc6e1c61a3d93776e791815cb6fd28a7f0223561"
+  integrity sha512-eyD4VgHQLw2sEIaKlljBVYrUx61F7yZbViSDNZgjaeiFeMC/W/EKjuttMsBJz/iGshQ0Sq1/TwHa7uGGZVGeTQ==
   dependencies:
     babel-jest "^27.2.0"
     find-up "^5.0.0"
@@ -5181,10 +5181,10 @@ eslint-plugin-import@^2.24.2:
     resolve "^1.20.0"
     tsconfig-paths "^3.11.0"
 
-eslint-plugin-jest@^24.5.0:
-  version "24.5.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-24.5.0.tgz#a223a0040a19af749a161807254f0e47f5bfdcc3"
-  integrity sha512-Cm+XdX7Nms2UXGRnivHFVcM3ZmlKheHvc9VD78iZLO1XcqB59WbVjrMSiesCbHDlToxWjMJDiJMgc1CzFE13Vg==
+eslint-plugin-jest@^24.7.0:
+  version "24.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-24.7.0.tgz#206ac0833841e59e375170b15f8d0955219c4889"
+  integrity sha512-wUxdF2bAZiYSKBclsUMrYHH6WxiBreNjyDxbRv345TIvPeoCEgPNEn3Sa+ZrSqsf1Dl9SqqSREXMHExlMMu1DA==
   dependencies:
     "@typescript-eslint/experimental-utils" "^4.0.1"
 
@@ -13256,10 +13256,10 @@ webpack-sources@^3.2.0:
   resolved "https://registry.yarnpkg.com/webpack-sources/-/webpack-sources-3.2.0.tgz#b16973bcf844ebcdb3afde32eda1c04d0b90f89d"
   integrity sha512-fahN08Et7P9trej8xz/Z7eRu8ltyiygEo/hnRi9KqBUs80KeDcnf96ZJo++ewWd84fEf3xSX9bp4ZS9hbw0OBw==
 
-webpack@^5.1.0, webpack@^5.56.0:
-  version "5.56.0"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.56.0.tgz#91a04de09c85765002818678538c319b6e461324"
-  integrity sha512-pJ7esw2AGkpZL0jqsEAKnDEfRZdrc9NVjAWA+d1mFkwj68ng9VQ6+Wnrl+kS5dlDHvrat5ASK5vd7wp6I7f53Q==
+webpack@^5.1.0, webpack@^5.58.1:
+  version "5.58.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-5.58.1.tgz#df8aad72b617a9d0db8c89d4f410784ee93320d7"
+  integrity sha512-4Z/dmbTU+VmkCb2XNgW7wkE5TfEcSooclprn/UEuVeAkwHhn07OcgUsyaKHGtCY/VobjnsYBlyhKeMLiSoOqPg==
   dependencies:
     "@types/eslint-scope" "^3.7.0"
     "@types/estree" "^0.0.50"
