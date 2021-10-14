@@ -2097,7 +2097,7 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.30.tgz#3501e6f09b954de9c404671cefdbcc5d9d7c45f6"
   integrity sha512-sz9MF/zk6qVr3pAnM0BSQvYIBK44tS75QC5N+VbWSE4DjCV/pJ+UzCW/F+vVnl7TkOPcuwQureKNtSSwjBTaMg==
 
-"@types/normalize-package-data@^2.4.0":
+"@types/normalize-package-data@^2.4.0", "@types/normalize-package-data@^2.4.1":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
@@ -5777,10 +5777,10 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
-find-up@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/find-up/-/find-up-6.0.0.tgz#7e321c34ecfea17dfffc4d78017bb025b9dfff71"
-  integrity sha512-NU20P/qRR4fbjbfQgf5SL6L7AbQbUG69OmBJ3o+DEmHwSwKaaeZ+9ok/zuE5Z8pyFSGPerTen16gLZTs1v1zjQ==
+find-up@^6.0.0, find-up@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/find-up/-/find-up-6.2.0.tgz#f3b81d633fa83bebe64f83a8bab357f86d5914be"
+  integrity sha512-yWHzMzXCaFoABSnFTCPKNFlYoq4mSga9QLRRKOCLSJ33hSkzROB14ITbAWW0QDQDyuzsPQ33S1DsOWQb/oW1yA==
   dependencies:
     locate-path "^7.0.0"
     path-exists "^5.0.0"
@@ -10925,14 +10925,14 @@ read-pkg-up@^7.0.1:
     read-pkg "^5.2.0"
     type-fest "^0.8.1"
 
-read-pkg-up@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-8.0.0.tgz#72f595b65e66110f43b052dd9af4de6b10534670"
-  integrity sha512-snVCqPczksT0HS2EC+SxUndvSzn6LRCwpfSvLrIfR5BKDQQZMaI6jPRC9dYvYFDRAuFEAnkwww8kBBNE/3VvzQ==
+read-pkg-up@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-9.0.0.tgz#2f03ba3e1430c56f8f0a4da73274c6d26c283b45"
+  integrity sha512-7dNMZVru/9QQYnYYjboVqpaqT/e24MuhovJWjZHFBmUnCKVz5ZVFNLbd+fJCUsH7uIgkYbX9yQJvab2nc6P7Nw==
   dependencies:
-    find-up "^5.0.0"
-    read-pkg "^6.0.0"
-    type-fest "^1.0.1"
+    find-up "^6.2.0"
+    read-pkg "^7.0.0"
+    type-fest "^2.5.0"
 
 read-pkg@^1.0.0:
   version "1.1.0"
@@ -10962,15 +10962,15 @@ read-pkg@^5.2.0:
     parse-json "^5.0.0"
     type-fest "^0.6.0"
 
-read-pkg@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-6.0.0.tgz#a67a7d6a1c2b0c3cd6aa2ea521f40c458a4a504c"
-  integrity sha512-X1Fu3dPuk/8ZLsMhEj5f4wFAF0DWoK7qhGJvgaijocXxBmSToKfbFtqbxMO7bVjNA1dmE5huAzjXj/ey86iw9Q==
+read-pkg@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-7.0.0.tgz#7009094a9cd58c7efc325d31f1f6cfce1928fa00"
+  integrity sha512-oG2cKegOo2gjy/hrAM+KFHD9IqKdQvWcpWBBxuHbaucziM9PY45EuF6YbenLF7tL9ekXgB6Lfruo9hwdHQZUrA==
   dependencies:
-    "@types/normalize-package-data" "^2.4.0"
+    "@types/normalize-package-data" "^2.4.1"
     normalize-package-data "^3.0.2"
     parse-json "^5.2.0"
-    type-fest "^1.0.1"
+    type-fest "^2.0.0"
 
 read-yaml-file@^1.1.0:
   version "1.1.0"
@@ -12762,10 +12762,10 @@ type-fest@^0.8.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
 
-type-fest@^1.0.1:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.4.0.tgz#e9fb813fe3bf1744ec359d55d1affefa76f14be1"
-  integrity sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==
+type-fest@^2.0.0, type-fest@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.5.0.tgz#e5d0ef818d565e8fc442414194a4ac3afc4c42a7"
+  integrity sha512-wB5vE+XXZ2g2mDRo18yZMae1joUhquomLTm+BkxeuRHnwmrNWzVPNrFah9z7pjsKNiVAaJL33+uQbgbPSARyqw==
 
 type-is@~1.6.17, type-is@~1.6.18:
   version "1.6.18"

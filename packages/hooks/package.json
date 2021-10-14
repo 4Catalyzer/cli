@@ -39,7 +39,7 @@
     "@4c/cli-core": "^3.0.0",
     "find-up": "^6.0.0",
     "has-yarn": "^3.0.0",
-    "read-pkg-up": "^8.0.0",
+    "read-pkg-up": "^9.0.0",
     "yargs": "^17.1.1"
   }
 }
