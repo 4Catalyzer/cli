@@ -33,7 +33,7 @@
     "fork-ts-checker-webpack-plugin": "^6.3.3",
     "lodash": "^4.17.21",
     "react-dev-utils": "^11.0.1",
-    "webpack-dev-server": "^3.11.2",
+    "webpack-dev-server": "^4.4.0",
     "webpack-log": "^3.0.2",
     "webpack-notifier": "^1.13.0",
     "webpackbar": "^5.0.0-3"
