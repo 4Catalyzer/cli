@@ -2,7 +2,7 @@ import format from './lib.js';
 
 export const command = '$0 <patterns..>';
 
-export const describe = 'Lint files use ESLint and prettier';
+export const describe = 'Lint files using ESLint and Prettier';
 
 export function builder(_) {
   return _.option('fix', {
