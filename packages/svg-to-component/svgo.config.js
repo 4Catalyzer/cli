@@ -9,37 +9,50 @@ const SPECIAL_ATTRS = {
 });
 
 const camelCaseAttributes = {
-  type: 'perItem',
+  name: 'camelCaseAttributes',
+  type: 'visitor',
   active: true,
-  fn(item) {
-    if (!item.isElem()) return;
+  fn() {
+    return {
+      element: {
+        enter: (node) => {
+          for (const [name, attr] of Object.entries(node.attributes)) {
+            if (name.match(/(aria|data)-.+/gi)) {
+              continue;
+            }
 
-    item.eachAttr((attr) => {
-      if (attr.name.match(/(aria|data)-.+/gi)) return;
+            let nextName =
+              SPECIAL_ATTRS[name] ||
+              name.replace(
+                /^(xml|xlink|xmlns):(.+)$/i,
+                (_, ns, n) => `${ns}-${n}`,
+              );
 
-      let name =
-        SPECIAL_ATTRS[attr.name] ||
-        attr.name.replace(
-          /^(xml|xlink|xmlns):(.+)$/i,
-          (_, ns, n) => `${ns}-${n}`,
-        );
+            nextName = camelCase(nextName);
 
-      name = camelCase(name);
-
-      if (name !== attr.name) {
-        item.removeAttr(attr.name);
-        item.addAttr({ ...attr, name });
-      }
-    });
+            if (nextName !== name) {
+              delete node.attributes[name];
+              node.attributes[nextName] = attr;
+            }
+          }
+        },
+      },
+    };
   },
 };
 
 export const plugins = [
-  { removeViewBox: false },
-  { removeXMLNS: true },
-  { removeComments: true },
-  { camelCaseAttributes },
+  {
+    name: 'preset-default',
+    overrides: {
+      removeViewBox: false,
+    },
+  },
+  'removeXMLNS',
+  'removeComments',
+  camelCaseAttributes,
 ];
+
 export const js2svg = {
   pretty: true,
   indent: '  ',
