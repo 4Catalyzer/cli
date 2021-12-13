@@ -31,10 +31,9 @@
   },
   "dependencies": {
     "@4c/cli-core": "^3.0.0",
-    "@babel/core": "^7.15.5",
-    "@babel/preset-react": "^7.14.5",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
+    "sucrase": "^3.20.3",
     "svgo": "^1.2.2"
   }
 }
