@@ -1,4 +1,4 @@
-import execa from 'execa';
+import { execa } from 'execa';
 import rxjs from 'rxjs';
 import { filter } from 'rxjs/operators';
 

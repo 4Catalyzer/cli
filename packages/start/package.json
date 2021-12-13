@@ -27,20 +27,20 @@
   },
   "dependencies": {
     "@4c/cli-core": "^3.0.0",
-    "@babel/code-frame": "^7.14.5",
-    "dotenv": "^8.1.0",
+    "@babel/code-frame": "^7.16.0",
+    "dotenv": "^10.0.0",
     "exists-case": "^0.1.0",
-    "fork-ts-checker-webpack-plugin": "^6.3.3",
+    "fork-ts-checker-webpack-plugin": "^6.5.0",
     "lodash": "^4.17.21",
-    "react-dev-utils": "^11.0.1",
+    "react-dev-utils": "^11.0.4",
     "webpack-dev-server": "^3.11.2",
     "webpack-log": "^3.0.2",
-    "webpack-notifier": "^1.13.0",
-    "webpackbar": "^5.0.0-3"
+    "webpack-notifier": "^1.14.1",
+    "webpackbar": "^5.0.2"
   },
   "devDependencies": {
     "webpack": "^5.65.0",
-    "webpack-atoms": "^16.1.0"
+    "webpack-atoms": "^17.1.0"
   },
   "peerDependencies": {
     "webpack": ">=5.0.0"

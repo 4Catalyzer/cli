@@ -1,6 +1,6 @@
 import { relative, resolve } from 'path';
 
-import execa from 'execa';
+import { execa } from 'execa';
 import gitDefaultBranch from 'git-default-branch';
 import slash from 'slash';
 

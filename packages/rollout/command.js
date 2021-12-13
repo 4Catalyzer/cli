@@ -7,7 +7,7 @@ import * as PromptUtilities from '@4c/cli-core/PromptUtilities';
 import { createAltPublishDir } from '@4c/file-butler';
 import exitHook from 'async-exit-hook';
 import chalk from 'chalk';
-import execa from 'execa';
+import { execa } from 'execa';
 import fs from 'fs-extra';
 import hasYarn from 'has-yarn';
 import Listr from 'listr';

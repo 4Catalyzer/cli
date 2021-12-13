@@ -4,7 +4,7 @@
 import { fileURLToPath } from 'url';
 
 import { symbols } from '@4c/cli-core/ConsoleUtilities';
-import nodePlop from 'node-plop/lib/node-plop.js';
+import nodePlop from 'node-plop';
 
 export const command = '$0 [location]';
 
@@ -19,15 +19,10 @@ export function builder(_) {
   });
 }
 
-const filePath = fileURLToPath(new URL('plopfile.cjs', import.meta.url));
+const filePath = fileURLToPath(new URL('plopfile.js', import.meta.url));
 
 async function handlerImpl({ location }) {
-  const plop = nodePlop.default(filePath);
-
-  // we need to wait for the promise in plopfile.js to resolve out of band
-  // because plop doesn't await it internally and this is the only way to get ESM
-  // working since it requires the file we pass in
-  await import('./plopfile.cjs').then((m) => m.ready);
+  const plop = await nodePlop(filePath);
 
   const newPkg = plop.getGenerator('new-package');
 
