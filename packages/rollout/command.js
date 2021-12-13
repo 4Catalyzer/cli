@@ -6,12 +6,11 @@ import * as GitUtilities from '@4c/cli-core/GitUtilities';
 import * as PromptUtilities from '@4c/cli-core/PromptUtilities';
 import { createAltPublishDir } from '@4c/file-butler';
 import exitHook from 'async-exit-hook';
-import chalk from 'chalk';
-import execa from 'execa';
+import { execa } from 'execa';
 import fs from 'fs-extra';
 import hasYarn from 'has-yarn';
 import Listr from 'listr';
-import { readPackageUpAsync } from 'read-pkg-up';
+import { readPackageUp } from 'read-pkg-up';
 import rimraf from 'rimraf';
 import { from } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -21,6 +20,7 @@ import { recommendedBump, updateChangelog } from './conventional-commits.js';
 import handleNpmError from './handleNpmError.js';
 import { exec } from './rx.js';
 
+const { chalk } = ConsoleUtilities;
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
 
 async function runLifecycle(script, pkg) {
@@ -219,7 +219,7 @@ export const builder = (_) =>
 
 const handlerImpl = async (argv) => {
   const cwd = process.cwd();
-  const { path: pkgPath, packageJson } = await readPackageUpAsync({
+  const { path: pkgPath, packageJson } = await readPackageUp({
     cwd,
     normalize: false,
   });

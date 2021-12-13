@@ -5,7 +5,7 @@ const tmp = require('tmp');
 const {
   updateChangelog,
   recommendedBump,
-} = require('../conventional-commits');
+} = require('../conventional-commits.js');
 
 const commit = (...msgs) =>
   shell.exec(

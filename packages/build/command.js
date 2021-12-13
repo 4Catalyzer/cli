@@ -4,7 +4,7 @@ import { debuglog } from 'util';
 
 import { chalk, info, symbols } from '@4c/cli-core/ConsoleUtilities';
 import { getPackages } from '@manypkg/get-packages';
-import execa from 'execa';
+import { execa } from 'execa';
 import fsExtra from 'fs-extra';
 import Listr from 'listr';
 
