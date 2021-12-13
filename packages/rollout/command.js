@@ -10,7 +10,7 @@ import { execa } from 'execa';
 import fs from 'fs-extra';
 import hasYarn from 'has-yarn';
 import Listr from 'listr';
-import { readPackageUpAsync } from 'read-pkg-up';
+import { readPackageUp } from 'read-pkg-up';
 import rimraf from 'rimraf';
 import { from } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -219,7 +219,7 @@ export const builder = (_) =>
 
 const handlerImpl = async (argv) => {
   const cwd = process.cwd();
-  const { path: pkgPath, packageJson } = await readPackageUpAsync({
+  const { path: pkgPath, packageJson } = await readPackageUp({
     cwd,
     normalize: false,
   });

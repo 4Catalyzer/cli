@@ -26,7 +26,7 @@
     "cpy": "^8.1.2",
     "fs-extra": "^10.0.0",
     "globby": "^12.0.2",
-    "read-pkg-up": "^8.0.0",
+    "read-pkg-up": "^9.0.0",
     "yargs": "^17.3.0"
   },
   "publishConfig": {

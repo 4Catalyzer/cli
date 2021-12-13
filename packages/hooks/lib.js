@@ -4,7 +4,7 @@ import { debuglog } from 'util';
 
 import { findUp } from 'find-up';
 import hasYarn from 'has-yarn';
-import { readPackageUpAsync } from 'read-pkg-up';
+import { readPackageUp } from 'read-pkg-up';
 
 const debug = debuglog('hookem');
 
@@ -14,7 +14,7 @@ const isHook = (contents) => contents.includes('# hookem');
 
 async function install() {
   const [{ packageJson }, gitDir] = await Promise.all([
-    readPackageUpAsync(),
+    readPackageUp(),
     findUp('.git', { type: 'directory' }),
   ]);
 
