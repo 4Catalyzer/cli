@@ -1,18 +1,15 @@
 /* eslint-disable no-param-reassign */
 import { promises as fs } from 'fs';
-import { createRequire } from 'module';
 import { extname as _extname, basename, resolve } from 'path';
 
 import { chalk } from '@4c/cli-core/ConsoleUtilities';
-import babel from '@babel/core';
 import { safeLoad } from 'js-yaml';
 import camelCase from 'lodash/camelCase.js';
 import upperFirst from 'lodash/upperFirst.js';
+import sucrase from 'sucrase';
 import Svgo from 'svgo';
 
 import * as defaultConfig from './svgo.config.js';
-
-const require = createRequire(import.meta.url);
 
 // https://github.com/svg/svgo/blob/fe0ecaf31eb87a913638a62f842044e425683623/lib/svgo/coa.js
 async function loadConfig(config) {
@@ -92,13 +89,9 @@ export default async function svg2c(source, { esModules, filename, config }) {
 
   const exportName = esModules ? 'export default' : 'module.exports =';
 
-  const { code } = await babel.transformAsync(
+  const { code } = sucrase.transform(
     (await svgo.optimize(source)).data.trim(),
-    {
-      presets: [
-        [require.resolve('@babel/preset-react'), { development: false }],
-      ],
-    },
+    { transforms: ['jsx'], production: true },
   );
 
   return `/* eslint-disable */
@@ -109,15 +102,7 @@ ${reactImport}
 
 var element = ${code}
 
-var Svg = React.forwardRef(function (props, ref) {
-  var next = { ref: ref };
-  for (var key in props) {
-    if (props.hasOwnProperty(key)) {
-      next[key] = props[key];
-    }
-  }
-  return React.cloneElement(element, next);
-});
+var Svg = React.forwardRef((props, ref) => React.cloneElement(element, { ref, ...props }));
 Svg.displayName = "${displayName}";
 Svg.element = element;
 ${exportName} Svg;
