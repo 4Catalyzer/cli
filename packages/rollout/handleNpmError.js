@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import chalk from 'chalk';
+import { chalk } from '@4c/cli-core/ConsoleUtilities';
 import listrInput from 'listr-input';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';

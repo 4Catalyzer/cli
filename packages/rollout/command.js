@@ -6,7 +6,6 @@ import * as GitUtilities from '@4c/cli-core/GitUtilities';
 import * as PromptUtilities from '@4c/cli-core/PromptUtilities';
 import { createAltPublishDir } from '@4c/file-butler';
 import exitHook from 'async-exit-hook';
-import chalk from 'chalk';
 import { execa } from 'execa';
 import fs from 'fs-extra';
 import hasYarn from 'has-yarn';
@@ -21,6 +20,7 @@ import { recommendedBump, updateChangelog } from './conventional-commits.js';
 import handleNpmError from './handleNpmError.js';
 import { exec } from './rx.js';
 
+const { chalk } = ConsoleUtilities;
 const writeJson = (p, json) => fs.writeJson(p, json, { spaces: 2 });
 
 async function runLifecycle(script, pkg) {

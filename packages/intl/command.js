@@ -2,7 +2,7 @@ import { statSync, writeFileSync } from 'fs';
 import { createRequire } from 'module';
 import { join, relative } from 'path';
 
-import chalk from 'chalk';
+import { chalk } from '@4c/cli-core/ConsoleUtilities';
 import glob from 'glob';
 
 const require = createRequire(import.meta.url);
