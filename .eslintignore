@@ -1,4 +1,5 @@
 **/node_modules/**
 **/fixtures/**
+**/build/**
 **/package.json
 **/CHANGELOG.md
