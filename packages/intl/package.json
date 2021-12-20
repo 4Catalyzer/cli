@@ -33,7 +33,7 @@
     "glob": "^7.2.0"
   },
   "devDependencies": {
-    "jest": "^27.4.4"
+    "jest": "^27.4.5"
   },
   "publishConfig": {
     "access": "public"
