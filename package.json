@@ -38,6 +38,6 @@
     "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "lerna": "^4.0.0",
-    "lint-staged": "^12.1.2"
+    "lint-staged": "^12.1.3"
   }
 }
