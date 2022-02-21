@@ -29,7 +29,7 @@
     "yargs": "^17.3.0"
   },
   "devDependencies": {
-    "webpack": "^5.68.0"
+    "webpack": "^5.69.1"
   },
   "publishConfig": {
     "access": "public"
