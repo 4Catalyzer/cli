@@ -33,7 +33,7 @@
     "@4c/jest-preset": "^1.7.0",
     "@4c/prettier-config": "^1.1.0",
     "jest": "^27.5.1",
-    "pinst": "^2.1.6"
+    "pinst": "^3.0.0"
   },
   "dependencies": {
     "@4c/cli-core": "^3.0.0",
