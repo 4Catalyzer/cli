@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/4Catalyzer/cli/compare/@4c/rollout@3.0.1...@4c/rollout@4.0.0) (2022-08-19)
+
+
+### Bug Fixes
+
+* handle newer npm publish directories ([961b8ac](https://github.com/4Catalyzer/cli/commit/961b8acbec2e1f0103697dd2e5c7112ffe92fd70))
+
+
+### Features
+
+* upgrade dependencies: svgo, chalk, etc ([#342](https://github.com/4Catalyzer/cli/issues/342)) ([82f3317](https://github.com/4Catalyzer/cli/commit/82f3317a81dc3db9c829d294bb256661a328fe41))
+
+
+### BREAKING CHANGES
+
+* SVGO upgraded to v2, which requires a compatible config file 
+
+
+
+
+
 ## [3.0.1](https://github.com/4Catalyzer/cli/compare/@4c/rollout@3.0.0...@4c/rollout@3.0.1) (2021-10-07)
 
 **Note:** Version bump only for package @4c/rollout

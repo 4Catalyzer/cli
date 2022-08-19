@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0](https://github.com/4Catalyzer/cli/compare/svg2c@2.0.0...svg2c@3.0.0) (2022-08-19)
+
+
+### Features
+
+* update svg icon output to more modern js ([#341](https://github.com/4Catalyzer/cli/issues/341)) ([221c6d3](https://github.com/4Catalyzer/cli/commit/221c6d34a681ee96f8ce473ac7139f4be7d4c956))
+* upgrade dependencies: svgo, chalk, etc ([#342](https://github.com/4Catalyzer/cli/issues/342)) ([82f3317](https://github.com/4Catalyzer/cli/commit/82f3317a81dc3db9c829d294bb256661a328fe41))
+
+
+### BREAKING CHANGES
+
+* SVGO upgraded to v2, which requires a compatible config file 
+* icons require object spread and arrow function support
+
+
+
+
+
 # [2.0.0](https://github.com/4Catalyzer/cli/compare/svg2c@1.5.2...svg2c@2.0.0) (2021-09-17)
 
 

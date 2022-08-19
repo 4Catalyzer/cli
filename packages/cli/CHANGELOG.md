@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/4Catalyzer/cli/compare/@4c/cli@3.0.1...@4c/cli@4.0.0) (2022-08-19)
+
+
+### Features
+
+* upgrade dependencies: svgo, chalk, etc ([#342](https://github.com/4Catalyzer/cli/issues/342)) ([82f3317](https://github.com/4Catalyzer/cli/commit/82f3317a81dc3db9c829d294bb256661a328fe41))
+
+
+### BREAKING CHANGES
+
+* SVGO upgraded to v2, which requires a compatible config file 
+
+
+
+
+
 ## [3.0.1](https://github.com/4Catalyzer/cli/compare/@4c/cli@3.0.0...@4c/cli@3.0.1) (2021-10-07)
 
 **Note:** Version bump only for package @4c/cli
