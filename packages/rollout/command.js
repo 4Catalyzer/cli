@@ -122,6 +122,12 @@ async function npmPublish(pkgJson, options) {
   const args = ['publish'];
 
   if (publishDir) {
+    // npm@7 and above require an unambigious path otherwise
+    // it will assume things like 'lib' or 'dist/esm' are github repos
+    if (!publishDir.startsWith('.') && !path.isAbsolute(publishDir)) {
+      publishDir = `./${publishDir}`
+    }
+
     args.push(publishDir, '--ignore-scripts');
 
     // We run the lifecycle scripts manually to ensure they run in
@@ -249,10 +255,6 @@ const handlerImpl = async (argv) => {
   // older rollout
   if (!publishDir && packageJson.release) {
     publishDir = packageJson.release.publishDir;
-    if (publishDir)
-      ConsoleUtilities.warn(
-        'publishDir in package.json `release` field is deprecated. Use the `publishConfig.directory` field instead.',
-      );
   }
 
   await runTasks([
