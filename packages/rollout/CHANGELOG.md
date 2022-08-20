@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/4Catalyzer/cli/compare/@4c/rollout@4.0.0...@4c/rollout@4.0.1) (2022-08-20)
+
+
+### Bug Fixes
+
+* publish ([3f427d3](https://github.com/4Catalyzer/cli/commit/3f427d3ed7130f3185a2a5b1e01f79cfd43f32b8))
+
+
+
+
+
 # [4.0.0](https://github.com/4Catalyzer/cli/compare/@4c/rollout@3.0.1...@4c/rollout@4.0.0) (2022-08-19)
 
 
