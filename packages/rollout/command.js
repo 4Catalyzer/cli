@@ -124,9 +124,11 @@ async function npmPublish(pkgJson, options) {
   if (publishDir) {
     // npm@7 and above require an unambigious path otherwise
     // it will assume things like 'lib' or 'dist/esm' are github repos
-    if (!publishDir.startsWith('.') && !path.isAbsolute(publishDir)) {
-      publishDir = `./${publishDir}`
+    let npmDir = publishDir;
+    if (!npmDir.startsWith('.')) {
+      npmDir = `./${npmDir}`;
     }
+    args.push(npmDir, '--ignore-scripts');
 
     args.push(publishDir, '--ignore-scripts');
 
