@@ -130,8 +130,6 @@ async function npmPublish(pkgJson, options) {
     }
     args.push(npmDir, '--ignore-scripts');
 
-    args.push(publishDir, '--ignore-scripts');
-
     // We run the lifecycle scripts manually to ensure they run in
     // the package root, not the publish dir
     await runLifecycle('prepublish', pkgJson);
