@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/4Catalyzer/cli/compare/hookem@3.0.1...hookem@3.0.2) (2022-08-20)
+
+**Note:** Version bump only for package hookem
+
+
+
+
+
 ## [3.0.1](https://github.com/4Catalyzer/cli/compare/hookem@3.0.0...hookem@3.0.1) (2022-08-20)
 
 **Note:** Version bump only for package hookem
