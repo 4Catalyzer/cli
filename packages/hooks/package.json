@@ -1,6 +1,6 @@
 {
   "name": "hookem",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "main": "lib.js",
   "type": "module",
   "repository": {
@@ -29,7 +29,7 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@4c/cli": "^4.0.2",
+    "@4c/cli": "^4.0.3",
     "@4c/jest-preset": "^1.7.0",
     "@4c/prettier-config": "^1.1.0",
     "jest": "^27.5.1",

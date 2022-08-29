@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/4Catalyzer/cli/compare/@4c/intl@3.0.0...@4c/intl@3.0.1) (2022-08-29)
+
+
+### Bug Fixes
+
+* better duplicate handling ([4cfbc14](https://github.com/4Catalyzer/cli/commit/4cfbc14bcec412a164f9b1fa6298647fa837748b))
+
+
+
+
+
 # [3.0.0](https://github.com/4Catalyzer/cli/compare/@4c/intl@2.0.1...@4c/intl@3.0.0) (2022-08-19)
 
 

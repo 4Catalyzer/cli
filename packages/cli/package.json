@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/cli",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -20,7 +20,7 @@
   "dependencies": {
     "@4c/build": "^4.0.0",
     "@4c/init": "^5.0.0",
-    "@4c/intl": "^3.0.0",
+    "@4c/intl": "^3.0.1",
     "@4c/rollout": "^4.0.2",
     "@4c/start": "^4.0.0",
     "pedantic": "^7.0.0",
