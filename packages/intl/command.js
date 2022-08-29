@@ -3,6 +3,7 @@ import { createRequire } from 'module';
 import { join, relative } from 'path';
 
 import { chalk } from '@4c/cli-core/ConsoleUtilities';
+import stringify from 'fast-json-stable-stringify';
 import glob from 'glob';
 
 const require = createRequire(import.meta.url);
@@ -113,18 +114,22 @@ export function handler({ paths, outDir, format = 'json' }) {
     }
 
     json.forEach((descriptor) => {
-      const { id } = descriptor;
+      const { id, description, defaultMessage } = descriptor;
+      const existing = messages[id];
       // eslint-disable-next-line no-param-reassign
       descriptor.file = relative(process.cwd(), filepath);
 
-      if (messages[id]) {
+      if (
+        existing &&
+        // does the content match?
+        (stringify(description) !== stringify(existing.description) ||
+          defaultMessage !== existing.defaultMessage)
+      ) {
         const dup = duplicates.get(id);
-        duplicates.set(
-          id,
-          dup ? [...dup, descriptor] : [messages[id], descriptor],
-        );
+        duplicates.set(id, dup ? [...dup, descriptor] : [descriptor]);
         return;
       }
+
       messages[id] = descriptor;
     });
   });
