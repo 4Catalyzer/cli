@@ -44,8 +44,10 @@ const camelCaseAttributes = {
 export const plugins = [
   {
     name: 'preset-default',
-    overrides: {
-      removeViewBox: false,
+    params: {
+      overrides: {
+        removeViewBox: false,
+      },
     },
   },
   'removeXMLNS',
