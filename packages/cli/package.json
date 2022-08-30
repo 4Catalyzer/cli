@@ -1,6 +1,6 @@
 {
   "name": "@4c/cli",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "homepage": "https://github.com/4Catalyzer/cli/tree/master/packages/cli",
   "bugs": {
     "url": "https://github.com/4Catalyzer/cli/issues"
@@ -24,7 +24,7 @@
     "@4c/rollout": "^4.0.2",
     "@4c/start": "^4.0.0",
     "pedantic": "^7.0.0",
-    "svg2c": "^3.0.0",
+    "svg2c": "^3.0.1",
     "ts-doctor": "^3.0.0",
     "yargs": "^17.3.0"
   },

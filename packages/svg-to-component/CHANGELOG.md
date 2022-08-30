@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/4Catalyzer/cli/compare/svg2c@3.0.0...svg2c@3.0.1) (2022-08-30)
+
+
+### Bug Fixes
+
+* svg options ([099b4be](https://github.com/4Catalyzer/cli/commit/099b4bea8b47561db7c2fdd2a049cb246c5b8d26))
+
+
+
+
+
 # [3.0.0](https://github.com/4Catalyzer/cli/compare/svg2c@2.0.0...svg2c@3.0.0) (2022-08-19)
 
 
