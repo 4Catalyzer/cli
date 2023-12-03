@@ -36,7 +36,7 @@
     "@4c/file-butler": "^6.0.0",
     "async-exit-hook": "^2.0.1",
     "conventional-changelog": "^3.1.24",
-    "conventional-recommended-bump": "^6.1.0",
+    "conventional-recommended-bump": "^9.0.0",
     "execa": "^6.0.0",
     "fs-extra": "^10.0.0",
     "has-yarn": "^3.0.0",
