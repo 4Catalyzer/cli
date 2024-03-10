@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@4c/cli-core": "^4.0.0",
-    "cpy": "^8.1.2",
+    "cpy": "^11.0.1",
     "fs-extra": "^10.0.0",
     "globby": "^12.0.2",
     "read-pkg-up": "^9.0.0",
