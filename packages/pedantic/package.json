@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@4c/jest-preset": "^1.7.0",
-    "jest": "^27.5.1"
+    "jest": "^29.7.0"
   },
   "publishConfig": {
     "access": "public"
