@@ -48,10 +48,10 @@
     "semver": "^7.3.5"
   },
   "devDependencies": {
-    "@4c/jest-preset": "^1.7.0",
+    "@4c/jest-preset": "^1.8.1",
     "jest": "^27.5.1",
     "shelljs": "^0.8.5",
-    "tmp": "^0.2.1"
+    "tmp": "^0.2.3"
   },
   "publishConfig": {
     "access": "public"
