@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@4c/cli": "^4.0.4",
-    "@4c/jest-preset": "^1.7.0",
+    "@4c/jest-preset": "^1.8.1",
     "@4c/prettier-config": "^1.1.0",
     "jest": "^27.5.1",
     "pinst": "^2.1.6"
