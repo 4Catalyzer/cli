@@ -41,7 +41,7 @@
     "yargs": "^17.3.0"
   },
   "devDependencies": {
-    "@4c/jest-preset": "^1.7.0",
+    "@4c/jest-preset": "^1.8.1",
     "jest": "^27.5.1"
   },
   "publishConfig": {
